@@ -2,22 +2,20 @@ import { Dispatch, FC, SetStateAction, useEffect, useRef } from 'react';
 import { RgbColor } from 'react-colorful';
 import EightBitInput from './EightBitInput';
 import clamp from 'lodash/clamp';
+import { usePixelCanvasContext } from '../../contexts/PixelCanvasContext';
 
-type ColorInputProps = {
-    color: RgbColor;
-    onChange: Dispatch<SetStateAction<RgbColor>>;
-};
+const RGBColorInput: FC = () => {
+    const { selectedColor, setSelectedColor } = usePixelCanvasContext();
 
-const RGBColorInput: FC<ColorInputProps> = ({ color, onChange }) => {
     const redRef = useRef<HTMLInputElement>(null);
     const greenRef = useRef<HTMLInputElement>(null);
     const blueRef = useRef<HTMLInputElement>(null);
 
     useEffect(() => {
-        if (redRef.current) redRef.current.value = String(color.r);
-        if (greenRef.current) greenRef.current.value = String(color.g);
-        if (blueRef.current) blueRef.current.value = String(color.b);
-    }, [color]);
+        if (redRef.current) redRef.current.value = String(selectedColor.r);
+        if (greenRef.current) greenRef.current.value = String(selectedColor.g);
+        if (blueRef.current) blueRef.current.value = String(selectedColor.b);
+    }, [selectedColor]);
 
     const inputChangeHandler = () => {
         // clamp values if outside of 0 and 255
@@ -40,7 +38,7 @@ const RGBColorInput: FC<ColorInputProps> = ({ color, onChange }) => {
             g: greenRef.current?.value ?? 0,
             b: blueRef.current?.value ?? 0,
         };
-        onChange(newColor as RgbColor);
+        setSelectedColor(newColor as RgbColor);
     };
 
     return (

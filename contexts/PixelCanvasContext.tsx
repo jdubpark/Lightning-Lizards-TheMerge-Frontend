@@ -8,16 +8,20 @@ import {
 } from 'react';
 import { RgbColor } from 'react-colorful';
 
-export type XYCoordinates = {
+export interface XYCoordinates {
     x: number;
     y: number;
-};
+}
 
 interface PixelCanvasContextInterface {
     selectedCoordinates: XYCoordinates;
     setSelectedCoordinates: Dispatch<SetStateAction<XYCoordinates>>;
     selectedColor: RgbColor;
     setSelectedColor: Dispatch<SetStateAction<RgbColor>>;
+    selectedPixelsList: { coordinates: XYCoordinates; color: RgbColor }[];
+    setSelectedPixelsList: Dispatch<
+        SetStateAction<{ coordinates: XYCoordinates; color: RgbColor }[]>
+    >;
 }
 
 const PixelCanvasContext = createContext<
@@ -39,6 +43,9 @@ export const PixelCanvasContextProvider = ({
         g: 255,
         b: 255,
     });
+    const [selectedPixelsList, setSelectedPixelsList] = useState<
+        { coordinates: XYCoordinates; color: RgbColor }[]
+    >([]);
 
     return (
         <PixelCanvasContext.Provider
@@ -47,6 +54,8 @@ export const PixelCanvasContextProvider = ({
                 setSelectedCoordinates,
                 selectedColor,
                 setSelectedColor,
+                selectedPixelsList,
+                setSelectedPixelsList,
             }}
         >
             {children}
