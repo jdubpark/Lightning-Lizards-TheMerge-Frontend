@@ -24,7 +24,7 @@ export const PixelInfo = () => {
                     backgroundColor: `rgb(${selectedColor.r}, ${selectedColor.g}, ${selectedColor.b})`,
                 }}
             />
-            <RgbColorInput color={selectedColor} onChange={setSelectedColor} />
+            <RgbColorInput />
             <div className="mt-3">
                 <RgbColorPicker
                     color={selectedColor}
