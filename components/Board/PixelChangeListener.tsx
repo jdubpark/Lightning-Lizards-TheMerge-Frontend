@@ -1,12 +1,11 @@
 import { BigNumber } from 'ethers';
 import { FC, MutableRefObject } from 'react';
 import { useBlockNumber, useContractEvent } from 'wagmi';
+
 import MergeCanvasArtifact from '../../contracts/MergeCanvas.json';
+import {MERGE_CANVAS_CONTRACT_ADDRESS} from "../../utils/constants";
 
 const MergeCanvasABI = MergeCanvasArtifact.abi;
-// Deployed to local hardhat node
-const MERGE_CANVAS_CONTRACT_ADDRESS =
-    '0x5FbDB2315678afecb367f032d93F642f64180aa3';
 
 type ContractData = {
     addressOrName: string;

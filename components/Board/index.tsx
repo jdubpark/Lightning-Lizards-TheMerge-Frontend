@@ -3,6 +3,7 @@ import PixelLocationInfo from './PixelLocationInfo';
 import PixelColorInfo  from './PixelColorInfo';
 import PixelCanvasContextProvider  from '../../contexts/PixelCanvasContext';
 import { SelectedPixelsList } from '../Inputs/SelectedPixelsList';
+import UserPixelsList from '../List/UserPixelsList'
 
 export const Board = () => {
     return (
@@ -15,6 +16,9 @@ export const Board = () => {
                 </div>
                 <div>
                     <SelectedPixelsList />
+                </div>
+                <div>
+                    <UserPixelsList />
                 </div>
             </div>
         </PixelCanvasContextProvider>

@@ -19,7 +19,7 @@ const { chains, provider, webSocketProvider } = configureChains(
     [
         alchemyProvider({
             // You can get your own at https://dashboard.alchemyapi.io
-            alchemyId: process.env.NEXT_PUBLIC_ALCHEMY_ID || '0xkey',
+            apiKey: process.env.NEXT_PUBLIC_ALCHEMY_ID || '0x0',
         }),
         jsonRpcProvider({
             rpc: (chain) => {

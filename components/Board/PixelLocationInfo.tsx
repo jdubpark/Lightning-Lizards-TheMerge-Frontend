@@ -50,7 +50,7 @@ export default function PixelLocationInfo() {
 	const [prevRGB, setPrevRGB] = useState<RgbColor>({ r: 0, g: 0, b: 0 })
 
 	useEffect(() => {
-		ApiClient.fetchCoordinateData(selectedCoordinates.x, selectedCoordinates.y)
+		ApiClient.getCoordinateData(selectedCoordinates.x, selectedCoordinates.y)
 			.then((cd) => {
 				if (!cd) return
 				setPrevRGB({ r: cd.color.R, g: cd.color.G, b: cd.color.B, })
