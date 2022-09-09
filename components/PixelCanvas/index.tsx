@@ -41,8 +41,7 @@ const shadowSize = 8;
 
 const PixelCanvas: NextPage<Props> = (props) => {
     const { setSelectedCoordinates, selectedColor } = usePixelCanvasContext();
-    // using destructuring to get username
-    // const { username } = props;
+
     const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
     const halfSize = CANVAS_DIMENSION / 2;
@@ -52,24 +51,6 @@ const PixelCanvas: NextPage<Props> = (props) => {
             const context = canvasRef.current.getContext('2d');
             if (!context) return;
             context.imageSmoothingEnabled = false;
-
-            // const image = new Image()
-            // image.src = 'https://i.redd.it/o4oku48qk9py.png'
-            // image.src = out
-            // image.onload = () => {
-            //   context.drawImage(image, 0, 0)
-            // }
-
-            // Colors the canvas
-            for (let i = 0; i < CANVAS_DIMENSION; i++) {
-                for (let j = 0; j < CANVAS_DIMENSION; j++) {
-                    // let key: any = i + '-' + j
-                    const color = randomRgb();
-
-                    context.fillStyle = `rgb(${color.R}, ${color.G}, ${color.B})`;
-                    context.fillRect(i, j, 1, 1);
-                }
-            }
 
             const canvas = panzoom(canvasRef.current, {
                 maxZoom: 50,
@@ -147,13 +128,8 @@ const PixelCanvas: NextPage<Props> = (props) => {
                     imageRendering: 'pixelated',
                     // height: CANVAS_DIMENSION,
                     // width: CANVAS_DIMENSION,
-                    backgroundImage: `
-                linear-gradient(${bg.direction}deg, ${bg.color.dark} ${bg.span}%, ${bg.color.light} ${bg.span}%),
-                linear-gradient(-${bg.direction}deg, ${bg.color.dark} ${bg.span}%, ${bg.color.light} ${bg.span}%),
-                linear-gradient(${bg.direction}deg, ${bg.color.light} ${bg.rest}%, ${bg.color.dark} ${bg.rest}%),
-                linear-gradient(-${bg.direction}deg, ${bg.color.light} ${bg.rest}%, ${bg.color.dark} ${bg.rest}%)`,
-                    backgroundSize: `${bg.doubleSize}px ${bg.doubleSize}px`,
-                    backgroundPosition: `0 0, 0 ${bg.size}px, ${bg.size}px -${bg.size}px, -${bg.size}px 0`,
+                    backgroundImage:
+                        'url(https://merge-nft.s3.us-west-2.amazonaws.com/canvas.png)',
                 }}
             />
         </div>
