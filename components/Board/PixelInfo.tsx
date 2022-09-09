@@ -1,5 +1,10 @@
 import { usePixelCanvasContext } from '../../contexts/PixelCanvasContext';
-import { RgbColorPicker } from 'react-colorful';
+import {
+    RgbColorPicker,
+    RgbaStringColorPicker,
+    HexColorInput,
+} from 'react-colorful';
+import RgbColorInput from '../Inputs/RGBColorInput';
 
 export const PixelInfo = () => {
     const { selectedCoordinates, selectedColor, setSelectedColor } =
@@ -19,6 +24,7 @@ export const PixelInfo = () => {
                     backgroundColor: `rgb(${selectedColor.r}, ${selectedColor.g}, ${selectedColor.b})`,
                 }}
             />
+            <RgbColorInput color={selectedColor} onChange={setSelectedColor} />
             <div className="mt-3">
                 <RgbColorPicker
                     color={selectedColor}
