@@ -5,6 +5,7 @@ import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { useAccount, useConnect } from 'wagmi';
 import { useEffect, useRef } from 'react';
 import { Board } from '../components/Board';
+import PixelCanvasContextProvider from '../contexts/PixelCanvasContext';
 
 function Header({ children }: { children: JSX.Element | JSX.Element[] }) {
     return (
@@ -50,7 +51,9 @@ const Home: NextPage = () => {
                 </nav>
             </Header>
             <main className="flex-grow width-clamp">
-                <Board />
+                <PixelCanvasContextProvider>
+                    <Board />
+                </PixelCanvasContextProvider>
                 {/*<DisplayNameComp />*/}
             </main>
             {/* <Footer>

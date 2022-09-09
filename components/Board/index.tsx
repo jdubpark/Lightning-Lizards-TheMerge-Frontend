@@ -1,36 +1,41 @@
 import PixelCanvas from './PixelCanvas';
 import PixelLocationInfo from '../Displays/PixelLocationInfo';
 import PixelColorInfo from '../Displays/PixelColorInfo';
-import PixelCanvasContextProvider from '../../contexts/PixelCanvasContext';
+import PixelCanvasContextProvider, {
+    usePixelCanvasContext,
+} from '../../contexts/PixelCanvasContext';
 import { SelectedPixelsList } from '../Inputs/SelectedPixelsList';
 import UserPixelsList from '../Displays/UserPixelsList';
+import { PixelInfoSection } from '../Displays/PixelInfo';
+import { MintButton } from '../Inputs/MintButton';
 
 export const Board = () => {
+    const { canvasIsEditable, setCanvasIsEditable } = usePixelCanvasContext();
+
     return (
-        <PixelCanvasContextProvider>
-            <div className="flex flex-row gap-x-5 h-full">
-                <PixelCanvas />
-                <div className="z-10 mt-10">
-                    <PixelLocationInfo />
-                </div>
-            </div>
-            {/* <div className="flex flex-col gap-y-6">
-                <div className="flex flex-row gap-x-10 items-start">
-                    <div>
-                        <PixelLocationInfo />
+        <div className="flex flex-row gap-x-5 h-full">
+            <PixelCanvas />
+            <div className="flex flex-col gap-y-5 w-[300px] z-10 mt-10">
+                <PixelInfoSection
+                    name={canvasIsEditable ? 'Edit Mode' : 'View Mode'}
+                    onClick={() => {
+                        setCanvasIsEditable(!canvasIsEditable);
+                    }}
+                >
+                    <div />
+                </PixelInfoSection>
+                <PixelLocationInfo />
+                {canvasIsEditable && (
+                    <>
                         <PixelColorInfo />
-                    </div>a
-                    <div className="flex-grow">
-                        <PixelCanvas />
-                    </div>
-                </div>
-                <div>
-                    <SelectedPixelsList />
-                </div>
-                <div>
-                    <UserPixelsList />
-                </div>
-            </div> */}
-        </PixelCanvasContextProvider>
+                        <SelectedPixelsList />
+                        <MintButton />
+                    </>
+                )}
+                {/* <div>
+                        <UserPixelsList />
+                    </div> */}
+            </div>
+        </div>
     );
 };
