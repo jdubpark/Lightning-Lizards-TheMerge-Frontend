@@ -15,14 +15,11 @@ import { publicProvider } from 'wagmi/providers/public';
 import { jsonRpcProvider } from 'wagmi/providers/jsonRpc';
 
 const { chains, provider, webSocketProvider } = configureChains(
-    [
-        chain.mainnet,
-        chain.goerli,
-    ],
+    [chain.mainnet, chain.goerli, chain.hardhat],
     [
         alchemyProvider({
             // You can get your own at https://dashboard.alchemyapi.io
-            apiKey: process.env.NEXT_PUBLIC_ALCHEMY_ID,
+            alchemyId: process.env.NEXT_PUBLIC_ALCHEMY_ID || '0xkey',
         }),
         jsonRpcProvider({
             rpc: (chain) => {
