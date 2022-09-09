@@ -68,7 +68,7 @@ const PixelCanvas: NextPage<Props> = (props) => {
             }
 
             const canvas = panzoom(canvasRef.current, {
-                maxZoom: 10,
+                maxZoom: 50,
                 minZoom: 0.8,
                 autocenter: true,
                 pinchSpeed: 0.6,
@@ -112,6 +112,7 @@ const PixelCanvas: NextPage<Props> = (props) => {
         x = Math.floor(x);
         y = Math.floor(y);
         drawPixel(x, y, 'light grey', canvas);
+        console.log(x, y);
     }
 
     return (
@@ -133,11 +134,13 @@ const PixelCanvas: NextPage<Props> = (props) => {
             <canvas
                 ref={canvasRef}
                 onClick={clickHandler}
+                height={canvasSize}
+                width={canvasSize}
                 style={{
                     cursor: 'crosshair',
                     imageRendering: 'pixelated',
-                    height: canvasSize,
-                    width: canvasSize,
+                    // height: canvasSize,
+                    // width: canvasSize,
                     backgroundImage: `
                 linear-gradient(${bg.direction}deg, ${bg.color.dark} ${bg.span}%, ${bg.color.light} ${bg.span}%),
                 linear-gradient(-${bg.direction}deg, ${bg.color.dark} ${bg.span}%, ${bg.color.light} ${bg.span}%),
