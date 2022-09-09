@@ -16,4 +16,8 @@ export default class ApiClient {
 		const url = `https://us-east-1.aws.data.mongodb-api.com/app/dataapi-cmuqf/endpoint/canvas?key=${x}-${y}`
 		return axios.get<CoordinateData[]>(url).then((res) => res.data[0])
 	}
+
+	static async getEtherScanLink(address: string): Promise<string> {
+		return `https://etherscan.io/address/${address}`
+	}
 }
