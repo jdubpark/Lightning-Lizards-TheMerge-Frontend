@@ -59,7 +59,7 @@ const PixelCanvas: NextPage<Props> = (props) => {
                 pinchSpeed: 0.6,
             });
 
-            canvas.zoomAbs(halfSize, halfSize, 1);
+            canvas.zoomAbs(halfSize, halfSize, 0.8);
 
             return () => {
                 // safe destruction, lfg!!
