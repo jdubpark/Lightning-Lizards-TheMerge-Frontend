@@ -110,7 +110,7 @@ const PixelCanvas: NextPage = (props) => {
                 drawPixel(newCoord.x, newCoord.y, canvas, selectedColor);
             }
         },
-        [prevCoord, selectedColor, setSelectedCoordinates]
+        [canvasPanZoom, prevCoord.x, prevCoord.y, selectedColor, setSelectedCoordinates]
     );
 
     return (

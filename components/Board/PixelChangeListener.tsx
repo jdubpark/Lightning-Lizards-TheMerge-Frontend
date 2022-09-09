@@ -28,9 +28,15 @@ export const PixelChangeListener: FC<PixelChangeListenerProps> = ({
     };
 
     // Currently seems to miss some events the occur in the MergeCanvas contract
-    useContractEvent(mergeCanvasContractData, 'PixelColorChanged', (event) => {
-        colorCanvasPixel(event);
-    });
+    // useContractEvent(mergeCanvasContractData, 'PixelColorChanged', (event) => {
+    //     colorCanvasPixel(event);
+    // });
+    useContractEvent({
+        addressOrName: MERGE_CANVAS_CONTRACT_ADDRESS,
+        contractInterface: MergeCanvasABI,
+        eventName: 'PixelColorChanged',
+        listener: (event) => colorCanvasPixel(event),
+    })
 
     const colorCanvasPixel = (colorCanvasPixelEvent: unknown[]) => {
         console.log('colorCanvasPixel Event: ', colorCanvasPixelEvent);

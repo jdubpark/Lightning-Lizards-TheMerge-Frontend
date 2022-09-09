@@ -1,4 +1,5 @@
-import { constants } from 'ethers'
+import clsx from 'clsx';
+import { constants } from 'ethers';
 import {useEffect, useState} from "react";
 
 import { usePixelCanvasContext } from '../../contexts/PixelCanvasContext';
@@ -15,12 +16,12 @@ function CoordinateItem({ name, value }: { name: string, value: number }) {
 	)
 }
 
-function InfoItem({ name, value }: { name: string, value: number | string }) {
+function InfoItem({ name, value, multiline }: { name: string, value: number | string, multiline?: boolean }) {
 	// size is auto here & title is not uppercase-enforced
 	return (
-		<div className="flex space-x-2 items-center">
+		<div className={clsx('flex space-x-2', multiline ? 'flex-col space-x-0 space-y-1 items-left' : 'items-center')}>
 			<div className="p-1 w-12 text-xs bg-eth-gray text-white font-semibold rounded text-center">{name}</div>
-			<div>{value}</div>
+			<div className={clsx(multiline && 'w-24')}>{value}</div>
 		</div>
 	)
 }
@@ -66,8 +67,8 @@ export default function PixelLocationInfo() {
 			</PixelLocationInfoSection>
 			<PixelLocationInfoSection name="Pixel Info">
 				<InfoItem name="Price" value={price !== 0 ? price : '—'} />
-				<InfoItem name="Owner" value={owner !== '' && owner !== constants.AddressZero ? midEllipsis(owner, 8) : '—'} />
-				<InfoItem name="RGB" value={`(${prevRGB.r},${prevRGB.g},${prevRGB.b})`} />
+				<InfoItem name="Owner" value={owner !== '' && owner !== constants.AddressZero ? midEllipsis(owner, 9) : '—'} multiline />
+				<InfoItem name="RGB" value={`(${prevRGB.r},${prevRGB.g},${prevRGB.b})`} multiline />
 			</PixelLocationInfoSection>
 		</div>
 	);
