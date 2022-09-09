@@ -1,18 +1,28 @@
 import PixelCanvas from './PixelCanvas';
-import PixelLocationInfo from './PixelLocationInfo';
-import PixelColorInfo  from './PixelColorInfo';
-import PixelCanvasContextProvider  from '../../contexts/PixelCanvasContext';
+import PixelLocationInfo from '../Displays/PixelLocationInfo';
+import PixelColorInfo from '../Displays/PixelColorInfo';
+import PixelCanvasContextProvider from '../../contexts/PixelCanvasContext';
 import { SelectedPixelsList } from '../Inputs/SelectedPixelsList';
-import UserPixelsList from '../List/UserPixelsList'
+import UserPixelsList from '../Displays/UserPixelsList';
 
 export const Board = () => {
     return (
         <PixelCanvasContextProvider>
-            <div className="flex flex-col gap-y-6">
-                <div className="flex flex-row gap-x-12 items-stretch">
+            <div className="flex flex-row gap-x-5 h-full">
+                <PixelCanvas />
+                <div className="z-10 mt-10">
                     <PixelLocationInfo />
-                    <PixelCanvas />
-                    <PixelColorInfo />
+                </div>
+            </div>
+            {/* <div className="flex flex-col gap-y-6">
+                <div className="flex flex-row gap-x-10 items-start">
+                    <div>
+                        <PixelLocationInfo />
+                        <PixelColorInfo />
+                    </div>a
+                    <div className="flex-grow">
+                        <PixelCanvas />
+                    </div>
                 </div>
                 <div>
                     <SelectedPixelsList />
@@ -20,7 +30,7 @@ export const Board = () => {
                 <div>
                     <UserPixelsList />
                 </div>
-            </div>
+            </div> */}
         </PixelCanvasContextProvider>
     );
 };

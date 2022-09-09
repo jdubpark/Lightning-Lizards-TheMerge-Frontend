@@ -9,7 +9,7 @@ import { Board } from '../components/Board';
 function Header({ children }: { children: JSX.Element | JSX.Element[] }) {
     return (
         <header
-            className="relative py-4 px-8 border-b border-eth-light-gray flex flex-row justify-between items-center"
+            className="relative py-4 px-8 border-b border-eth-light-gray flex flex-row justify-between items-center bg-stone-200"
             style={{
                 boxShadow: '0 0 20px 1px rgba(30,30,30,0.2)',
                 zIndex: 10000,
@@ -17,20 +17,16 @@ function Header({ children }: { children: JSX.Element | JSX.Element[] }) {
         >
             {children}
         </header>
-    )
+    );
 }
 
 function Footer({ children }: { children: JSX.Element | JSX.Element[] }) {
-    return (
-        <footer className="p-4 bg-white text-center">
-            {children}
-        </footer>
-    )
+    return <footer className="p-4 bg-white text-center">{children}</footer>;
 }
 
 const Home: NextPage = () => {
     return (
-        <div className="flex flex-col h-screen">
+        <div className="flex flex-col h-screen bg-stone-200 z-0 overflow-hidden">
             <Head>
                 <title className="text-eth-gray">The Merge Canvas</title>
                 <meta
@@ -40,24 +36,29 @@ const Home: NextPage = () => {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             <Header>
-                <div className="text-2xl font-bold">The Merge Canvas</div>
-                <div>
-                    <ConnectButton
-                        // chainStatus="none"
-                        // showBalance={false}
-                        // accountStatus="address"
-                    />
-                </div>
+                <nav className="text-2xl font-bold w-full ">
+                    <div className="flex flex-row width-clamp justify-between items-center">
+                        <div>The Merge Canvas</div>
+                        <div>
+                            <ConnectButton
+                            // chainStatus="none"
+                            // showBalance={false}
+                            // accountStatus="address"
+                            />
+                        </div>
+                    </div>
+                </nav>
             </Header>
-            <main className="flex grow justify-center bg-stone-50 py-12 px-4">
+            <main className="flex-grow width-clamp">
                 <Board />
                 {/*<DisplayNameComp />*/}
             </main>
-            <Footer>
+            {/* <Footer>
                 <div className="text-eth-gray">
-                    The Merge Canvas built with ❤️ by <a href="https://twitter.com/outlierdao">Outliers</a>
+                    The Merge Canvas built with ❤️ by{' '}
+                    <a href="https://twitter.com/outlierdao">Outliers</a>
                 </div>
-            </Footer>
+            </Footer> */}
         </div>
     );
 };

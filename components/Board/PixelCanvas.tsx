@@ -41,8 +41,12 @@ function drawPixel(
 }
 
 const PixelCanvas: NextPage = (props) => {
-    const { selectedCoordinates, setSelectedCoordinates, selectedColor } =
-        usePixelCanvasContext();
+    const {
+        selectedCoordinates,
+        setSelectedCoordinates,
+        selectedColor,
+        canvasIsEditable,
+    } = usePixelCanvasContext();
 
     const canvasRef = useRef<HTMLCanvasElement | null>(null);
     const [canvasPanZoom, setCanvasPanZoom] = useState<PanZoom | null>(null);
@@ -68,7 +72,7 @@ const PixelCanvas: NextPage = (props) => {
                 // }
             });
 
-            canvas.zoomAbs(halfSize, halfSize, 0.8);
+            canvas.zoomAbs(halfSize, halfSize, 1);
             setCanvasPanZoom(canvas);
 
             return () => {
@@ -92,7 +96,7 @@ const PixelCanvas: NextPage = (props) => {
     const onMouseUp = useCallback(
         (e: React.MouseEvent) => {
             const canvas = canvasRef.current;
-            if (!canvas || !canvasPanZoom) return;
+            if (!canvas || !canvasPanZoom || !canvasIsEditable) return;
             const newCoord = getMousePos(canvas, e);
 
             // console.log(prevCoord, newCoord)
@@ -110,22 +114,18 @@ const PixelCanvas: NextPage = (props) => {
                 drawPixel(newCoord.x, newCoord.y, canvas, selectedColor);
             }
         },
-        [canvasPanZoom, prevCoord.x, prevCoord.y, selectedColor, setSelectedCoordinates]
+        [
+            canvasPanZoom,
+            prevCoord.x,
+            prevCoord.y,
+            selectedColor,
+            setSelectedCoordinates,
+            canvasIsEditable,
+        ]
     );
 
     return (
-        <div
-            style={{
-                width: `${CANVAS_DIMENSION}px`,
-                height: `${CANVAS_DIMENSION}px`,
-                overflow: 'hidden',
-                border: '2px solid #5A60D2',
-                boxShadow: `${createShadow(shadowSize)}, ${createShadow(
-                    -shadowSize
-                )}`,
-                backgroundColor: '#fff',
-            }}
-        >
+        <div className={`z-0 w-full`}>
             <canvas
                 ref={canvasRef}
                 onMouseDown={onMouseDown}
@@ -137,6 +137,7 @@ const PixelCanvas: NextPage = (props) => {
                     imageRendering: 'pixelated',
                     // height: CANVAS_DIMENSION,
                     // width: CANVAS_DIMENSION,
+                    opacity: canvasIsEditable ? 1 : 0.5,
                     backgroundImage:
                         'url(https://merge-nft.s3.us-west-2.amazonaws.com/canvas.png)',
                 }}

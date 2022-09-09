@@ -22,6 +22,9 @@ interface PixelCanvasContextInterface {
     setSelectedPixelsList: Dispatch<
         SetStateAction<{ coordinates: XYCoordinates; color: RgbColor }[]>
     >;
+
+    canvasIsEditable: boolean;
+    setCanvasIsEditable: Dispatch<SetStateAction<boolean>>;
 }
 
 const PixelCanvasContext = createContext<
@@ -46,6 +49,7 @@ export default function PixelCanvasContextProvider({
     const [selectedPixelsList, setSelectedPixelsList] = useState<
         { coordinates: XYCoordinates; color: RgbColor }[]
     >([]);
+    const [canvasIsEditable, setCanvasIsEditable] = useState(false);
 
     return (
         <PixelCanvasContext.Provider
@@ -56,12 +60,15 @@ export default function PixelCanvasContextProvider({
                 setSelectedColor,
                 selectedPixelsList,
                 setSelectedPixelsList,
+
+                canvasIsEditable,
+                setCanvasIsEditable,
             }}
         >
             {children}
         </PixelCanvasContext.Provider>
     );
-};
+}
 
 export const usePixelCanvasContext = (): PixelCanvasContextInterface => {
     const context = useContext(PixelCanvasContext);
