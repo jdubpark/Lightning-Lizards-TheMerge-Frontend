@@ -28,8 +28,8 @@ const Home: NextPage = () => {
                 />
                 <link rel="icon" href="/favicon.ico" />
             </Head>
-            <header className="p-4 bg-white flex flex-row justify-between">
-                <div className="font-xl">The Merge Canvas </div>
+            <header className="py-4 px-8 bg-white flex flex-row justify-between items-center">
+                <div className="text-xl font-bold text-blue-700">The Merge Canvas</div>
                 <div>
                     <ConnectButton
                     // chainStatus="none"
@@ -38,15 +38,14 @@ const Home: NextPage = () => {
                     />
                 </div>
             </header>
-            <main className="flex-grow bg-green-500 p-4">
-                <div className="flex-row justify-center mx-auto w-1/2">
-                    <Board />
-                </div>
-
-                <DisplayNameComp />
+            <main className="flex grow justify-center bg-green-500 p-4">
+                <Board />
+                {/*<DisplayNameComp />*/}
             </main>
             <footer className="p-4 bg-white text-center">
-                The Merge Canvas built with ❤️ by Outliers
+                <div className="text-blue-700">
+                    The Merge Canvas built with ❤️ by <a href="https://twitter.com/outlierdao">Outliers</a>
+                </div>
             </footer>
         </div>
     );
