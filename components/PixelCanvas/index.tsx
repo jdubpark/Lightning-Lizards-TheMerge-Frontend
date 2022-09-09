@@ -2,6 +2,10 @@ import { NextPage } from 'next';
 import React, { useEffect, useRef } from 'react';
 import panzoom from 'panzoom';
 import { colorsBoard } from './colors';
+import {
+    CANVAS_DIMENSION,
+    usePixelCanvasContext,
+} from '../../contexts/PixelCanvasContext';
 
 // Props interface
 // with username set to string
@@ -36,12 +40,12 @@ const createShadow = (size: number) => `${size}px ${size}px 10px #ccc inset`;
 const shadowSize = 8;
 
 const PixelCanvas: NextPage<Props> = (props) => {
+    const { setSelectedCoordinates, selectedColor } = usePixelCanvasContext();
     // using destructuring to get username
     // const { username } = props;
     const canvasRef = useRef<HTMLCanvasElement | null>(null);
-    const canvasSize = 600;
 
-    const halfSize = canvasSize / 2;
+    const halfSize = CANVAS_DIMENSION / 2;
 
     useEffect(() => {
         if (canvasRef.current) {
@@ -57,8 +61,8 @@ const PixelCanvas: NextPage<Props> = (props) => {
             // }
 
             // Colors the canvas
-            for (let i = 0; i < canvasSize; i++) {
-                for (let j = 0; j < canvasSize; j++) {
+            for (let i = 0; i < CANVAS_DIMENSION; i++) {
+                for (let j = 0; j < CANVAS_DIMENSION; j++) {
                     // let key: any = i + '-' + j
                     const color = randomRgb();
 
@@ -95,10 +99,9 @@ const PixelCanvas: NextPage<Props> = (props) => {
         };
     }
 
-    function drawPixel(x: number, y: number, color: string, canvas: any) {
+    function drawPixel(x: number, y: number, canvas: any) {
         const context: any = canvas.getContext('2d');
-        const colorRGB: number[] = colorsBoard[color];
-        context.fillStyle = `rgb(${colorRGB[0]}, ${colorRGB[1]}, ${colorRGB[2]})`;
+        context.fillStyle = `rgb(${selectedColor.r}, ${selectedColor.g}, ${selectedColor.b})`;
         context.fillRect(x, y, 1, 1);
     }
 
@@ -111,8 +114,11 @@ const PixelCanvas: NextPage<Props> = (props) => {
         let { x, y } = getMousePos(canvas, event);
         x = Math.floor(x);
         y = Math.floor(y);
-        drawPixel(x, y, 'light grey', canvas);
-        console.log(x, y);
+        drawPixel(x, y, canvas);
+        setSelectedCoordinates({
+            x,
+            y,
+        });
     }
 
     return (
@@ -121,8 +127,8 @@ const PixelCanvas: NextPage<Props> = (props) => {
         // </div>
         <div
             style={{
-                width: `${canvasSize}px`,
-                height: `${canvasSize}px`,
+                width: `${CANVAS_DIMENSION}px`,
+                height: `${CANVAS_DIMENSION}px`,
                 overflow: 'hidden',
                 border: '2px solid #5A60D2',
                 boxShadow: `${createShadow(shadowSize)}, ${createShadow(
@@ -134,13 +140,13 @@ const PixelCanvas: NextPage<Props> = (props) => {
             <canvas
                 ref={canvasRef}
                 onClick={clickHandler}
-                height={canvasSize}
-                width={canvasSize}
+                height={CANVAS_DIMENSION}
+                width={CANVAS_DIMENSION}
                 style={{
                     cursor: 'crosshair',
                     imageRendering: 'pixelated',
-                    // height: canvasSize,
-                    // width: canvasSize,
+                    // height: CANVAS_DIMENSION,
+                    // width: CANVAS_DIMENSION,
                     backgroundImage: `
                 linear-gradient(${bg.direction}deg, ${bg.color.dark} ${bg.span}%, ${bg.color.light} ${bg.span}%),
                 linear-gradient(-${bg.direction}deg, ${bg.color.dark} ${bg.span}%, ${bg.color.light} ${bg.span}%),

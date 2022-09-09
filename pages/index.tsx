@@ -5,6 +5,8 @@ import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { useAccount, useConnect } from 'wagmi';
 import { useEffect, useRef } from 'react';
 import CanvasPixel from './../components/PixelCanvas';
+import { PixelCanvasContextProvider } from '../contexts/PixelCanvasContext';
+import { PixelInfo } from '../components/PixelCanvas/PixelInfo';
 
 const Home: NextPage = () => {
     const { data } = useAccount();
@@ -70,7 +72,12 @@ const Home: NextPage = () => {
             </header>
             <main className="flex-grow bg-green-500 p-4">
                 <div className="flex-row justify-center mx-auto w-1/2">
-                    <CanvasPixel />
+                    <PixelCanvasContextProvider>
+                        <div className="flex flex-row gap-x-5">
+                            <CanvasPixel />
+                            <PixelInfo />
+                        </div>
+                    </PixelCanvasContextProvider>
 
                     {/* <canvas
                         id="myCanvas"
