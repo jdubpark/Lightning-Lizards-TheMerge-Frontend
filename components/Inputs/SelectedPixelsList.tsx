@@ -1,6 +1,7 @@
-import { FC, useState } from 'react';
+import { FC, useCallback, useState } from 'react';
 import { usePixelCanvasContext } from '../../contexts/PixelCanvasContext';
 import { RgbColor } from 'react-colorful';
+import ApiClient from '../../utils/ApiClient';
 
 type SelectedPixel = {
     coordinates: {
@@ -12,6 +13,9 @@ type SelectedPixel = {
 
 export const SelectedPixelsList: FC = () => {
     const {
+        canvasRef,
+        drawPixel,
+
         selectedColor,
         selectedCoordinates,
         selectedPixelsList,
@@ -27,7 +31,6 @@ export const SelectedPixelsList: FC = () => {
                     p.coordinates.y === selectedCoordinates.y
                 )
         );
-        console.log(newSelectedPixelsList);
         // Add the selected pixel to the list
         newSelectedPixelsList.push({
             coordinates: selectedCoordinates,
@@ -38,13 +41,32 @@ export const SelectedPixelsList: FC = () => {
     };
 
     const deleteSelectedPixelHandler = (index: number) => {
+        const canvas = canvasRef.current;
+        if (!canvas) return;
+        const selectedPixel = selectedPixelsList[index];
         const newSelectedPixelsList = [...selectedPixelsList];
         newSelectedPixelsList.splice(index, 1);
         setSelectedPixelsList([...newSelectedPixelsList]);
+        ApiClient.fetchCoordinateData(
+            selectedPixel.coordinates.x,
+            selectedPixel.coordinates.y
+        ).then((cd) => {
+            if (!cd) return;
+            drawPixel(
+                selectedPixel.coordinates.x,
+                selectedPixel.coordinates.y,
+                canvas,
+                {
+                    r: cd.color.R,
+                    g: cd.color.G,
+                    b: cd.color.B,
+                }
+            );
+        });
     };
 
     return (
-        <div className="flex flex-col gap-y-5">
+        <div className="flex flex-row gap-x-5">
             {selectedPixelsList.map(({ coordinates, color }, index) => (
                 <div key={index}>
                     <p>Pixel #{index}</p>
@@ -62,12 +84,12 @@ export const SelectedPixelsList: FC = () => {
                     />
                 </div>
             ))}
-            <button
+            {/* <button
                 onClick={addToListHandler}
                 className="px-2 py-2 border-2 border-black"
             >
                 Add to list
-            </button>
+            </button> */}
         </div>
     );
 };
