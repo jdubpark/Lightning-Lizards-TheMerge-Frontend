@@ -7,7 +7,6 @@ import {
 } from '../../contexts/PixelCanvasContext';
 
 // Props interface
-// with username set to string
 interface Props {}
 
 const createShadow = (size: number) => `${size}px ${size}px 10px #ccc inset`;

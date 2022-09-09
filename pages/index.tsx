@@ -4,15 +4,11 @@ import Image from 'next/image';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { useAccount, useConnect } from 'wagmi';
 import { useEffect, useRef } from 'react';
-import CanvasPixel from './../components/PixelCanvas';
-import { PixelCanvasContextProvider } from '../contexts/PixelCanvasContext';
-import { PixelInfo } from '../components/PixelCanvas/PixelInfo';
+import { Board } from '../components/Board';
 
 const Home: NextPage = () => {
     const { data } = useAccount();
     const { isConnected } = useConnect();
-
-    // const canvasRef = useRef(null);
 
     const DisplayNameComp = () => {
         if (isConnected && data) {
@@ -21,34 +17,6 @@ const Home: NextPage = () => {
             return <></>;
         }
     };
-
-    // const colorRandomPixel = () => {
-    //     const canvas = canvasRef.current;
-    //     const context = canvas.getContext('2d');
-    //     var id = context.getImageData(0, 0, 1, 1);
-
-    //     var cw = canvas.width;
-    //     var ch = canvas.height;
-
-    //     var x = Math.floor(Math.random() * cw);
-    //     var y = Math.floor(Math.random() * ch);
-    //     var r = Math.floor(Math.random() * 256);
-    //     var g = Math.floor(Math.random() * 256);
-    //     var b = Math.floor(Math.random() * 256);
-
-    //     id.data[0] = r;
-    //     id.data[1] = g;
-    //     id.data[2] = b;
-    //     context.putImageData(id, x, y);
-    // };
-
-    // useEffect(() => {
-    //     const canvas = canvasRef.current;
-    //     const context = canvas.getContext('2d');
-    //     //Our first draw
-    //     context.fillStyle = '#ffffff';
-    //     context.fillRect(0, 0, context.canvas.width, context.canvas.height);
-    // }, []);
 
     return (
         <div className="flex flex-col h-screen">
@@ -72,29 +40,7 @@ const Home: NextPage = () => {
             </header>
             <main className="flex-grow bg-green-500 p-4">
                 <div className="flex-row justify-center mx-auto w-1/2">
-                    <PixelCanvasContextProvider>
-                        <div className="flex flex-row gap-x-5">
-                            <CanvasPixel />
-                            <PixelInfo />
-                        </div>
-                    </PixelCanvasContextProvider>
-
-                    {/* <canvas
-                        id="myCanvas"
-                        width="500"
-                        height="500"
-                        className="border-2 border-black mx-auto"
-                        ref={canvasRef}
-                    ></canvas>
-
-                    <div className="flex justify-center mt-4">
-                        <button
-                            onClick={colorRandomPixel}
-                            className="mx-auto border-2 rounded-md p-2 border-blue-700 text-xl"
-                        >
-                            Color random pixel
-                        </button>
-                    </div> */}
+                    <Board />
                 </div>
 
                 <DisplayNameComp />
