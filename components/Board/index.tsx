@@ -7,7 +7,12 @@ export const Board = () => {
         <PixelCanvasContextProvider>
             <div className="flex flex-row gap-x-5">
                 <PixelCanvas />
-                <PixelInfo />
+                <div className="">
+                    <PixelInfo />
+                    <button className="mt-4 border-4 rounded-md bg-cyan-300 border-red-400 p-4 text-2xl">
+                        Submit changes
+                    </button>
+                </div>
             </div>
         </PixelCanvasContextProvider>
     );
