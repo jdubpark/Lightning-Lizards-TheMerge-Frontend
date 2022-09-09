@@ -49,7 +49,7 @@ const PixelCanvas: NextPage<Props> = (props) => {
 
             const canvas = panzoom(canvasRef.current, {
                 maxZoom: 50,
-                minZoom: 0.8,
+                minZoom: 0.9,
                 autocenter: true,
                 pinchSpeed: 0.6,
                 // beforeMouseDown: function(e) {
@@ -89,7 +89,7 @@ const PixelCanvas: NextPage<Props> = (props) => {
         const diffY = Math.abs(prevCoord.y - newCoord.y) * scale;
         const delta = 100 // 100 is a good number from trial and error
 
-        console.log(diffX, diffY, delta, scale)
+        // console.log(diffX, diffY, delta, scale)
         if (diffX < delta && diffY < delta) {
             // is a click!
             setSelectedCoordinates(newCoord);
@@ -108,7 +108,7 @@ const PixelCanvas: NextPage<Props> = (props) => {
                 boxShadow: `${createShadow(shadowSize)}, ${createShadow(
                     -shadowSize
                 )}`,
-                backgroundColor: '#eee',
+                backgroundColor: '#fff',
             }}
         >
             <canvas

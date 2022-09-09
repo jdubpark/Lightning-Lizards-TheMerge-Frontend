@@ -28,11 +28,11 @@ const PixelCanvasContext = createContext<
     PixelCanvasContextInterface | undefined
 >(undefined);
 
-export const PixelCanvasContextProvider = ({
+export default function PixelCanvasContextProvider({
     children,
 }: {
     children: ReactNode;
-}) => {
+}) {
     const [selectedCoordinates, setSelectedCoordinates] =
         useState<XYCoordinates>({
             x: 0,

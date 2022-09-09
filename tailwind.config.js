@@ -11,6 +11,11 @@ module.exports = {
                 bitter: ['Bitter'],
                 opensans: ['OpenSans'],
             },
+            colors: {
+                'eth-light-gray': '#ecf0f1',
+                'eth-gold': '#c99d66',
+                'eth-gray': '#3c3c3d',
+            },
         },
     },
     plugins: [],
