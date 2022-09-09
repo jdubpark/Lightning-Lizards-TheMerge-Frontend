@@ -1,0 +1,18 @@
+export const colorsBoard: { [key: string]: number[] } = {
+    white: [255, 255, 255],
+    'light grey': [228, 228, 228],
+    grey: [136, 136, 136],
+    black: [34, 34, 34],
+    pink: [255, 167, 209],
+    red: [229, 0, 9],
+    orange: [229, 149, 0],
+    brown: [160, 106, 66],
+    yellow: [229, 217, 0],
+    'light green': [148, 224, 68],
+    green: [2, 190, 1],
+    cyan: [0, 211, 221],
+    'medium blue': [0, 131, 199],
+    'dark blue': [0, 0, 234],
+    'light purple': [207, 110, 228],
+    'dark purple': [130, 0, 128],
+};
