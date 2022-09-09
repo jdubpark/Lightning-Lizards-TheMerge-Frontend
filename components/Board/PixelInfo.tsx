@@ -10,7 +10,7 @@ export const PixelInfo = () => {
     const { selectedCoordinates, selectedColor, setSelectedColor } =
         usePixelCanvasContext();
 
-    console.log(selectedColor);
+    // console.log(selectedColor);
 
     return (
         <div>

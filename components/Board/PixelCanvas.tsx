@@ -1,10 +1,11 @@
 import { NextPage } from 'next';
-import React, { useEffect, useRef } from 'react';
-import panzoom from 'panzoom';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
+import panzoom, {PanZoom} from 'panzoom';
 import {
     CANVAS_DIMENSION,
-    usePixelCanvasContext,
+    usePixelCanvasContext, XYCoordinates,
 } from '../../contexts/PixelCanvasContext';
+import {RgbColor} from "react-colorful";
 
 // Props interface
 interface Props {}
@@ -12,10 +13,31 @@ interface Props {}
 const createShadow = (size: number) => `${size}px ${size}px 10px #ccc inset`;
 const shadowSize = 8;
 
+/**
+ * Returns the floored coordinate {x,y} from mouse event
+ * @param {HTMLCanvasElement} canvas
+ * @param {React.MouseEvent} evt
+ */
+function getMousePos(canvas: any, evt: any): XYCoordinates {
+    const rect = canvas.getBoundingClientRect();
+    const x = ((evt.clientX - rect.left) / (rect.right - rect.left)) * canvas.width
+    const y = ((evt.clientY - rect.top) / (rect.bottom - rect.top)) * canvas.height
+    return { x: Math.floor(x), y: Math.floor(y) }
+}
+
+function drawPixel(x: number, y: number, canvas: HTMLCanvasElement, selectedColor: RgbColor) {
+    const context: any = canvas.getContext('2d');
+    context.fillStyle = `rgb(${selectedColor.r}, ${selectedColor.g}, ${selectedColor.b})`;
+    context.fillRect(x, y, 1, 1);
+}
+
 const PixelCanvas: NextPage<Props> = (props) => {
-    const { setSelectedCoordinates, selectedColor } = usePixelCanvasContext();
+    const { selectedCoordinates, setSelectedCoordinates, selectedColor } = usePixelCanvasContext();
 
     const canvasRef = useRef<HTMLCanvasElement | null>(null);
+    const [canvasPanZoom, setCanvasPanZoom] = useState<PanZoom | null>(null);
+
+    const [prevCoord, setPrevCoord] = useState<XYCoordinates>({ x: 0, y: 0 })
 
     const halfSize = CANVAS_DIMENSION / 2;
 
@@ -30,50 +52,51 @@ const PixelCanvas: NextPage<Props> = (props) => {
                 minZoom: 0.8,
                 autocenter: true,
                 pinchSpeed: 0.6,
+                // beforeMouseDown: function(e) {
+                //     // allow mouse-down panning only if altKey is down. Otherwise - ignore
+                //     return !e.altKey; // ignoring !e.altKey
+                // }
             });
 
             canvas.zoomAbs(halfSize, halfSize, 0.8);
+            setCanvasPanZoom(canvas);
 
             return () => {
                 // safe destruction, lfg!!
+                setCanvasPanZoom(null);
                 canvas.dispose();
             };
         }
-    }, []);
+    }, [halfSize]);
 
-    function getMousePos(canvas: any, evt: any) {
-        const rect = canvas.getBoundingClientRect();
-        return {
-            x:
-                ((evt.clientX - rect.left) / (rect.right - rect.left)) *
-                canvas.width,
-            y:
-                ((evt.clientY - rect.top) / (rect.bottom - rect.top)) *
-                canvas.height,
-        };
-    }
-
-    function drawPixel(x: number, y: number, canvas: any) {
-        const context: any = canvas.getContext('2d');
-        context.fillStyle = `rgb(${selectedColor.r}, ${selectedColor.g}, ${selectedColor.b})`;
-        context.fillRect(x, y, 1, 1);
-    }
-
-    function clickHandler(event: any) {
-        /*
-         * Finding the slected pixel
-         */
+    const onMouseDown = useCallback((e: React.MouseEvent) => {
         const canvas = canvasRef.current;
         if (!canvas) return;
-        let { x, y } = getMousePos(canvas, event);
-        x = Math.floor(x);
-        y = Math.floor(y);
-        drawPixel(x, y, canvas);
-        setSelectedCoordinates({
-            x,
-            y,
-        });
-    }
+        setPrevCoord(selectedCoordinates)
+        setSelectedCoordinates(getMousePos(canvas, e));
+    }, [selectedCoordinates, setSelectedCoordinates])
+
+    const onMouseUp = useCallback((e: React.MouseEvent) => {
+        const canvas = canvasRef.current;
+        if (!canvas || !canvasPanZoom) return;
+        const newCoord = getMousePos(canvas, e);
+
+        // console.log(prevCoord, newCoord)
+        // Check if it was a drag or a click
+        // Multiply by scale to account for zoom
+        const { scale } = canvasPanZoom.getTransform()
+        const diffX = Math.abs(prevCoord.x - newCoord.x) * scale;
+        const diffY = Math.abs(prevCoord.y - newCoord.y) * scale;
+        const delta = 100 // 100 is a good number from trial and error
+
+        console.log(diffX, diffY, delta, scale)
+        if (diffX < delta && diffY < delta) {
+            // is a click!
+            setSelectedCoordinates(newCoord);
+            drawPixel(newCoord.x, newCoord.y, canvas, selectedColor);
+        }
+    }, [prevCoord, selectedColor, setSelectedCoordinates])
+
 
     return (
         <div
@@ -90,7 +113,8 @@ const PixelCanvas: NextPage<Props> = (props) => {
         >
             <canvas
                 ref={canvasRef}
-                onClick={clickHandler}
+                onMouseDown={onMouseDown}
+                onMouseUp={onMouseUp}
                 height={CANVAS_DIMENSION}
                 width={CANVAS_DIMENSION}
                 style={{

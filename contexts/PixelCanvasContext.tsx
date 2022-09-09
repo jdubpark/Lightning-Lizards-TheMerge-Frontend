@@ -8,7 +8,7 @@ import {
 } from 'react';
 import { RgbColor } from 'react-colorful';
 
-type XYCoordinates = {
+export type XYCoordinates = {
     x: number;
     y: number;
 };
