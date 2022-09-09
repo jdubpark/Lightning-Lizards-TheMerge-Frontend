@@ -1,7 +1,6 @@
 import { NextPage } from 'next';
 import React, { useEffect, useRef } from 'react';
 import panzoom from 'panzoom';
-import { colorsBoard } from './colors';
 import {
     CANVAS_DIMENSION,
     usePixelCanvasContext,
@@ -10,31 +9,6 @@ import {
 // Props interface
 // with username set to string
 interface Props {}
-
-function randomRgb() {
-    const o = Math.round;
-    const r = Math.random;
-    const s = 255;
-    return { R: o(r() * s), G: o(r() * s), B: o(r() * s) };
-}
-
-const zoomBy = 0.1;
-
-const bgDefault = {
-    direction: 45,
-    color: {
-        dark: '#ccc',
-        light: 'transparent',
-    },
-    size: 20,
-    span: 100 / 4,
-};
-
-const bg = {
-    ...bgDefault,
-    doubleSize: bgDefault.size * 2,
-    rest: 100 - bgDefault.span,
-};
 
 const createShadow = (size: number) => `${size}px ${size}px 10px #ccc inset`;
 const shadowSize = 8;
@@ -103,9 +77,6 @@ const PixelCanvas: NextPage<Props> = (props) => {
     }
 
     return (
-        // <div className="canvas">
-        //   <canvas ref={canvasRef} width={1000} height={1000} />
-        // </div>
         <div
             style={{
                 width: `${CANVAS_DIMENSION}px`,
