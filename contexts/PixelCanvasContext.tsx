@@ -13,6 +13,7 @@ import {
 import { RgbColor } from 'react-colorful';
 import { useSigner } from 'wagmi';
 import ApiClient, { CoordinateData } from '../utils/ApiClient';
+import {SelectedPixelsList} from "../utils/types";
 
 export interface XYCoordinates {
     x: number;
@@ -82,14 +83,7 @@ export default function PixelCanvasContextProvider({
         g: 255,
         b: 255,
     });
-    const [selectedPixelsList, setSelectedPixelsList] = useState<
-        {
-            coordinates: XYCoordinates;
-            color: RgbColor;
-            price: BigNumber;
-            minPrice: BigNumber;
-        }[]
-    >([]);
+    const [selectedPixelsList, setSelectedPixelsList] = useState<SelectedPixelsList>([]);
     const [userPixelsList, setUserPixelsList] = useState<CoordinateData[]>([]);
 
     const [canvasIsEditable, setCanvasIsEditable] = useState(false);
