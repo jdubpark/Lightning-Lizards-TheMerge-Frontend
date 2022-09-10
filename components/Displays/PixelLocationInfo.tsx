@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import {BigNumberish, BigNumber, constants, ethers} from 'ethers';
+import { BigNumberish, BigNumber, constants, ethers } from 'ethers';
 import { useEffect, useState } from 'react';
 
 import { usePixelCanvasContext } from '../../contexts/PixelCanvasContext';
@@ -52,7 +52,9 @@ export default function PixelLocationInfo() {
                         : '—'
                 }
                 link={
-                    owner !== '' && owner !== constants.AddressZero ? owner : ''
+                    owner !== '' && owner !== constants.AddressZero
+                        ? owner
+                        : undefined
                 }
             />
             <InfoItem
