@@ -7,7 +7,6 @@ import PixelCanvasContextProvider, {
     usePixelCanvasContext,
 } from '../../contexts/PixelCanvasContext';
 import { PixelsList } from '../Displays/PixelsList';
-import UserPixelsList from '../Displays/UserPixelsList';
 import { PixelInfoSection } from '../Displays/PixelInfo';
 import { MintButton } from '../Inputs/MintButton';
 import { TxLoading } from '../Displays/TxLoading';

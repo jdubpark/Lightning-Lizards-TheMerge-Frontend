@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import { constants, ethers } from 'ethers';
+import {BigNumberish, BigNumber, constants, ethers} from 'ethers';
 import { useEffect, useState } from 'react';
 
 import { usePixelCanvasContext } from '../../contexts/PixelCanvasContext';
@@ -18,7 +18,7 @@ export default function PixelLocationInfo() {
         setCanvasIsEditable,
     } = usePixelCanvasContext();
 
-    const [price, setPrice] = useState<number>(0);
+    const [price, setPrice] = useState<BigNumberish>('0');
     const [owner, setOwner] = useState<string>('');
     const [prevRGB, setPrevRGB] = useState<RgbColor>({ r: 0, g: 0, b: 0 });
 
