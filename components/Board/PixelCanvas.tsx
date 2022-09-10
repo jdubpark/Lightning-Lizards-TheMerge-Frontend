@@ -163,25 +163,30 @@ const PixelCanvas: NextPage = (props) => {
     );
 
     return (
-        <div className="z-0 w-full">
-            <canvas
-                ref={canvasRef}
-                onMouseDown={onMouseDown}
-                onMouseUp={onMouseUp}
-                height={CANVAS_DIMENSION}
-                width={CANVAS_DIMENSION}
-                style={{
-                    cursor: canvasIsEditable ? 'crosshair' : 'cursor',
-                    imageRendering: 'pixelated',
-                    // height: CANVAS_DIMENSION,
-                    // width: CANVAS_DIMENSION,
-                    // opacity: canvasIsEditable ? 1 : 0.5,
-                    opacity: 1,
-                    backgroundImage: waitingForTxConfirmation
-                        ? ``
-                        : `url(https://merge-nft.s3.us-west-2.amazonaws.com/canvas.png)`,
-                }}
-            />
+        <div
+            id="canvas-container"
+            className="z-0 w-full flex flex-row items-start"
+        >
+            <div className="flex-grow">
+                <canvas
+                    ref={canvasRef}
+                    onMouseDown={onMouseDown}
+                    onMouseUp={onMouseUp}
+                    height={CANVAS_DIMENSION}
+                    width={CANVAS_DIMENSION}
+                    style={{
+                        cursor: canvasIsEditable ? 'crosshair' : 'cursor',
+                        imageRendering: 'pixelated',
+                        // height: CANVAS_DIMENSION,
+                        // width: CANVAS_DIMENSION,
+                        // opacity: canvasIsEditable ? 1 : 0.5,
+                        opacity: 1,
+                        backgroundImage: waitingForTxConfirmation
+                            ? ``
+                            : `url(https://merge-nft.s3.us-west-2.amazonaws.com/canvas.png)`,
+                    }}
+                />
+            </div>
             <PixelChangeListener canvasRef={canvasRef} />
         </div>
     );

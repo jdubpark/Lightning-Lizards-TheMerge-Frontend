@@ -7,7 +7,7 @@ const pngUpdateDelay = 3 * 1000;
 export const TxLoading: FC = () => {
     const { waitingForTxConfirmation } = usePixelCanvasContext();
 
-    const [showPopup, setShowPopup] = useState(true);
+    const [showPopup, setShowPopup] = useState(false);
 
     useEffect(() => {
         if (waitingForTxConfirmation) {

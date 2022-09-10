@@ -5,10 +5,13 @@ import {
     ReactNode,
     SetStateAction,
     useContext,
+    useEffect,
     useRef,
     useState,
 } from 'react';
 import { RgbColor } from 'react-colorful';
+import { useSigner } from 'wagmi';
+import ApiClient, { CoordinateData } from '../utils/ApiClient';
 
 export interface XYCoordinates {
     x: number;
@@ -32,6 +35,7 @@ interface PixelCanvasContextInterface {
     setSelectedPixelsList: Dispatch<
         SetStateAction<{ coordinates: XYCoordinates; color: RgbColor }[]>
     >;
+    userPixelsList: CoordinateData[];
 
     canvasIsEditable: boolean;
     setCanvasIsEditable: Dispatch<SetStateAction<boolean>>;
@@ -49,6 +53,8 @@ export default function PixelCanvasContextProvider({
 }: {
     children: ReactNode;
 }) {
+    const { data: signer } = useSigner();
+
     const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
     const [selectedCoordinates, setSelectedCoordinates] =
@@ -64,9 +70,27 @@ export default function PixelCanvasContextProvider({
     const [selectedPixelsList, setSelectedPixelsList] = useState<
         { coordinates: XYCoordinates; color: RgbColor }[]
     >([]);
+    const [userPixelsList, setUserPixelsList] = useState<CoordinateData[]>([]);
+
     const [canvasIsEditable, setCanvasIsEditable] = useState(false);
     const [waitingForTxConfirmation, setWaitingForTxConfirmation] =
         useState(false);
+
+    const fetchUserPixelsList = async () => {
+        if (!signer) return;
+        const signerAddress = await signer.getAddress();
+        ApiClient.getUserPixels(signerAddress)
+            .then((cd) => setUserPixelsList([...cd]))
+            .catch((error) => {
+                console.log(error);
+            });
+    };
+
+    useEffect(() => {
+        if (signer) {
+            fetchUserPixelsList();
+        }
+    }, [signer]);
 
     function drawPixel(
         x: number,
@@ -92,6 +116,7 @@ export default function PixelCanvasContextProvider({
                 setSelectedColor,
                 selectedPixelsList,
                 setSelectedPixelsList,
+                userPixelsList,
 
                 canvasIsEditable,
                 setCanvasIsEditable,

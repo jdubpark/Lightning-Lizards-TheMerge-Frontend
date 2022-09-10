@@ -1,18 +1,26 @@
-import {Dispatch, FC, RefObject, SetStateAction, useCallback, useEffect, useRef} from 'react';
+import {
+    Dispatch,
+    FC,
+    RefObject,
+    SetStateAction,
+    useCallback,
+    useEffect,
+    useRef,
+} from 'react';
 import { RgbColor } from 'react-colorful';
 import EightBitInput from './EightBitInput';
 import clamp from 'lodash/clamp';
 import { usePixelCanvasContext } from '../../contexts/PixelCanvasContext';
 
 function clampColor(val: string) {
-    return clamp(Number(val), 0, 255).toString()
+    return clamp(Number(val), 0, 255).toString();
 }
 
 interface RGBColorInputItemProps {
     // ref: RefObject<HTMLInputElement>
     // inputChangeHandler: () => void
-    name: string
-    children: JSX.Element | JSX.Element[]
+    name: string;
+    children: JSX.Element | JSX.Element[];
 }
 
 function RGBColorInputItem({ name, children }: RGBColorInputItemProps) {
@@ -21,7 +29,7 @@ function RGBColorInputItem({ name, children }: RGBColorInputItemProps) {
             <div className="text-lg font-semibold w-5">{name}</div>
             {children}
         </div>
-    )
+    );
 }
 
 export default function RGBColorInput() {
@@ -39,9 +47,12 @@ export default function RGBColorInput() {
 
     const inputChangeHandler = useCallback(() => {
         // clamp values if outside of 0 and 255
-        if (redRef.current) redRef.current.value = clampColor(redRef.current.value);
-        if (greenRef.current) greenRef.current.value = clampColor(greenRef.current.value);
-        if (blueRef.current) blueRef.current.value = clampColor(blueRef.current.value);
+        if (redRef.current)
+            redRef.current.value = clampColor(redRef.current.value);
+        if (greenRef.current)
+            greenRef.current.value = clampColor(greenRef.current.value);
+        if (blueRef.current)
+            blueRef.current.value = clampColor(blueRef.current.value);
 
         // update with new color
         const newColor = {
@@ -51,7 +62,7 @@ export default function RGBColorInput() {
         };
 
         setSelectedColor(newColor as RgbColor);
-    }, [setSelectedColor])
+    }, [setSelectedColor]);
 
     return (
         <div className="flex flex-col space-y-2 text-sm">
@@ -78,4 +89,4 @@ export default function RGBColorInput() {
             </RGBColorInputItem>
         </div>
     );
-};
+}
