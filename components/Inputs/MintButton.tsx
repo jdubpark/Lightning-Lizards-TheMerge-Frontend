@@ -80,7 +80,7 @@ export const MintButton = () => {
                     selectedPixelsList.map((item) => item.price)
                 ]
 
-                gasLimit = await mergeCanvasContract.estimateGas.changePixelsColor(...params)
+                gasLimit = await mergeCanvasContract.estimateGas.changePixelsColor(...params, { gasLimit: 21000000 })
                 unsignedTx = await mergeCanvasContract.populateTransaction.changePixelsColor(...params);
             } else {
                 const params = [
@@ -92,15 +92,15 @@ export const MintButton = () => {
                         B: BigNumber.from(selectedColor.b),
                     }
                 ]
-                gasLimit = await mergeCanvasContract.estimateGas.changePixelsColor(...params)
+                gasLimit = await mergeCanvasContract.estimateGas.changePixelColor(...params)
                 unsignedTx = await mergeCanvasContract.populateTransaction.changePixelColor(...params);
             }
 
-            console.log('Gas limit', gasLimit)
+            // console.log('Gas limit', gasLimit.toString())
             const txChangeColor = await signer.sendTransaction({
                 ...unsignedTx,
                 value: getTotalPrice(selectedPixelsList).toString(),
-                gasLimit,
+                gasLimit: gasLimit.mul('1.5'),
             });
 
             setWaitingForTxConfirmation(true);
