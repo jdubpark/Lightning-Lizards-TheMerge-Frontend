@@ -21,11 +21,6 @@ export const PixelChangeListener: FC<PixelChangeListenerProps> = ({
 }) => {
     const { data: initialBlockNumber, isError, isLoading } = useBlockNumber();
 
-    const mergeCanvasContractData: ContractData = {
-        addressOrName: MERGE_CANVAS_CONTRACT_ADDRESS,
-        contractInterface: MergeCanvasABI,
-    };
-
     // Currently seems to miss some events the occur in the MergeCanvas contract
     useContractEvent({
         addressOrName: MERGE_CANVAS_CONTRACT_ADDRESS,
@@ -41,12 +36,12 @@ export const PixelChangeListener: FC<PixelChangeListenerProps> = ({
 
         const xCoordinate = colorCanvasPixelEvent[0] as number;
         const yCoordinate = colorCanvasPixelEvent[1] as number;
-        const oldOwner = colorCanvasPixelEvent[2] as string;
-        const newOwner = colorCanvasPixelEvent[3] as string;
-        const oldRGB = colorCanvasPixelEvent[4] as number[];
+        // const oldOwner = colorCanvasPixelEvent[2] as string;
+        // const newOwner = colorCanvasPixelEvent[3] as string;
+        // const oldRGB = colorCanvasPixelEvent[4] as number[];
         const newRGB = colorCanvasPixelEvent[5] as number[];
-        const oldPrice = colorCanvasPixelEvent[6] as BigNumber;
-        const newPrice = colorCanvasPixelEvent[7] as BigNumber;
+        // const oldPrice = colorCanvasPixelEvent[6] as BigNumber;
+        // const newPrice = colorCanvasPixelEvent[7] as BigNumber;
         const blockInfo = colorCanvasPixelEvent[8] as { blockNumber: number };
 
         if (blockInfo.blockNumber < initialBlockNumber) return;
