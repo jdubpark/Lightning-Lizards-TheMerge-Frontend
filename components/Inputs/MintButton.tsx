@@ -14,8 +14,12 @@ import { usePixelCanvasContext } from '../../contexts/PixelCanvasContext';
 import { PixelInfoSection } from '../Displays/PixelInfo';
 
 export const MintButton = () => {
-    const { selectedColor, selectedCoordinates, setWaitingForTxConfirmation } =
-        usePixelCanvasContext();
+    const {
+        selectedColor,
+        selectedCoordinates,
+        selectedPixelsList,
+        setWaitingForTxConfirmation,
+    } = usePixelCanvasContext();
 
     const {
         data: signer,
@@ -51,29 +55,45 @@ export const MintButton = () => {
             )
                 return;
             // if (chain.id !== 5) await switchNetworkAsync(5);
-
-            const unsignedTx =
-                await mergeCanvasContract.populateTransaction.changePixelColor(
-                    selectedCoordinates.x,
-                    selectedCoordinates.y,
-                    {
-                        R: ethBigNumber.from(selectedColor.r),
-                        G: ethBigNumber.from(selectedColor.g),
-                        B: ethBigNumber.from(selectedColor.b),
-                    }
-                    // No need to ABI Encode
-                    // https://docs.ethers.io/v5/api/utils/abi/coder/#AbiCoder-encode
-                    // utils.defaultAbiCoder.encode(
-                    //     ['tuple(uint8 R,uint8 G,uint8 B)'],
-                    //     [
-                    //         {
-                    //             R: ethBigNumber.from(selectedColor.r),
-                    //             G: ethBigNumber.from(selectedColor.g),
-                    //             B: ethBigNumber.from(selectedColor.b),
-                    //         },
-                    //     ]
-                    // )
-                );
+            let unsignedTx;
+            if (selectedPixelsList.length > 1) {
+                unsignedTx =
+                    await mergeCanvasContract.populateTransaction.changePixelsColor(
+                        selectedPixelsList.map((item) => item.coordinates.x),
+                        selectedPixelsList.map((item) => item.coordinates.y),
+                        selectedPixelsList.map((item) => {
+                            return {
+                                R: ethBigNumber.from(item.color.r),
+                                G: ethBigNumber.from(item.color.g),
+                                B: ethBigNumber.from(item.color.b),
+                            };
+                        }),
+                        selectedPixelsList.map((_) => ethBigNumber.from(0))
+                    );
+            } else {
+                unsignedTx =
+                    await mergeCanvasContract.populateTransaction.changePixelColor(
+                        selectedCoordinates.x,
+                        selectedCoordinates.y,
+                        {
+                            R: ethBigNumber.from(selectedColor.r),
+                            G: ethBigNumber.from(selectedColor.g),
+                            B: ethBigNumber.from(selectedColor.b),
+                        }
+                        // No need to ABI Encode
+                        // https://docs.ethers.io/v5/api/utils/abi/coder/#AbiCoder-encode
+                        // utils.defaultAbiCoder.encode(
+                        //     ['tuple(uint8 R,uint8 G,uint8 B)'],
+                        //     [
+                        //         {
+                        //             R: ethBigNumber.from(selectedColor.r),
+                        //             G: ethBigNumber.from(selectedColor.g),
+                        //             B: ethBigNumber.from(selectedColor.b),
+                        //         },
+                        //     ]
+                        // )
+                    );
+            }
 
             const txChangeColor = await signer.sendTransaction({
                 ...unsignedTx,
@@ -87,13 +107,18 @@ export const MintButton = () => {
             console.log(error);
         }
     }, [
-        chain,
-        mergeCanvasContract,
-        selectedColor,
-        selectedCoordinates,
         signer,
+        mergeCanvasContract,
+        chain,
         switchNetworkAsync,
+        selectedPixelsList,
         bid,
+        setWaitingForTxConfirmation,
+        selectedCoordinates.x,
+        selectedCoordinates.y,
+        selectedColor.r,
+        selectedColor.g,
+        selectedColor.b,
     ]);
 
     return (
