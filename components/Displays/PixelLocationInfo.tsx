@@ -29,7 +29,7 @@ export default function PixelLocationInfo() {
         ).then((cd) => {
             if (!cd) return;
             setPrevRGB({ r: cd.color.R, g: cd.color.G, b: cd.color.B });
-            setPrice(cd.price);
+            setPrice(Number(cd.price));
             setOwner(cd.owner);
         });
     }, [selectedCoordinates]);
@@ -52,9 +52,7 @@ export default function PixelLocationInfo() {
                         : '—'
                 }
                 link={
-                    owner !== '' && owner !== constants.AddressZero
-                        ? owner
-                        : undefined
+                    owner !== '' && owner !== constants.AddressZero ? owner : ''
                 }
             />
             <InfoItem

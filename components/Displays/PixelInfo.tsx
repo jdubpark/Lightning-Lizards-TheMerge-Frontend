@@ -44,6 +44,7 @@ export function InfoItemAddress({
                 <a
                     href={`https://etherscan.io/address/${link}`}
                     target="_blank"
+                    rel="noreferrer"
                 >
                     {' '}
                     {value}
