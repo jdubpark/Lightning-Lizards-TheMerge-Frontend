@@ -97,8 +97,17 @@
     html {
         @apply font-inter font-light;
     }
+
+    .width-clamp {
+        @apply mx-xSmallXOffset md:mx-smallXOffset 2xl:mx-xOffset;
+    }
 }
 
 :root {
-    font-family: SFRounded, ui-rounded, "SF Pro Rounded", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    font-family: SFRounded, ui-rounded, 'SF Pro Rounded', -apple-system,
+        BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif,
+        'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+    --xsmall-margin-x-offset: 1.5rem;
+    --small-margin-x-offset: 5rem;
+    --margin-x-offset: 15rem;
 }

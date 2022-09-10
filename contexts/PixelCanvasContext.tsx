@@ -1,9 +1,11 @@
 import {
     createContext,
     Dispatch,
+    MutableRefObject,
     ReactNode,
     SetStateAction,
     useContext,
+    useRef,
     useState,
 } from 'react';
 import { RgbColor } from 'react-colorful';
@@ -14,6 +16,14 @@ export interface XYCoordinates {
 }
 
 interface PixelCanvasContextInterface {
+    canvasRef: MutableRefObject<HTMLCanvasElement | null>;
+    drawPixel: (
+        x: number,
+        y: number,
+        canvas: HTMLCanvasElement,
+        selectedColor: RgbColor
+    ) => void;
+
     selectedCoordinates: XYCoordinates;
     setSelectedCoordinates: Dispatch<SetStateAction<XYCoordinates>>;
     selectedColor: RgbColor;
@@ -22,6 +32,9 @@ interface PixelCanvasContextInterface {
     setSelectedPixelsList: Dispatch<
         SetStateAction<{ coordinates: XYCoordinates; color: RgbColor }[]>
     >;
+
+    canvasIsEditable: boolean;
+    setCanvasIsEditable: Dispatch<SetStateAction<boolean>>;
 }
 
 const PixelCanvasContext = createContext<
@@ -33,6 +46,8 @@ export default function PixelCanvasContextProvider({
 }: {
     children: ReactNode;
 }) {
+    const canvasRef = useRef<HTMLCanvasElement | null>(null);
+
     const [selectedCoordinates, setSelectedCoordinates] =
         useState<XYCoordinates>({
             x: 0,
@@ -46,22 +61,41 @@ export default function PixelCanvasContextProvider({
     const [selectedPixelsList, setSelectedPixelsList] = useState<
         { coordinates: XYCoordinates; color: RgbColor }[]
     >([]);
+    const [canvasIsEditable, setCanvasIsEditable] = useState(false);
+
+    function drawPixel(
+        x: number,
+        y: number,
+        canvas: HTMLCanvasElement,
+        selectedColor: RgbColor
+    ) {
+        const context: any = canvas.getContext('2d');
+        if (!context) return;
+        context.fillStyle = `rgb(${selectedColor.r}, ${selectedColor.g}, ${selectedColor.b})`;
+        context.fillRect(x, y, 1, 1);
+    }
 
     return (
         <PixelCanvasContext.Provider
             value={{
+                canvasRef,
+                drawPixel,
+
                 selectedCoordinates,
                 setSelectedCoordinates,
                 selectedColor,
                 setSelectedColor,
                 selectedPixelsList,
                 setSelectedPixelsList,
+
+                canvasIsEditable,
+                setCanvasIsEditable,
             }}
         >
             {children}
         </PixelCanvasContext.Provider>
     );
-};
+}
 
 export const usePixelCanvasContext = (): PixelCanvasContextInterface => {
     const context = useContext(PixelCanvasContext);
@@ -74,4 +108,4 @@ export const usePixelCanvasContext = (): PixelCanvasContextInterface => {
     return context;
 };
 
-export const CANVAS_DIMENSION = 600;
+export const CANVAS_DIMENSION = 500;

@@ -8,6 +8,7 @@ import {
 } from '../../contexts/PixelCanvasContext';
 import { RgbColor } from 'react-colorful';
 import { PixelChangeListener } from './PixelChangeListener';
+import ApiClient from '../../utils/ApiClient';
 
 const createShadow = (size: number) => `${size}px ${size}px 10px #ccc inset`;
 const shadowSize = 8;
@@ -29,27 +30,39 @@ function getMousePos(
     return { x: Math.floor(x), y: Math.floor(y) };
 }
 
-function drawPixel(
-    x: number,
-    y: number,
-    canvas: HTMLCanvasElement,
-    selectedColor: RgbColor
-) {
-    const context: any = canvas.getContext('2d');
-    context.fillStyle = `rgb(${selectedColor.r}, ${selectedColor.g}, ${selectedColor.b})`;
-    context.fillRect(x, y, 1, 1);
+function defaultImage(): HTMLImageElement {
+    const img = new Image()
+    img.src = 'https://merge-nft.s3.us-west-2.amazonaws.com/canvas.png'
+    return img
 }
 
 const PixelCanvas: NextPage = (props) => {
-    const { selectedCoordinates, setSelectedCoordinates, selectedColor } =
-        usePixelCanvasContext();
+    const {
+        canvasRef,
+        drawPixel,
 
-    const canvasRef = useRef<HTMLCanvasElement | null>(null);
+        selectedCoordinates,
+        setSelectedCoordinates,
+        selectedColor,
+        selectedPixelsList,
+        setSelectedPixelsList,
+
+        canvasIsEditable,
+    } = usePixelCanvasContext();
+
     const [canvasPanZoom, setCanvasPanZoom] = useState<PanZoom | null>(null);
 
     const [prevCoord, setPrevCoord] = useState<XYCoordinates>({ x: 0, y: 0 });
 
+    const canvasBackgroundRef = useRef<HTMLImageElement[]>([defaultImage(), defaultImage()])
+    const canvasBackgroundAltRef = useRef<number>(0)
+
     const halfSize = CANVAS_DIMENSION / 2;
+
+    // useEffect(() => {
+    //     const idx = canvasBackgroundAltRef.alt[0]
+    //     canvasBackgroundRef.current[].src = `https://merge-nft.s3.us-west-2.amazonaws.com/canvas.png?${Date.now()}`
+    // }, [])
 
     useEffect(() => {
         if (canvasRef.current) {
@@ -68,7 +81,7 @@ const PixelCanvas: NextPage = (props) => {
                 // }
             });
 
-            canvas.zoomAbs(halfSize, halfSize, 0.8);
+            canvas.zoomAbs(halfSize, halfSize, 1);
             setCanvasPanZoom(canvas);
 
             return () => {
@@ -90,9 +103,9 @@ const PixelCanvas: NextPage = (props) => {
     );
 
     const onMouseUp = useCallback(
-        (e: React.MouseEvent) => {
+        async (e: React.MouseEvent) => {
             const canvas = canvasRef.current;
-            if (!canvas || !canvasPanZoom) return;
+            if (!canvas || !canvasPanZoom || !canvasIsEditable) return;
             const newCoord = getMousePos(canvas, e);
 
             // console.log(prevCoord, newCoord)
@@ -106,26 +119,59 @@ const PixelCanvas: NextPage = (props) => {
             console.log(diffX, diffY, delta, scale);
             if (diffX < delta && diffY < delta) {
                 // is a click!
+
                 setSelectedCoordinates(newCoord);
-                drawPixel(newCoord.x, newCoord.y, canvas, selectedColor);
+                // Check if the pixel has been previously selected
+                const newSelectedPixelsList = [...selectedPixelsList];
+                const indexOfPixel = selectedPixelsList.findIndex(
+                    (p) =>
+                        p.coordinates.x === newCoord.x &&
+                        p.coordinates.y === newCoord.y
+                );
+                if (indexOfPixel === -1) {
+                    // Newly selected pixel
+                    drawPixel(newCoord.x, newCoord.y, canvas, selectedColor);
+                    newSelectedPixelsList.push({
+                        coordinates: newCoord,
+                        color: selectedColor,
+                    });
+                } else if (
+                    selectedPixelsList[indexOfPixel].color !== selectedColor
+                ) {
+                    // Change the color of the pixel to the new selected color
+                    drawPixel(newCoord.x, newCoord.y, canvas, selectedColor);
+                    newSelectedPixelsList[indexOfPixel].color = selectedColor;
+                } else {
+                    // Remove the pixel and replace with most recent pixel coloring
+                    newSelectedPixelsList.splice(indexOfPixel, 1);
+                    await ApiClient.getCoordinateData(
+                        selectedCoordinates.x,
+                        selectedCoordinates.y
+                    ).then((cd) => {
+                        if (!cd) return;
+                        drawPixel(newCoord.x, newCoord.y, canvas, {
+                            r: cd.color.R,
+                            g: cd.color.G,
+                            b: cd.color.B,
+                        });
+                    });
+                }
+                setSelectedPixelsList([...newSelectedPixelsList]);
             }
         },
-        [canvasPanZoom, prevCoord.x, prevCoord.y, selectedColor, setSelectedCoordinates]
+        [
+            canvasPanZoom,
+            prevCoord.x,
+            prevCoord.y,
+            selectedColor,
+            setSelectedCoordinates,
+            selectedPixelsList,
+            canvasIsEditable,
+        ]
     );
 
     return (
-        <div
-            style={{
-                width: `${CANVAS_DIMENSION}px`,
-                height: `${CANVAS_DIMENSION}px`,
-                overflow: 'hidden',
-                border: '2px solid #5A60D2',
-                boxShadow: `${createShadow(shadowSize)}, ${createShadow(
-                    -shadowSize
-                )}`,
-                backgroundColor: '#fff',
-            }}
-        >
+        <div className="z-0 w-full">
             <canvas
                 ref={canvasRef}
                 onMouseDown={onMouseDown}
@@ -133,12 +179,14 @@ const PixelCanvas: NextPage = (props) => {
                 height={CANVAS_DIMENSION}
                 width={CANVAS_DIMENSION}
                 style={{
-                    cursor: 'crosshair',
+                    cursor: canvasIsEditable ? 'crosshair' : 'cursor',
                     imageRendering: 'pixelated',
                     // height: CANVAS_DIMENSION,
                     // width: CANVAS_DIMENSION,
+                    // opacity: canvasIsEditable ? 1 : 0.5,
+                    opacity: 1,
                     backgroundImage:
-                        'url(https://merge-nft.s3.us-west-2.amazonaws.com/canvas.png)',
+                        `url(https://merge-nft.s3.us-west-2.amazonaws.com/canvas.png)`,
                 }}
             />
             <PixelChangeListener canvasRef={canvasRef} />
