@@ -8,12 +8,14 @@ import { SelectedPixelsList } from '../Inputs/SelectedPixelsList';
 import UserPixelsList from '../Displays/UserPixelsList';
 import { PixelInfoSection } from '../Displays/PixelInfo';
 import { MintButton } from '../Inputs/MintButton';
+import { TxLoading } from '../Displays/TxLoading';
 
 export const Board = () => {
     const { canvasIsEditable, setCanvasIsEditable } = usePixelCanvasContext();
 
     return (
         <div className="flex flex-row gap-x-5 h-full">
+            <TxLoading />
             <PixelCanvas />
             <div
                 className="flex flex-col gap-y-5 w-[300px] z-10 my-10 overflow-y-auto"

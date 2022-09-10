@@ -35,6 +35,9 @@ interface PixelCanvasContextInterface {
 
     canvasIsEditable: boolean;
     setCanvasIsEditable: Dispatch<SetStateAction<boolean>>;
+
+    waitingForTxConfirmation: boolean;
+    setWaitingForTxConfirmation: Dispatch<SetStateAction<boolean>>;
 }
 
 const PixelCanvasContext = createContext<
@@ -62,6 +65,8 @@ export default function PixelCanvasContextProvider({
         { coordinates: XYCoordinates; color: RgbColor }[]
     >([]);
     const [canvasIsEditable, setCanvasIsEditable] = useState(false);
+    const [waitingForTxConfirmation, setWaitingForTxConfirmation] =
+        useState(false);
 
     function drawPixel(
         x: number,
@@ -90,6 +95,9 @@ export default function PixelCanvasContextProvider({
 
                 canvasIsEditable,
                 setCanvasIsEditable,
+
+                waitingForTxConfirmation,
+                setWaitingForTxConfirmation,
             }}
         >
             {children}
