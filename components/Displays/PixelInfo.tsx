@@ -33,7 +33,7 @@ export function InfoItemAddress({
 }: {
     name: string;
     value: number | string;
-    link: string;
+    link?: string;
 }) {
     return (
         <div className="flex space-x-3 items-center">
@@ -42,7 +42,7 @@ export function InfoItemAddress({
             </div>
             <div>
                 <a
-                    href={`https://etherscan.io/address/${link}`}
+                    href={link ? `https://etherscan.io/address/${link}` : '#'}
                     target="_blank"
                     rel="noreferrer"
                 >
