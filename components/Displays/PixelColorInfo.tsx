@@ -48,15 +48,7 @@ export default function PixelColorInfo() {
                 {/* <div className="p-4 bg-eth-light-gray font-semibold text-xl text-center">
                 Your On-Chain Pixel
             </div> */}
-                <button
-                    onClick={() => {
-                        setPickerType(
-                            pickerType === 'input' ? 'picker' : 'input'
-                        );
-                    }}
-                >
-                    Change Picker
-                </button>
+
                 {pickerType === 'input' && (
                     <div className="flex flex-row gap-x-5">
                         <div
@@ -69,7 +61,7 @@ export default function PixelColorInfo() {
                     </div>
                 )}
                 {pickerType === 'picker' && (
-                    <div className="pb-5">
+                    <div>
                         <div className="small custom-pointers">
                             <RgbColorPicker
                                 color={selectedColor}
@@ -82,6 +74,15 @@ export default function PixelColorInfo() {
                     </div>
                 )}
                 {/* <PixelInfoDivider name="Actions" /> */}
+                <button
+                    onClick={() => {
+                        setPickerType(
+                            pickerType === 'input' ? 'picker' : 'input'
+                        );
+                    }}
+                >
+                    Change Picker
+                </button>
             </div>
         </PixelInfoSection>
     );
