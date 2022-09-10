@@ -172,7 +172,7 @@ const PixelCanvas: NextPage = (props) => {
                     // opacity: canvasIsEditable ? 1 : 0.5,
                     opacity: 1,
                     backgroundImage:
-                        'url(https://merge-nft.s3.us-west-2.amazonaws.com/canvas.png)',
+                        `url(https://merge-nft.s3.us-west-2.amazonaws.com/canvas.png?${Date.now()})`,
                 }}
             />
             <PixelChangeListener canvasRef={canvasRef} />
