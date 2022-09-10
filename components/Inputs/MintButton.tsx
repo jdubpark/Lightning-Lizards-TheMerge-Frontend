@@ -138,7 +138,7 @@ export const MintButton = () => {
                                 setBid(e.target.value);
                             }
                         }}
-                        className="px-2 py-1 border-2 border-black"
+                        className="py-1 px-2 rounded border border-gray-400"
                     />
                     <button
                         type="button"
