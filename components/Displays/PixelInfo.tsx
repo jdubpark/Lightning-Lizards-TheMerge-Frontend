@@ -31,7 +31,7 @@ export function PixelInfoSection({
     return (
         <div
             onClick={onClick}
-            className={`py-4 px-6 bg-white rounded-lg shadow-xl overflow-hidden ${
+            className={`py-4 px-6 bg-white rounded-lg shadow-xl overflow-hidden flex-none ${
                 isDisabled
                     ? 'pointer-events-none hidden'
                     : 'pointer-events-auto'
