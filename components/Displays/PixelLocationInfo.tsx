@@ -36,8 +36,10 @@ export default function PixelLocationInfo() {
 
     return (
         <PixelInfoSection name="Pixel Info">
-            <InfoItem name="x" value={selectedCoordinates.x} />
-            <InfoItem name="y" value={selectedCoordinates.y} />
+            <div className="grid grid-cols-2">
+                <InfoItem name="x" value={selectedCoordinates.x} />
+                <InfoItem name="y" value={selectedCoordinates.y} />
+            </div>
             <InfoItem
                 name="Price"
                 value={price !== 0 ? formatPrice(String(price)) : '—'}
@@ -46,7 +48,7 @@ export default function PixelLocationInfo() {
                 name="Owner"
                 value={
                     owner !== '' && owner !== constants.AddressZero
-                        ? midEllipsis(owner, 9)
+                        ? midEllipsis(owner, 11)
                         : '—'
                 }
             />

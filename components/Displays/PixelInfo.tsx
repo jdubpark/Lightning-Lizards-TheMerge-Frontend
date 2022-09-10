@@ -1,3 +1,5 @@
+import clsx from 'clsx'
+
 export function InfoItem({
     name,
     value,
@@ -16,10 +18,12 @@ export function InfoItem({
 }
 
 interface PixelInfoSectionProps {
-    children: JSX.Element | JSX.Element[];
-    name: string;
+    children?: JSX.Element | JSX.Element[];
+    name: string | JSX.Element;
     isDisabled?: boolean;
     onClick?: () => void;
+    singleItem?: boolean;
+    compact?: boolean;
 }
 
 export function PixelInfoSection({
@@ -27,18 +31,27 @@ export function PixelInfoSection({
     name,
     isDisabled,
     onClick,
+    singleItem,
+    compact,
 }: PixelInfoSectionProps) {
     return (
         <div
             onClick={onClick}
-            className={`py-4 px-6 bg-white rounded-lg shadow-xl overflow-hidden flex-none ${
-                isDisabled
-                    ? 'pointer-events-none hidden'
-                    : 'pointer-events-auto'
-            } ${onClick ? 'cursor-pointer' : 'cursor-auto'}`}
+            className={clsx(
+                'bg-white rounded-lg shadow-xl overflow-hidden flex-none',
+                compact ? 'py-3 px-6' : 'py-4 px-6',
+                isDisabled ? 'pointer-events-none hidden' : 'pointer-events-auto',
+                onClick ? 'cursor-pointer' : 'cursor-auto'
+            )}
         >
             <div className="text-lg font-bold text-center">{name}</div>
-            <div className="flex flex-col space-y-2 pt-2">{children}</div>
+            {
+                children && (
+                    <div className={clsx('flex flex-col pt-2', singleItem ? '' : 'space-y-2')}>
+                        {children}
+                    </div>
+                )
+            }
         </div>
     );
 }

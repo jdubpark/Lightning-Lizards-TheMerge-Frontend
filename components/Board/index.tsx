@@ -1,3 +1,5 @@
+import { MdOutlineModeEditOutline, MdOutlineRemoveRedEye } from 'react-icons/md'
+
 import PixelCanvas from './PixelCanvas';
 import PixelLocationInfo from '../Displays/PixelLocationInfo';
 import PixelColorInfo from '../Displays/PixelColorInfo';
@@ -22,13 +24,28 @@ export const Board = () => {
                 style={{ maxHeight: 'calc(100vh - 160px)' }}
             >
                 <PixelInfoSection
-                    name={canvasIsEditable ? 'Edit Mode' : 'View Mode'}
+                    name={(
+                        <div className="flex justify-center space-x-2 items-center">
+                            {
+                                canvasIsEditable ? (
+                                    <>
+                                        <MdOutlineRemoveRedEye size="24px" />
+                                        <div>Switch to View</div>
+                                    </>
+                                ) : (
+                                    <>
+                                        <MdOutlineModeEditOutline size="24px" />
+                                        <div>Switch to Edit</div>
+                                    </>
+                                )
+                            }
+                        </div>
+                    )}
                     onClick={() => {
                         setCanvasIsEditable(!canvasIsEditable);
                     }}
-                >
-                    <div />
-                </PixelInfoSection>
+                    compact
+                />
                 <PixelLocationInfo />
                 {canvasIsEditable && (
                     <>
@@ -37,7 +54,7 @@ export const Board = () => {
                         <MintButton />
                     </>
                 )}
-                <div className="hidden h-40" />
+                <div className="hidden h-screen" />
                 {/* <div>
                         <UserPixelsList />
                     </div> */}

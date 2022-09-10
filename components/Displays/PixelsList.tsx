@@ -56,15 +56,17 @@ const SelectedPixelsListItem: FC<SelectedPixelsListItemProps> = ({
                     backgroundColor: `rgb(${color.r}, ${color.g}, ${color.b})`,
                 }}
             />
-            <p className="text-sm">
+            <div className="text-sm pt-1 font-semibold">
                 ({coordinates.x}, {coordinates.y})
-            </p>
-            <button
-                onClick={() => deleteSelectedPixelHandler(index)}
-                className="text-red-400"
-            >
-                Delete
-            </button>
+            </div>
+            <div>
+                <button
+                    onClick={() => deleteSelectedPixelHandler(index)}
+                    className="text-sm text-red-400 hover:font-semibold"
+                >
+                    Delete
+                </button>
+            </div>
         </div>
     );
 };
@@ -143,12 +145,10 @@ export const PixelsList: FC = () => {
             <PixelInfoSection
                 name={`Selected Pixels (${selectedPixelsList.length})`}
                 onClick={() => setShowPopup(true)}
-            >
-                <div />
-            </PixelInfoSection>
+            />
             {showPopup && (
-                <div className="absolute top-0 bottom-0 left-0 right-0 backdrop-blur flex flex-row justify-center items-center z-10">
-                    <div className="bg-white px-20 pt-10 pb-10 rounded-lg width-clamp min-w-[500px]">
+                <div className="absolute top-0 bottom-0 left-0 right-0 backdrop-blur flex flex-row justify-center items-center z-[9990]">
+                    <div className="bg-white px-20 pt-10 pb-10 rounded-lg width-clamp min-w-[500px]" style={{ marginTop: '72px' }}>
                         <div className="flex flex-row items-start justify-between">
                             <p className="mb-2 text-2xl font-semibold underline">
                                 {tab === PixelsListTab.SELECTED_PIXELS
@@ -156,15 +156,19 @@ export const PixelsList: FC = () => {
                                     : 'Owned'}{' '}
                                 Pixels
                             </p>
-                            <button onClick={() => setShowPopup(false)}>
+                            <button
+                                onClick={() => setShowPopup(false)}
+                                className="py-1 px-2 rounded text-white bg-eth-gray/80 hover:bg-eth-gray"
+                            >
                                 Close
                             </button>
                         </div>
-                        <div className="pb-5 flex flex-row items-center gap-x-2 text-lg">
+                        <div className="pb-5 flex flex-row items-center gap-x-2">
                             <button
                                 onClick={() =>
                                     setTab(PixelsListTab.SELECTED_PIXELS)
                                 }
+                                className="py-1 px-2 rounded bg-eth-light-gray/80 hover:bg-eth-light-gray"
                             >
                                 Selected
                             </button>
@@ -172,11 +176,12 @@ export const PixelsList: FC = () => {
                                 onClick={() =>
                                     setTab(PixelsListTab.USER_PIXELS)
                                 }
+                                className="py-1 px-2 rounded bg-eth-light-gray/80 hover:bg-eth-light-gray"
                             >
                                 Owned
                             </button>
                         </div>
-                        <div className="grid grid-cols-3 gap-x-10 gap-y-5 w-[500px] max-h-[500px] overflow-auto">
+                        <div className="grid grid-cols-3 gap-x-10 gap-y-5 w-[500px] max-h-[420px] overflow-auto">
                             {tab === PixelsListTab.SELECTED_PIXELS ? (
                                 <SelectedPixelsList />
                             ) : (
