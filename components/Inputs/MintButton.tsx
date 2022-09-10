@@ -61,7 +61,7 @@ export const MintButton = () => {
         return totalPrice;
     };
 
-    const mintPixels = useCallback(async () => {
+    const ownPixels = useCallback(async () => {
         try {
             if (
                 !signer ||
@@ -70,6 +70,9 @@ export const MintButton = () => {
                 !switchNetworkAsync
             )
                 return;
+
+            if (!selectedPixelsList.length) return
+
             // if (chain.id !== 5) await switchNetworkAsync(5);
             let unsignedTx;
             if (selectedPixelsList.length > 1) {
@@ -96,18 +99,6 @@ export const MintButton = () => {
                             G: ethBigNumber.from(selectedColor.g),
                             B: ethBigNumber.from(selectedColor.b),
                         }
-                        // No need to ABI Encode
-                        // https://docs.ethers.io/v5/api/utils/abi/coder/#AbiCoder-encode
-                        // utils.defaultAbiCoder.encode(
-                        //     ['tuple(uint8 R,uint8 G,uint8 B)'],
-                        //     [
-                        //         {
-                        //             R: ethBigNumber.from(selectedColor.r),
-                        //             G: ethBigNumber.from(selectedColor.g),
-                        //             B: ethBigNumber.from(selectedColor.b),
-                        //         },
-                        //     ]
-                        // )
                     );
             }
 
@@ -130,11 +121,9 @@ export const MintButton = () => {
         switchNetworkAsync,
         selectedPixelsList,
         setWaitingForTxConfirmation,
-        selectedCoordinates.x,
-        selectedCoordinates.y,
-        selectedColor.r,
-        selectedColor.g,
-        selectedColor.b,
+        selectedCoordinates,
+        selectedColor,
+        getTotalPrice,
     ]);
 
     return (
@@ -156,9 +145,9 @@ export const MintButton = () => {
                                 'py-3 px-6 w-full bg-eth-gold/80 text-white font-bold rounded uppercase shadow transition cursor-pointer',
                                 'hover:bg-eth-gold hover:shadow-lg'
                             )}
-                            onClick={() => mintPixels()}
+                            onClick={() => ownPixels()}
                         >
-                            Mint
+                            Own Pixels
                         </button>
                     </div>
                 </PixelInfoSection>
