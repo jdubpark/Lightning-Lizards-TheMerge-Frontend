@@ -1,3 +1,4 @@
+import { BigNumber } from 'ethers';
 import {
     createContext,
     Dispatch,
@@ -33,9 +34,21 @@ interface PixelCanvasContextInterface {
     setSelectedCoordinates: Dispatch<SetStateAction<XYCoordinates>>;
     selectedColor: RgbColor;
     setSelectedColor: Dispatch<SetStateAction<RgbColor>>;
-    selectedPixelsList: { coordinates: XYCoordinates; color: RgbColor }[];
+    selectedPixelsList: {
+        coordinates: XYCoordinates;
+        color: RgbColor;
+        price: BigNumber;
+        minPrice: BigNumber;
+    }[];
     setSelectedPixelsList: Dispatch<
-        SetStateAction<{ coordinates: XYCoordinates; color: RgbColor }[]>
+        SetStateAction<
+            {
+                coordinates: XYCoordinates;
+                color: RgbColor;
+                price: BigNumber;
+                minPrice: BigNumber;
+            }[]
+        >
     >;
     userPixelsList: CoordinateData[];
 
@@ -70,7 +83,12 @@ export default function PixelCanvasContextProvider({
         b: 255,
     });
     const [selectedPixelsList, setSelectedPixelsList] = useState<
-        { coordinates: XYCoordinates; color: RgbColor }[]
+        {
+            coordinates: XYCoordinates;
+            color: RgbColor;
+            price: BigNumber;
+            minPrice: BigNumber;
+        }[]
     >([]);
     const [userPixelsList, setUserPixelsList] = useState<CoordinateData[]>([]);
 

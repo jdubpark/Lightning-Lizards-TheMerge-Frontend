@@ -9,6 +9,7 @@ import {
 import { RgbColor } from 'react-colorful';
 import { PixelChangeListener } from './PixelChangeListener';
 import ApiClient from '../../utils/ApiClient';
+import { ethers } from 'ethers';
 
 const createShadow = (size: number) => `${size}px ${size}px 10px #ccc inset`;
 const shadowSize = 8;
@@ -140,11 +141,31 @@ const PixelCanvas: NextPage = (props) => {
                 );
                 if (indexOfPixel === -1) {
                     // Newly selected pixel
-                    drawPixel(newCoord.x, newCoord.y, canvas, selectedColor);
-                    newSelectedPixelsList.push({
-                        coordinates: newCoord,
-                        color: selectedColor,
-                    });
+                    try {
+                        const { price } = await ApiClient.getCoordinateData(
+                            newCoord.x,
+                            newCoord.y
+                        );
+                        console.log('price: ', price);
+                        const zero = ethers.utils.parseEther('0');
+                        const minPrice = ethers.utils.parseEther('1').eq(zero)
+                            ? zero
+                            : ethers.utils.parseEther('0').add(1);
+                        drawPixel(
+                            newCoord.x,
+                            newCoord.y,
+                            canvas,
+                            selectedColor
+                        );
+                        newSelectedPixelsList.push({
+                            coordinates: newCoord,
+                            color: selectedColor,
+                            price: minPrice,
+                            minPrice,
+                        });
+                    } catch (error) {
+                        console.log(error);
+                    }
                 } else if (
                     selectedPixelsList[indexOfPixel].color !== selectedColor
                 ) {
@@ -155,7 +176,6 @@ const PixelCanvas: NextPage = (props) => {
                     // Remove the pixel and replace with most recent pixel coloring
                     newSelectedPixelsList.splice(indexOfPixel, 1);
                     clearPixel(newCoord.x, newCoord.y, canvas);
-
                     // Since we will be refreshing every block, no need to get immediate data
                     // await ApiClient.getCoordinateData(
                     //     selectedCoordinates.x,

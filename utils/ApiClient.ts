@@ -8,7 +8,7 @@ export interface CoordinateData {
         B: number;
     };
     owner: string;
-    price: number;
+    price: string;
 }
 
 export default class ApiClient {

@@ -1,5 +1,11 @@
 import clsx from 'clsx';
-import { utils, BigNumber as ethBigNumber, Contract, ethers } from 'ethers';
+import {
+    utils,
+    BigNumber as ethBigNumber,
+    Contract,
+    ethers,
+    BigNumber,
+} from 'ethers';
 import { useState, useCallback } from 'react';
 import {
     useNetwork,
@@ -12,6 +18,7 @@ import { MERGE_CANVAS_CONTRACT_ADDRESS } from '../../utils/constants';
 import MergeCanvasArtifact from '../../contracts/MergeCanvas.json';
 import { usePixelCanvasContext } from '../../contexts/PixelCanvasContext';
 import { PixelInfoSection } from '../Displays/PixelInfo';
+import { formatPrice } from '../../utils/misc';
 
 export const MintButton = () => {
     const {
@@ -37,13 +44,22 @@ export const MintButton = () => {
     } = useSwitchNetwork();
 
     const [mintCallData, setMintCallData] = useState<string>();
-    const [bid, setBid] = useState('');
 
     const mergeCanvasContract = useContract({
         addressOrName: MERGE_CANVAS_CONTRACT_ADDRESS,
         contractInterface: MergeCanvasArtifact.abi,
         signerOrProvider: signer,
     }) as Contract;
+
+    const getTotalPrice = (): BigNumber => {
+        let totalPrice = ethers.utils.parseEther('0');
+
+        selectedPixelsList.forEach(
+            ({ price }) => (totalPrice = totalPrice.add(price))
+        );
+
+        return totalPrice;
+    };
 
     const mintPixels = useCallback(async () => {
         try {
@@ -68,7 +84,7 @@ export const MintButton = () => {
                                 B: ethBigNumber.from(item.color.b),
                             };
                         }),
-                        selectedPixelsList.map((_) => ethBigNumber.from(0))
+                        selectedPixelsList.map((item) => item.price)
                     );
             } else {
                 unsignedTx =
@@ -97,8 +113,9 @@ export const MintButton = () => {
 
             const txChangeColor = await signer.sendTransaction({
                 ...unsignedTx,
-                value: ethers.utils.parseEther(bid || '0').toString(),
+                value: getTotalPrice().toString(),
             });
+
             setWaitingForTxConfirmation(true);
             console.log(txChangeColor);
             await txChangeColor.wait();
@@ -112,7 +129,6 @@ export const MintButton = () => {
         chain,
         switchNetworkAsync,
         selectedPixelsList,
-        bid,
         setWaitingForTxConfirmation,
         selectedCoordinates.x,
         selectedCoordinates.y,
@@ -120,15 +136,6 @@ export const MintButton = () => {
         selectedColor.g,
         selectedColor.b,
     ]);
-
-    const onBidInput = (e: any) => {
-        if (
-            !Number.isNaN(e.target.value) &&
-            Number(e.target.value) >= 0
-        ) {
-            setBid(e.target.value);
-        }
-    }
 
     return (
         <div className="flex-none">
@@ -138,27 +145,21 @@ export const MintButton = () => {
                 <PixelInfoSection name="Get pixels">
                     <div className="flex flex-col space-y-2">
                         <div>
-                            <div className="text-sm">Optional: Bid for Pixel (ETH)</div>
-                            <input
-                                placeholder="Bid for Pixel in ETH"
-                                type="number"
-                                value={bid}
-                                onChange={onBidInput}
-                                className="w-full px-2 py-1 mt-1 border border-eth-gray rounded focus:outline-0"
-                            />
+                            <p className="text-center">
+                                Total Price:{' '}
+                                {formatPrice(getTotalPrice().toString())}
+                            </p>
                         </div>
-                        <div>
-                            <button
-                                type="button"
-                                className={clsx(
-                                    'py-3 px-6 w-full bg-eth-gold/80 text-white font-bold rounded uppercase shadow transition cursor-pointer',
-                                    'hover:bg-eth-gold hover:shadow-lg'
-                                )}
-                                onClick={() => mintPixels()}
-                            >
-                                Mint
-                            </button>
-                        </div>
+                        <button
+                            type="button"
+                            className={clsx(
+                                'py-3 px-6 w-full bg-eth-gold/80 text-white font-bold rounded uppercase shadow transition cursor-pointer',
+                                'hover:bg-eth-gold hover:shadow-lg'
+                            )}
+                            onClick={() => mintPixels()}
+                        >
+                            Mint
+                        </button>
                     </div>
                 </PixelInfoSection>
             )}
