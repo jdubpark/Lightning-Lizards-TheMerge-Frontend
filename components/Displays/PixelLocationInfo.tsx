@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import { constants } from 'ethers';
+import { constants, ethers } from 'ethers';
 import { useEffect, useState } from 'react';
 
 import { usePixelCanvasContext } from '../../contexts/PixelCanvasContext';
@@ -35,11 +35,27 @@ export default function PixelLocationInfo() {
         });
     }, [selectedCoordinates]);
 
+    const formatPrice = (rawPrice: string): string => {
+        const weiPrice = ethers.utils.formatUnits(rawPrice, 'wei');
+        if (weiPrice.toString().length < 9) {
+            return `${weiPrice} WEI`;
+        }
+        const gweiPrice = ethers.utils.formatUnits(rawPrice, 'gwei');
+        if (gweiPrice.toString().length < 9) {
+            return `${gweiPrice} GWEI`;
+        }
+        const ethPrice = ethers.utils.formatUnits(rawPrice, 'ether');
+        return `${ethPrice} ETH`;
+    };
+
     return (
         <PixelInfoSection name="Pixel Info">
             <InfoItem name="x" value={selectedCoordinates.x} />
             <InfoItem name="y" value={selectedCoordinates.y} />
-            <InfoItem name="Price" value={price !== 0 ? price : '—'} />
+            <InfoItem
+                name="Price"
+                value={price !== 0 ? formatPrice(String(price)) : '—'}
+            />
             <InfoItem
                 name="Owner"
                 value={
