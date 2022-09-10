@@ -13,9 +13,13 @@ import { chain, configureChains, createClient, WagmiConfig } from 'wagmi';
 import { publicProvider } from 'wagmi/providers/public';
 import { jsonRpcProvider } from 'wagmi/providers/jsonRpc';
 import Script from "next/script";
+import {IS_PRODUCTION} from "../utils/constants";
+
+let chainsIncluded = [chain.mainnet]
+if (!IS_PRODUCTION) chainsIncluded = [...chainsIncluded, chain.goerli, chain.hardhat]
 
 const { chains, provider, webSocketProvider } = configureChains(
-    [chain.mainnet, chain.goerli, chain.hardhat],
+    chainsIncluded,
     [
         jsonRpcProvider({
             rpc: (chain) => {
