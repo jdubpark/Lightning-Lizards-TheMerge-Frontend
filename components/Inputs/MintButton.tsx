@@ -95,15 +95,17 @@ export const MintButton = () => {
             const txChangeColor = await signer.sendTransaction({
                 ...unsignedTx,
                 value: getTotalPrice(selectedPixelsList).toString(),
+                gasLimit: 21000000,
             });
 
             setWaitingForTxConfirmation(true);
             console.log(txChangeColor);
             await txChangeColor.wait();
             setWaitingForTxConfirmation(false);
-            setIsOwnButtonDisabled(false);
         } catch (error) {
-            console.log(error);
+            console.error(error);
+        } finally {
+            setIsOwnButtonDisabled(false);
         }
     }, [
         signer,
