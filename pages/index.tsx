@@ -1,22 +1,22 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
-import Image from 'next/image';
+// import Image from 'next/image';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
-import { useAccount, useConnect } from 'wagmi';
-import { useEffect, useRef } from 'react';
 import { Board } from '../components/Board';
 import PixelCanvasContextProvider from '../contexts/PixelCanvasContext';
 
 function Header({ children }: { children: JSX.Element | JSX.Element[] }) {
     return (
         <header
-            className="relative py-4 px-8 border-b border-eth-light-gray flex flex-row justify-between items-center bg-stone-200"
+            className="sticky inset-x-0 top-0 w-screen backdrop-filter backdrop-blur-3xl bg-white/30 dark:bg-black/30 shadow z-[9980]"
             style={{
                 boxShadow: '0 0 20px 1px rgba(30,30,30,0.2)',
-                zIndex: 10000,
+                zIndex: 9980,
             }}
         >
-            {children}
+            <div className="relative py-4 px-8 flex flex-row justify-between items-center">
+                {children}
+            </div>
         </header>
     );
 }
@@ -37,13 +37,19 @@ const Home: NextPage = () => {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             <Header>
-                <nav className="text-2xl font-bold w-full ">
+                <nav className="w-full">
                     <div className="flex flex-row width-clamp justify-between items-center">
-                        <div>The Merge Canvas</div>
-                        <div>
+                        <div className="flex space-x-4 items-center">
+                            <div>
+                                <img src="https://merge-nft.s3.us-west-2.amazonaws.com/canvas.png" alt="" className="h-8 w-8" />
+                            </div>
+                            <div className="text-2xl font-bold text-eth-gray">The Merge Canvas</div>
+                        </div>
+                        <div className="text-lg">
                             <ConnectButton
                             // chainStatus="none"
-                            // showBalance={false}
+                                showBalance={false}
+                                chainStatus="icon"
                             // accountStatus="address"
                             />
                         </div>

@@ -3,11 +3,10 @@ import { constants, ethers } from 'ethers';
 import { useEffect, useState } from 'react';
 
 import { usePixelCanvasContext } from '../../contexts/PixelCanvasContext';
-import { midEllipsis } from '../../utils/misc';
+import { formatPrice, midEllipsis } from '../../utils/misc';
 import ApiClient from '../../utils/ApiClient';
 import { RgbColor } from 'react-colorful';
 import PixelColorInfo from './PixelColorInfo';
-import { SelectedPixelsList } from '../Inputs/SelectedPixelsList';
 import { InfoItem, PixelInfoSection } from './PixelInfo';
 
 export default function PixelLocationInfo() {
@@ -35,23 +34,12 @@ export default function PixelLocationInfo() {
         });
     }, [selectedCoordinates]);
 
-    const formatPrice = (rawPrice: string): string => {
-        const weiPrice = ethers.utils.formatUnits(rawPrice, 'wei');
-        if (weiPrice.toString().length < 9) {
-            return `${weiPrice} WEI`;
-        }
-        const gweiPrice = ethers.utils.formatUnits(rawPrice, 'gwei');
-        if (gweiPrice.toString().length < 9) {
-            return `${gweiPrice} GWEI`;
-        }
-        const ethPrice = ethers.utils.formatUnits(rawPrice, 'ether');
-        return `${ethPrice} ETH`;
-    };
-
     return (
         <PixelInfoSection name="Pixel Info">
-            <InfoItem name="x" value={selectedCoordinates.x} />
-            <InfoItem name="y" value={selectedCoordinates.y} />
+            <div className="grid grid-cols-2">
+                <InfoItem name="x" value={selectedCoordinates.x} />
+                <InfoItem name="y" value={selectedCoordinates.y} />
+            </div>
             <InfoItem
                 name="Price"
                 value={price !== 0 ? formatPrice(String(price)) : '—'}
@@ -60,7 +48,7 @@ export default function PixelLocationInfo() {
                 name="Owner"
                 value={
                     owner !== '' && owner !== constants.AddressZero
-                        ? midEllipsis(owner, 9)
+                        ? midEllipsis(owner, 11)
                         : '—'
                 }
             />

@@ -6,8 +6,8 @@ import {
     RainbowKitProvider,
     getDefaultWallets,
     Theme,
-    darkTheme,
-    lightTheme,
+    darkTheme as rbDarkTheme,
+    lightTheme as rbLightTheme,
 } from '@rainbow-me/rainbowkit';
 import { chain, configureChains, createClient, WagmiConfig } from 'wagmi';
 import { publicProvider } from 'wagmi/providers/public';
@@ -37,12 +37,20 @@ const wagmiClient = createClient({
     webSocketProvider,
 });
 
-const DarkTheme = darkTheme();
-const LightTheme = lightTheme();
+const DarkTheme = rbDarkTheme();
+const LightTheme = rbLightTheme();
 
-const myCustomTheme: Theme = {
+const lightTheme: Theme = {
     // ...DarkTheme,
     ...LightTheme,
+    colors: {
+        ...LightTheme.colors,
+        accentColorForeground: '#ecf0f1',
+    },
+    radii: {
+        ...LightTheme.radii,
+        connectButton: '6px',
+    },
     shadows: {
         ...LightTheme.shadows,
         connectButton: 'none',
@@ -54,7 +62,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         <WagmiConfig client={wagmiClient}>
             <RainbowKitProvider
                 chains={chains}
-                theme={myCustomTheme}
+                theme={lightTheme}
                 modalSize="compact"
                 showRecentTransactions
             >

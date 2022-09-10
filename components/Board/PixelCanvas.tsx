@@ -34,12 +34,14 @@ const PixelCanvas: NextPage = (props) => {
     const {
         canvasRef,
         drawPixel,
+        clearPixel,
 
         selectedCoordinates,
         setSelectedCoordinates,
         selectedColor,
         selectedPixelsList,
         setSelectedPixelsList,
+        userPixelsList,
 
         canvasIsEditable,
         waitingForTxConfirmation,
@@ -83,6 +85,22 @@ const PixelCanvas: NextPage = (props) => {
             };
         }
     }, [halfSize]);
+
+    // Color the user's owned pixels
+    useEffect(() => {
+        if (canvasRef.current) {
+            const canvas = canvasRef.current as HTMLCanvasElement;
+            userPixelsList.forEach(({ _id, color, price }) => {
+                const [x, y] = _id.split('-');
+                console.log(x, y);
+                drawPixel(Number(x), Number(y), canvas, {
+                    r: color.R,
+                    g: color.G,
+                    b: color.B,
+                });
+            });
+        }
+    }, [canvasRef, userPixelsList]);
 
     const onMouseDown = useCallback(
         (e: React.MouseEvent) => {
@@ -136,17 +154,26 @@ const PixelCanvas: NextPage = (props) => {
                 } else {
                     // Remove the pixel and replace with most recent pixel coloring
                     newSelectedPixelsList.splice(indexOfPixel, 1);
-                    await ApiClient.getCoordinateData(
-                        selectedCoordinates.x,
-                        selectedCoordinates.y
-                    ).then((cd) => {
-                        if (!cd) return;
-                        drawPixel(newCoord.x, newCoord.y, canvas, {
-                            r: cd.color.R,
-                            g: cd.color.G,
-                            b: cd.color.B,
-                        });
-                    });
+                    clearPixel(newCoord.x, newCoord.y, canvas);
+
+                    // Since we will be refreshing every block, no need to get immediate data
+                    // await ApiClient.getCoordinateData(
+                    //     selectedCoordinates.x,
+                    //     selectedCoordinates.y
+                    // ).then((cd) => {
+                    //     if (!cd) return;
+                    //     drawPixel(
+                    //         newCoord.x,
+                    //         newCoord.y,
+                    //         canvas,
+                    //         {
+                    //             r: cd.color.R,
+                    //             g: cd.color.G,
+                    //             b: cd.color.B,
+                    //         },
+                    //         true
+                    //     );
+                    // });
                 }
                 setSelectedPixelsList([...newSelectedPixelsList]);
             }
@@ -163,25 +190,33 @@ const PixelCanvas: NextPage = (props) => {
     );
 
     return (
-        <div className="z-0 w-full">
-            <canvas
-                ref={canvasRef}
-                onMouseDown={onMouseDown}
-                onMouseUp={onMouseUp}
-                height={CANVAS_DIMENSION}
-                width={CANVAS_DIMENSION}
-                style={{
-                    cursor: canvasIsEditable ? 'crosshair' : 'cursor',
-                    imageRendering: 'pixelated',
-                    // height: CANVAS_DIMENSION,
-                    // width: CANVAS_DIMENSION,
-                    // opacity: canvasIsEditable ? 1 : 0.5,
-                    opacity: 1,
-                    backgroundImage: waitingForTxConfirmation
-                        ? ``
-                        : `url(https://merge-nft.s3.us-west-2.amazonaws.com/canvas.png)`,
-                }}
-            />
+        <div
+            id="canvas-container"
+            className="z-0 w-full flex flex-row items-start"
+        >
+            <div className="flex-grow">
+                <canvas
+                    ref={canvasRef}
+                    onMouseDown={onMouseDown}
+                    onMouseUp={onMouseUp}
+                    height={CANVAS_DIMENSION}
+                    width={CANVAS_DIMENSION}
+                    style={{
+                        cursor: canvasIsEditable ? 'crosshair' : 'cursor',
+                        imageRendering: 'pixelated',
+                        // height: CANVAS_DIMENSION,
+                        // width: CANVAS_DIMENSION,
+                        // opacity: canvasIsEditable ? 1 : 0.5,
+                        backgroundImage: waitingForTxConfirmation
+                            ? ``
+                            : `${
+                                  canvasIsEditable
+                                      ? 'linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), '
+                                      : ''
+                              }url(https://merge-nft.s3.us-west-2.amazonaws.com/canvas.png)`,
+                    }}
+                />
+            </div>
             <PixelChangeListener canvasRef={canvasRef} />
         </div>
     );

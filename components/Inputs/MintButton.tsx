@@ -121,35 +121,45 @@ export const MintButton = () => {
         selectedColor.b,
     ]);
 
+    const onBidInput = (e: any) => {
+        if (
+            !Number.isNaN(e.target.value) &&
+            Number(e.target.value) >= 0
+        ) {
+            setBid(e.target.value);
+        }
+    }
+
     return (
         <div className="flex-none">
             {isLoadingSigner ? (
                 <div>Connect Wallet!</div>
             ) : (
                 <PixelInfoSection name="Get pixels">
-                    <input
-                        placeholder="(Optional) Bid for pixel in eth"
-                        value={bid}
-                        onChange={(e) => {
-                            if (
-                                !Number.isNaN(e.target.value) &&
-                                Number(e.target.value) >= 0
-                            ) {
-                                setBid(e.target.value);
-                            }
-                        }}
-                        className="py-1 px-2 rounded border border-gray-400"
-                    />
-                    <button
-                        type="button"
-                        className={clsx(
-                            'py-5 px-6 w-full bg-eth-gray/90 text-white font-bold rounded-xl uppercase shadow transition cursor-pointer',
-                            'hover:bg-eth-gray hover:shadow-lg'
-                        )}
-                        onClick={() => mintPixels()}
-                    >
-                        Mint
-                    </button>
+                    <div className="flex flex-col space-y-2">
+                        <div>
+                            <div className="text-sm">Optional: Bid for Pixel (ETH)</div>
+                            <input
+                                placeholder="Bid for Pixel in ETH"
+                                type="number"
+                                value={bid}
+                                onChange={onBidInput}
+                                className="w-full px-2 py-1 mt-1 border border-eth-gray rounded focus:outline-0"
+                            />
+                        </div>
+                        <div>
+                            <button
+                                type="button"
+                                className={clsx(
+                                    'py-3 px-6 w-full bg-eth-gold/80 text-white font-bold rounded uppercase shadow transition cursor-pointer',
+                                    'hover:bg-eth-gold hover:shadow-lg'
+                                )}
+                                onClick={() => mintPixels()}
+                            >
+                                Mint
+                            </button>
+                        </div>
+                    </div>
                 </PixelInfoSection>
             )}
         </div>
