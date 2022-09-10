@@ -51,6 +51,11 @@ export default function PixelLocationInfo() {
                         ? midEllipsis(owner, 11)
                         : '—'
                 }
+                link={
+                    owner !== '' && owner !== constants.AddressZero
+                        ? owner
+                        : undefined
+                }
             />
             <InfoItem
                 name="RGB"

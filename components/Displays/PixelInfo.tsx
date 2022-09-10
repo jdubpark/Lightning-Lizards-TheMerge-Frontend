@@ -29,9 +29,11 @@ interface PixelInfoSectionProps {
 export function InfoItemAddress({
     name,
     value,
+    link,
 }: {
     name: string;
     value: number | string;
+    link: string;
 }) {
     return (
         <div className="flex space-x-3 items-center">
@@ -39,7 +41,13 @@ export function InfoItemAddress({
                 {name}
             </div>
             <div>
-                <a href={`https://etherscan.io/address/${value}`}> {value}</a>
+                <a
+                    href={`https://etherscan.io/address/${link}`}
+                    target="_blank"
+                >
+                    {' '}
+                    {value}
+                </a>
             </div>
         </div>
     );
