@@ -78,7 +78,7 @@ export const MintButton = () => {
     ]);
 
     return (
-        <div>
+        <div className="flex-none">
             {isLoadingSigner ? (
                 <div>Connect Wallet!</div>
             ) : (
