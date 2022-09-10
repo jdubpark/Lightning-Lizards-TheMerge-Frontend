@@ -24,8 +24,10 @@ interface PixelCanvasContextInterface {
         x: number,
         y: number,
         canvas: HTMLCanvasElement,
-        selectedColor: RgbColor
+        selectedColor: RgbColor,
+        lowOpacity?: boolean
     ) => void;
+    clearPixel: (x: number, y: number, canvas: HTMLCanvasElement) => void;
 
     selectedCoordinates: XYCoordinates;
     setSelectedCoordinates: Dispatch<SetStateAction<XYCoordinates>>;
@@ -96,12 +98,21 @@ export default function PixelCanvasContextProvider({
         x: number,
         y: number,
         canvas: HTMLCanvasElement,
-        selectedColor: RgbColor
+        selectedColor: RgbColor,
+        lowOpacity?: boolean
     ) {
-        const context: any = canvas.getContext('2d');
+        const context = canvas.getContext('2d');
         if (!context) return;
-        context.fillStyle = `rgb(${selectedColor.r}, ${selectedColor.g}, ${selectedColor.b})`;
+        context.fillStyle = `rgba(${selectedColor.r}, ${selectedColor.g}, ${
+            selectedColor.b
+        }, ${lowOpacity ? 0.3 : 1})`;
         context.fillRect(x, y, 1, 1);
+    }
+
+    function clearPixel(x: number, y: number, canvas: HTMLCanvasElement) {
+        const context = canvas.getContext('2d');
+        if (!context) return;
+        context.clearRect(x, y, 1, 1);
     }
 
     return (
@@ -123,6 +134,8 @@ export default function PixelCanvasContextProvider({
 
                 waitingForTxConfirmation,
                 setWaitingForTxConfirmation,
+
+                clearPixel,
             }}
         >
             {children}
