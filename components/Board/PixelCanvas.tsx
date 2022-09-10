@@ -42,6 +42,7 @@ const PixelCanvas: NextPage = (props) => {
         setSelectedPixelsList,
 
         canvasIsEditable,
+        waitingForTxConfirmation,
     } = usePixelCanvasContext();
 
     const [canvasPanZoom, setCanvasPanZoom] = useState<PanZoom | null>(null);
@@ -176,7 +177,9 @@ const PixelCanvas: NextPage = (props) => {
                     // width: CANVAS_DIMENSION,
                     // opacity: canvasIsEditable ? 1 : 0.5,
                     opacity: 1,
-                    backgroundImage: `url(https://merge-nft.s3.us-west-2.amazonaws.com/canvas.png)`,
+                    backgroundImage: waitingForTxConfirmation
+                        ? ``
+                        : `url(https://merge-nft.s3.us-west-2.amazonaws.com/canvas.png)`,
                 }}
             />
             <PixelChangeListener canvasRef={canvasRef} />

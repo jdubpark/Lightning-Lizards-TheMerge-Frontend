@@ -13,7 +13,8 @@ import MergeCanvasArtifact from '../../contracts/MergeCanvas.json';
 import { usePixelCanvasContext } from '../../contexts/PixelCanvasContext';
 
 export const MintButton = () => {
-    const { selectedColor, selectedCoordinates } = usePixelCanvasContext();
+    const { selectedColor, selectedCoordinates, setWaitingForTxConfirmation } =
+        usePixelCanvasContext();
 
     const {
         data: signer,
@@ -38,36 +39,47 @@ export const MintButton = () => {
     }) as Contract;
 
     const mintPixels = useCallback(async () => {
-        if (!signer || !mergeCanvasContract || !chain || !switchNetworkAsync)
-            return;
-        if (chain.id !== 5) await switchNetworkAsync(5);
+        try {
+            if (
+                !signer ||
+                !mergeCanvasContract ||
+                !chain ||
+                !switchNetworkAsync
+            )
+                return;
+            // if (chain.id !== 5) await switchNetworkAsync(5);
 
-        const unsignedTx =
-            await mergeCanvasContract.populateTransaction.changePixelColor(
-                selectedCoordinates.x,
-                selectedCoordinates.y,
-                {
-                    R: ethBigNumber.from(selectedColor.r),
-                    G: ethBigNumber.from(selectedColor.g),
-                    B: ethBigNumber.from(selectedColor.b),
-                }
-                // No need to ABI Encode
-                // https://docs.ethers.io/v5/api/utils/abi/coder/#AbiCoder-encode
-                // utils.defaultAbiCoder.encode(
-                //     ['tuple(uint8 R,uint8 G,uint8 B)'],
-                //     [
-                //         {
-                //             R: ethBigNumber.from(selectedColor.r),
-                //             G: ethBigNumber.from(selectedColor.g),
-                //             B: ethBigNumber.from(selectedColor.b),
-                //         },
-                //     ]
-                // )
-            );
+            const unsignedTx =
+                await mergeCanvasContract.populateTransaction.changePixelColor(
+                    selectedCoordinates.x,
+                    selectedCoordinates.y,
+                    {
+                        R: ethBigNumber.from(selectedColor.r),
+                        G: ethBigNumber.from(selectedColor.g),
+                        B: ethBigNumber.from(selectedColor.b),
+                    }
+                    // No need to ABI Encode
+                    // https://docs.ethers.io/v5/api/utils/abi/coder/#AbiCoder-encode
+                    // utils.defaultAbiCoder.encode(
+                    //     ['tuple(uint8 R,uint8 G,uint8 B)'],
+                    //     [
+                    //         {
+                    //             R: ethBigNumber.from(selectedColor.r),
+                    //             G: ethBigNumber.from(selectedColor.g),
+                    //             B: ethBigNumber.from(selectedColor.b),
+                    //         },
+                    //     ]
+                    // )
+                );
 
-        const txChangeColor = await signer.sendTransaction(unsignedTx);
-        console.log(txChangeColor);
-        console.log(await txChangeColor.wait());
+            const txChangeColor = await signer.sendTransaction(unsignedTx);
+            setWaitingForTxConfirmation(true);
+            console.log(txChangeColor);
+            await txChangeColor.wait();
+            setWaitingForTxConfirmation(false);
+        } catch (error) {
+            console.log(error);
+        }
     }, [
         chain,
         mergeCanvasContract,
