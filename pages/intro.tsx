@@ -7,7 +7,6 @@ import { useEffect, useRef } from 'react';
 import { Board } from '../components/Board';
 import PixelCanvasContextProvider from '../contexts/PixelCanvasContext';
 import canvas from '../public/canvas2.png';
-import { LunchButton } from '../components/Inputs/LunchAppButton';
 
 function Header({ children }: { children: JSX.Element | JSX.Element[] }) {
     return (
