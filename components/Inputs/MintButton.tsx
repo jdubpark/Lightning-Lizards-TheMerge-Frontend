@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 import {
-    BigNumber,
+    BigNumber, BigNumberish,
     Contract,
 } from 'ethers';
 import { useEffect, useState, useCallback } from 'react';
@@ -65,37 +65,42 @@ export const MintButton = () => {
             setIsOwnButtonDisabled(true)
             // if (chain.id !== 5) await switchNetworkAsync(5);
             let unsignedTx;
+            let gasLimit: BigNumberish;
             if (selectedPixelsList.length > 1) {
-                unsignedTx =
-                    await mergeCanvasContract.populateTransaction.changePixelsColor(
-                        selectedPixelsList.map((item) => item.coordinates.x),
-                        selectedPixelsList.map((item) => item.coordinates.y),
-                        selectedPixelsList.map((item) => {
-                            return {
-                                R: BigNumber.from(item.color.r),
-                                G: BigNumber.from(item.color.g),
-                                B: BigNumber.from(item.color.b),
-                            };
-                        }),
-                        selectedPixelsList.map((item) => item.price)
-                    );
+                const params = [
+                    selectedPixelsList.map((item) => item.coordinates.x),
+                    selectedPixelsList.map((item) => item.coordinates.y),
+                    selectedPixelsList.map((item) => {
+                        return {
+                            R: BigNumber.from(item.color.r),
+                            G: BigNumber.from(item.color.g),
+                            B: BigNumber.from(item.color.b),
+                        };
+                    }),
+                    selectedPixelsList.map((item) => item.price)
+                ]
+
+                gasLimit = await mergeCanvasContract.estimateGas.changePixelsColor(...params)
+                unsignedTx = await mergeCanvasContract.populateTransaction.changePixelsColor(...params);
             } else {
-                unsignedTx =
-                    await mergeCanvasContract.populateTransaction.changePixelColor(
-                        selectedCoordinates.x,
-                        selectedCoordinates.y,
-                        {
-                            R: BigNumber.from(selectedColor.r),
-                            G: BigNumber.from(selectedColor.g),
-                            B: BigNumber.from(selectedColor.b),
-                        }
-                    );
+                const params = [
+                    selectedCoordinates.x,
+                    selectedCoordinates.y,
+                    {
+                        R: BigNumber.from(selectedColor.r),
+                        G: BigNumber.from(selectedColor.g),
+                        B: BigNumber.from(selectedColor.b),
+                    }
+                ]
+                gasLimit = await mergeCanvasContract.estimateGas.changePixelsColor(...params)
+                unsignedTx = await mergeCanvasContract.populateTransaction.changePixelColor(...params);
             }
 
+            console.log('Gas limit', gasLimit)
             const txChangeColor = await signer.sendTransaction({
                 ...unsignedTx,
                 value: getTotalPrice(selectedPixelsList).toString(),
-                gasLimit: 21000000,
+                gasLimit,
             });
 
             setWaitingForTxConfirmation(true);
