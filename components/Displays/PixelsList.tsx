@@ -29,7 +29,7 @@ const SelectedPixelsListItem: FC<SelectedPixelsListItemProps> = ({
         const selectedPixel = selectedPixelsList[index];
         const newSelectedPixelsList = [...selectedPixelsList];
         newSelectedPixelsList.splice(index, 1);
-        setSelectedPixelsList([...newSelectedPixelsList]);
+        setSelectedPixelsList(newSelectedPixelsList);
         ApiClient.getCoordinateData(
             selectedPixel.coordinates.x,
             selectedPixel.coordinates.y
@@ -71,7 +71,7 @@ const SelectedPixelsListItem: FC<SelectedPixelsListItemProps> = ({
                 <div>
                     <button
                         onClick={() => deleteSelectedPixelHandler(index)}
-                        className="text-sm text-red-400 hover:font-semibold"
+                        className="text-sm text-red-400 drop-shadow hover:font-semibold"
                     >
                         Delete
                     </button>
