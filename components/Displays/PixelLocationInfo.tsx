@@ -7,7 +7,7 @@ import { formatPrice, midEllipsis } from '../../utils/misc';
 import ApiClient from '../../utils/ApiClient';
 import { RgbColor } from 'react-colorful';
 import PixelColorInfo from './PixelColorInfo';
-import { InfoItem, PixelInfoSection } from './PixelInfo';
+import { InfoItem, InfoItemAddress, PixelInfoSection } from './PixelInfo';
 
 export default function PixelLocationInfo() {
     const {
@@ -44,7 +44,7 @@ export default function PixelLocationInfo() {
                 name="Price"
                 value={price !== 0 ? formatPrice(String(price)) : '—'}
             />
-            <InfoItem
+            <InfoItemAddress
                 name="Owner"
                 value={
                     owner !== '' && owner !== constants.AddressZero
