@@ -30,6 +30,12 @@ function getMousePos(
     return { x: Math.floor(x), y: Math.floor(y) };
 }
 
+function defaultImage(): HTMLImageElement {
+    const img = new Image()
+    img.src = 'https://merge-nft.s3.us-west-2.amazonaws.com/canvas.png'
+    return img
+}
+
 const PixelCanvas: NextPage = (props) => {
     const {
         canvasRef,
@@ -48,7 +54,15 @@ const PixelCanvas: NextPage = (props) => {
 
     const [prevCoord, setPrevCoord] = useState<XYCoordinates>({ x: 0, y: 0 });
 
+    const canvasBackgroundRef = useRef<HTMLImageElement[]>([defaultImage(), defaultImage()])
+    const canvasBackgroundAltRef = useRef<number>(0)
+
     const halfSize = CANVAS_DIMENSION / 2;
+
+    // useEffect(() => {
+    //     const idx = canvasBackgroundAltRef.alt[0]
+    //     canvasBackgroundRef.current[].src = `https://merge-nft.s3.us-west-2.amazonaws.com/canvas.png?${Date.now()}`
+    // }, [])
 
     useEffect(() => {
         if (canvasRef.current) {
@@ -157,7 +171,7 @@ const PixelCanvas: NextPage = (props) => {
     );
 
     return (
-        <div className={`z-0 w-full`}>
+        <div className="z-0 w-full">
             <canvas
                 ref={canvasRef}
                 onMouseDown={onMouseDown}
@@ -172,7 +186,7 @@ const PixelCanvas: NextPage = (props) => {
                     // opacity: canvasIsEditable ? 1 : 0.5,
                     opacity: 1,
                     backgroundImage:
-                        `url(https://merge-nft.s3.us-west-2.amazonaws.com/canvas.png?${Date.now()})`,
+                        `url(https://merge-nft.s3.us-west-2.amazonaws.com/canvas.png)`,
                 }}
             />
             <PixelChangeListener canvasRef={canvasRef} />
