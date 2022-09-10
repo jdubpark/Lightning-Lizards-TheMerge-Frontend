@@ -73,7 +73,7 @@ const PixelCanvas: NextPage = (props) => {
                 // }
             });
 
-            canvas.zoomAbs(halfSize, halfSize, 100);
+            canvas.zoomAbs(halfSize, halfSize, 1);
             setCanvasPanZoom(canvas);
 
             return () => {

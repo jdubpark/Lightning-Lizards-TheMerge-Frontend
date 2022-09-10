@@ -75,12 +75,10 @@ export const MintButton = () => {
                     // )
                 );
 
-            console.log('bid...', bid);
             const txChangeColor = await signer.sendTransaction({
                 ...unsignedTx,
-                value: ethers.utils.parseEther(bid).toString(),
+                value: ethers.utils.parseEther(bid || '0').toString(),
             });
-            console.log('next...');
             setWaitingForTxConfirmation(true);
             console.log(txChangeColor);
             await txChangeColor.wait();
@@ -108,7 +106,10 @@ export const MintButton = () => {
                         placeholder="(Optional) Bid for pixel in eth"
                         value={bid}
                         onChange={(e) => {
-                            if (!Number.isNaN(e.target.value)) {
+                            if (
+                                !Number.isNaN(e.target.value) &&
+                                Number(e.target.value) >= 0
+                            ) {
                                 setBid(e.target.value);
                             }
                         }}
