@@ -108,4 +108,4 @@ export const usePixelCanvasContext = (): PixelCanvasContextInterface => {
     return context;
 };
 
-export const CANVAS_DIMENSION = 600;
+export const CANVAS_DIMENSION = 500;

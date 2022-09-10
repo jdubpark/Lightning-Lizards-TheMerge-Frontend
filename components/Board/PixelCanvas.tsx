@@ -165,11 +165,12 @@ const PixelCanvas: NextPage = (props) => {
                 height={CANVAS_DIMENSION}
                 width={CANVAS_DIMENSION}
                 style={{
-                    cursor: 'crosshair',
+                    cursor: canvasIsEditable ? 'crosshair' : 'cursor',
                     imageRendering: 'pixelated',
                     // height: CANVAS_DIMENSION,
                     // width: CANVAS_DIMENSION,
-                    opacity: canvasIsEditable ? 1 : 0.5,
+                    // opacity: canvasIsEditable ? 1 : 0.5,
+                    opacity: 1,
                     backgroundImage:
                         'url(https://merge-nft.s3.us-west-2.amazonaws.com/canvas.png)',
                 }}
