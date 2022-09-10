@@ -30,12 +30,6 @@ function getMousePos(
     return { x: Math.floor(x), y: Math.floor(y) };
 }
 
-function defaultImage(): HTMLImageElement {
-    const img = new Image()
-    img.src = 'https://merge-nft.s3.us-west-2.amazonaws.com/canvas.png'
-    return img
-}
-
 const PixelCanvas: NextPage = (props) => {
     const {
         canvasRef,
@@ -53,9 +47,6 @@ const PixelCanvas: NextPage = (props) => {
     const [canvasPanZoom, setCanvasPanZoom] = useState<PanZoom | null>(null);
 
     const [prevCoord, setPrevCoord] = useState<XYCoordinates>({ x: 0, y: 0 });
-
-    const canvasBackgroundRef = useRef<HTMLImageElement[]>([defaultImage(), defaultImage()])
-    const canvasBackgroundAltRef = useRef<number>(0)
 
     const halfSize = CANVAS_DIMENSION / 2;
 
@@ -185,8 +176,7 @@ const PixelCanvas: NextPage = (props) => {
                     // width: CANVAS_DIMENSION,
                     // opacity: canvasIsEditable ? 1 : 0.5,
                     opacity: 1,
-                    backgroundImage:
-                        `url(https://merge-nft.s3.us-west-2.amazonaws.com/canvas.png)`,
+                    backgroundImage: `url(https://merge-nft.s3.us-west-2.amazonaws.com/canvas.png)`,
                 }}
             />
             <PixelChangeListener canvasRef={canvasRef} />
