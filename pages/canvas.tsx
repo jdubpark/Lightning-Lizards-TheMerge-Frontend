@@ -60,7 +60,7 @@ const Home: NextPage = () => {
                                     width="32px"
                                     layout="fixed"
                                 />
-                                <div className="text-2xl font-bold text-stone-100">
+                                <div className="text-2xl font-bold text-eth-gray">
                                     <Link href="/">
                                         <a>The Merge Mosaic</a>
                                     </Link>
