@@ -1,4 +1,4 @@
-import { ethers } from 'ethers';
+import {BigNumber, BigNumberish, ethers} from 'ethers';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { RgbColor } from 'react-colorful';
 import {
@@ -23,7 +23,7 @@ const SelectedPixelsListItem: FC<SelectedPixelsListItemProps> = ({
     const { canvasRef, selectedPixelsList, setSelectedPixelsList, drawPixel } =
         usePixelCanvasContext();
 
-    const deleteSelectedPixelHandler = (index: number) => {
+    const deleteSelectedPixelHandler = useCallback((index: number) => {
         const canvas = canvasRef.current;
         if (!canvas) return;
         const selectedPixel = selectedPixelsList[index];
@@ -46,12 +46,34 @@ const SelectedPixelsListItem: FC<SelectedPixelsListItemProps> = ({
                 }
             );
         });
-    };
+    }, [canvasRef, drawPixel, selectedPixelsList, setSelectedPixelsList])
 
     const textColor =
         color.r * 0.299 + color.g * 0.587 + color.b * 0.114 > 186
             ? '#000000'
             : '#ffffff';
+
+    const [inputValue, setInputValue] = useState<BigNumberish>(ethers.utils.formatEther(
+        selectedPixelsList[index].minPrice
+    ))
+
+    const onInputChange = useCallback((e: any) => {
+        if (Number.isNaN(e.target.value)) return
+        let value
+        if (Number(e.target.value) <= selectedPixelsList[index].minPrice.toNumber()) {
+            value = selectedPixelsList[index].minPrice
+        } else {
+            value = ethers.utils.parseEther(e.target.value)
+        }
+        setInputValue(value)
+    }, [])
+
+    useEffect(() => {
+        const bn = BigNumber.from(inputValue)
+        if (selectedPixelsList[index].price === bn) return
+        selectedPixelsList[index].price = bn
+        setSelectedPixelsList(selectedPixelsList);
+    }, [index, inputValue, selectedPixelsList, setSelectedPixelsList])
 
     return (
         <div
@@ -81,25 +103,8 @@ const SelectedPixelsListItem: FC<SelectedPixelsListItemProps> = ({
                 <label>Bid: </label>
                 <input
                     type="number"
-                    value={ethers.utils.formatEther(
-                        selectedPixelsList[index].price
-                    )}
-                    onChange={(e) => {
-                        try {
-                            if (!Number.isNaN(e.target.value)) {
-                                const newSelectedPixelsList = [
-                                    ...selectedPixelsList,
-                                ];
-                                newSelectedPixelsList[index].price =
-                                    ethers.utils.parseEther(e.target.value);
-                                setSelectedPixelsList([
-                                    ...newSelectedPixelsList,
-                                ]);
-                            }
-                        } catch (error) {
-                            console.log(error);
-                        }
-                    }}
+                    value={inputValue.toString()}
+                    onChange={onInputChange}
                     className="border-2 border-black w-full"
                 />
             </div>
