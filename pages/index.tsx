@@ -40,19 +40,19 @@ const InfoSection: FC = () => {
     return (
         <div className="flex flex-row justify-center py-20 mx-auto max-w-[85%]">
             <p className="text-2xl md:text-4xl font-bold max-w-[1000px]">
-                Become part of the history of the blockchain when you color a
-                pixel on this Mosaic
+                Be the history of Ethereum with your on-chain pixel of Mosaic! 🦄
                 <br />
                 <br />
-                You get to draw on the canvas in ETH 1.0, up to the Merge moment
-                and be one of the last people who writes into the old chain
+                Draw on the Mosaic Canvas up to the Merge TTD, when your pixels
+                become permanent in the old chain. Be the last one to write
+                into the old chain!.
                 <br />
-                Then, you can mint an NFT of the pixels you own in the Mosaic as
-                soon as the Merge happens and be one of the first ETH-ers to
-                have an NFT on ETH 2.0
+                Unleash your artsy inner self and mint an NFT of your Mosaic pixels!
+                Be the first ETH-ers to have an NFT on ETH 2.0 that represents the
+                history.
                 <br />
                 <br />
-                Showcase your community spirit, support the ETH, and get a proof
+                Showcase your community spirit, support the ETH, and own a proof
                 you were part of the historical moment of ETH Merge!
                 <br />
                 <br />
