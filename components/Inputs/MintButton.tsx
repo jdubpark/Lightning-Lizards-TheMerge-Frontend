@@ -70,7 +70,7 @@ export const MintButton = () => {
             let fnName = ''
 
             if (selectedPixelsList.length > 1) {
-                fnName = 'changePixelColor'
+                fnName = 'changePixelsColor'
                 params = [
                     selectedPixelsList.map((item) => item.coordinates.x),
                     selectedPixelsList.map((item) => item.coordinates.y),
@@ -84,7 +84,7 @@ export const MintButton = () => {
                     selectedPixelsList.map((item) => item.price)
                 ]
             } else {
-                fnName = 'changePixelsColor'
+                fnName = 'changePixelColor'
                 params = [
                     selectedCoordinates.x,
                     selectedCoordinates.y,

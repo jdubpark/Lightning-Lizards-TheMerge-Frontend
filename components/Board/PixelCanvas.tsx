@@ -220,7 +220,7 @@ const PixelCanvas: NextPage = (props) => {
             id="canvas-container"
             className="z-0 w-full flex flex-row items-start"
         >
-            <div className="flex-grow">
+            <div className="flex-grow outline-0 hover:outline-0 focus:outline-0">
                 <canvas
                     ref={canvasRef}
                     onMouseDown={onMouseDown}
