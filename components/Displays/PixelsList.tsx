@@ -64,13 +64,6 @@ const SelectedPixelsListItem: FC<SelectedPixelsListItemProps> = ({
         selectedPixelsList[index].minPrice
     );
 
-    useEffect(() => {
-        const bn = BigNumber.from(ethers.utils.formatEther(inputValue));
-        if (selectedPixelsList[index].price === bn) return;
-        selectedPixelsList[index].price = bn;
-        setSelectedPixelsList(selectedPixelsList);
-    }, [index, inputValue, selectedPixelsList, setSelectedPixelsList]);
-
     return (
         <div key={index} className="flex flex-col gap-y-2">
             <div

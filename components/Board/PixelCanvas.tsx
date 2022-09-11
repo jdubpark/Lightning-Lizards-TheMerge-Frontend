@@ -127,7 +127,6 @@ const PixelCanvas: NextPage = (props) => {
             const diffY = Math.abs(prevCoord.y - newCoord.y) * scale;
             const delta = 100; // 100 is a good number from trial and error
 
-            console.log(diffX, diffY, delta, scale);
             if (diffX < delta && diffY < delta) {
                 // is a click!
 
