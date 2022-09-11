@@ -40,16 +40,18 @@ const InfoSection: FC = () => {
     return (
         <div className="flex flex-row justify-center py-20 mx-auto max-w-[85%]">
             <p className="text-2xl md:text-4xl font-bold max-w-[1000px]">
-                Be the history of Ethereum with your on-chain pixel of Mosaic! 🦄
+                Be the history of Ethereum with your on-chain pixel of Mosaic!
+                🦄
                 <br />
                 <br />
                 Draw on the Mosaic Canvas up to the Merge TTD, when your pixels
-                become permanent in the old chain. Be the last one to write
-                into the old chain!.
+                become permanent in the old chain. Be the last one to write into
+                the old chain!
                 <br />
-                Unleash your artsy inner self and mint an NFT of your Mosaic pixels!
-                Be the first ETH-ers to have an NFT on ETH 2.0 that represents the
-                history.
+                <br />
+                Unleash your artsy inner self and mint an NFT of your Mosaic
+                pixels! Be the first ETH-ers to have an NFT on ETH 2.0 that
+                represents the history.
                 <br />
                 <br />
                 Showcase your community spirit, support the ETH, and own a proof
@@ -80,7 +82,7 @@ const Home: NextPage = () => {
             </noscript>
             <div>
                 <Head>
-                    <title className="text-eth-gray">The Merge Canvas</title>
+                    <title className="text-eth-gray">The Merge Mosaic</title>
                     <meta
                         name="description"
                         content="Own a Piece of Blockchain History By Contributing to this Hybrid NFT! Made with love by OutlierDAO"

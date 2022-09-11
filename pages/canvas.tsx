@@ -5,6 +5,8 @@ import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { Board } from '../components/Board';
 import PixelCanvasContextProvider from '../contexts/PixelCanvasContext';
 import { BrowserCheck } from '../components/Displays/BrowserWarning';
+import Image from 'next/image';
+import Link from 'next/link';
 
 function Header({ children }: { children: JSX.Element | JSX.Element[] }) {
     return (
@@ -39,7 +41,7 @@ const Home: NextPage = () => {
             </noscript>
             <div className="flex flex-col h-screen bg-stone-200 z-0 overflow-hidden">
                 <Head>
-                    <title className="text-eth-gray">The Merge Canvas</title>
+                    <title className="text-eth-gray">The Merge Mosaic</title>
                     <meta
                         name="description"
                         content="Own a Piece of Blockchain History By Contributing to this Hybrid NFT! Made with love by OutlierDAO"
@@ -50,16 +52,18 @@ const Home: NextPage = () => {
                 <Header>
                     <nav className="w-full">
                         <div className="flex flex-row width-clamp justify-center md:justify-between items-center">
-                            <div className="flex space-x-4 items-center">
-                                <div>
-                                    <img
-                                        src="https://merge-nft.s3.us-west-2.amazonaws.com/canvas.png"
-                                        alt=""
-                                        className="h-8 w-8"
-                                    />
-                                </div>
-                                <div className="text-2xl font-bold text-eth-gray">
-                                    The Merge Canvas
+                            <div className="flex flex-row space-x-4 items-center">
+                                <Image
+                                    src="https://merge-nft.s3.us-west-2.amazonaws.com/canvas.png"
+                                    alt=""
+                                    height="32px"
+                                    width="32px"
+                                    layout="fixed"
+                                />
+                                <div className="text-2xl font-bold text-stone-100">
+                                    <Link href="/">
+                                        <a>The Merge Mosaic</a>
+                                    </Link>
                                 </div>
                             </div>
                             <div className="hidden md:block text-lg">
