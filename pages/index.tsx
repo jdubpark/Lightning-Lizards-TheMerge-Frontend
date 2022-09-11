@@ -92,7 +92,7 @@ const Home: NextPage = () => {
                     <InfoSection />
                     <Footer>
                         <div className="text-eth-gray">
-                            The Merge Canvas built with ⚡ by{' '}
+                            The Merge Mosaic built with ⚡ by{' '}
                             <Link href="https://twitter.com/outlierdao">
                                 <a>Outliers</a>
                             </Link>
