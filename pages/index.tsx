@@ -40,18 +40,17 @@ const InfoSection: FC = () => {
     return (
         <div className="flex flex-row justify-center py-20 mx-auto max-w-[85%]">
             <p className="text-2xl md:text-4xl font-bold max-w-[1000px]">
-                Be the history of Ethereum with your on-chain pixel of Mosaic!
-                🦄
+                Be a part of the historic Ethereum merge with your on-chain
+                pixel of Mosaic! 🦄
                 <br />
                 <br />
-                Draw on the Mosaic Canvas up to the Merge TTD, when your pixels
-                become permanent. Be the last one to write into the old Ethereum state!
+                Draw on the Mosaic up to the Merge TTD, when your pixels become
+                permanent in the old chain, you will be one of the last ones to
+                write into the old chain!
                 <br />
                 <br />
                 Win a pixel before the Merge by painting over others or bidding
-                ETH to show your zeal! Minimum bid is 0.001 ETH and the new
-                bid amount is sent to the previous owner. So you earn money
-                if you lose your beloved pixels! Get in early!
+                ETH to show your zeal!
                 <br />
                 <br />
                 Unleash your artsy inner self and mint an NFT of your Mosaic
@@ -65,6 +64,51 @@ const InfoSection: FC = () => {
                 <br />
                 PS: Pixels are free for grab and you can gain ETH from the next
                 person bidding 😉
+                <br />
+                #LGTM - Let’s get the merge
+                <br />
+                <br />
+                <br />
+                <h3 className="text-eth-gold">
+                    How on earth does this even work?
+                </h3>
+                <br />
+                <div className="[&>*]:mb-6">
+                    <p> We give you a large canvas</p>
+                    <p> Connect your wallet 🦊</p>
+                    <p>
+                        Choose upto 500 pixels anywhere on the canvas for free
+                    </p>
+
+                    <p>
+                        You can draw on someone else’s pixel - pay them and
+                        overwrite their work (minimum bid is 0.001ETH) 😛
+                    </p>
+
+                    <p>
+                        Post the merge you would get a fully on chain NFT on ETH
+                        2.0 of the art you made on the canvas making you one of
+                        the first people to have an NFT on ETH 2.0
+                    </p>
+                    <p>
+                        Get your community together and draw out what you stand
+                        for. Go crazy 🤪
+                    </p>
+                    <p>
+                        P.S: We’ve optimized the code so much so it won't cost
+                        you more than a couple of bucks to edit pixels 💸
+                    </p>
+                </div>
+                <br />
+                <br />
+                <h3 className=" text-eth-gold">Who tf are we?</h3>
+                <br />
+                OutlierDAO is a community of student builders passionate about
+                web3. Our mission is to connect, educate and empower the top
+                web3 builders of the world who would offer open,
+                censorship-resistant, and sustainable tech for the future. The
+                DAO is mentored and backed by thought leaders from Floodgate and
+                Standard Crypto.
             </p>
         </div>
     );
