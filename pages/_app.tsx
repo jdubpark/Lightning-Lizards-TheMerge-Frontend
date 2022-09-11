@@ -66,20 +66,21 @@ const lightTheme: Theme = {
 
 function MyApp({ Component, pageProps }: AppProps) {
     return (
-        <>
-            <PlausibleProvider domain="mergemosaic.xyz" trackLocalhost={true}>
-                <WagmiConfig client={wagmiClient}>
-                    <RainbowKitProvider
-                        chains={chains}
-                        theme={lightTheme}
-                        modalSize="compact"
-                        showRecentTransactions
-                    >
-                        <Component {...pageProps} />
-                    </RainbowKitProvider>
-                </WagmiConfig>
-            </PlausibleProvider>
-        </>
+        <PlausibleProvider
+            domain={process.env.NEXT_PUBLIC_PLAUISBLE_DOMAN!}
+            trackLocalhost={true}
+        >
+            <WagmiConfig client={wagmiClient}>
+                <RainbowKitProvider
+                    chains={chains}
+                    theme={lightTheme}
+                    modalSize="compact"
+                    showRecentTransactions
+                >
+                    <Component {...pageProps} />
+                </RainbowKitProvider>
+            </WagmiConfig>
+        </PlausibleProvider>
     );
 }
 
