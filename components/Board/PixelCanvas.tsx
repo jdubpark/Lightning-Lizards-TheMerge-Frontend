@@ -49,7 +49,7 @@ const PixelCanvas: NextPage = (props) => {
     } = usePixelCanvasContext();
 
     // updates only on first render, used as force cache
-    const timeRef = useRef<number>(Date.now());
+    const timeRef = useRef<number>(Date.now())
 
     const [canvasPanZoom, setCanvasPanZoom] = useState<PanZoom | null>(null);
 
@@ -79,8 +79,7 @@ const PixelCanvas: NextPage = (props) => {
                 // }
             });
 
-            canvas.zoomAbs(halfSize, halfSize, 5);
-            canvas.moveTo(-halfSize, -halfSize);
+            canvas.zoomAbs(halfSize, halfSize, 50);
             setCanvasPanZoom(canvas);
 
             return () => {
@@ -237,8 +236,7 @@ const PixelCanvas: NextPage = (props) => {
                         // width: CANVAS_DIMENSION,
                         // opacity: canvasIsEditable ? 1 : 0.5,
                         backgroundImage: waitingForTxConfirmation
-                            ? ''
-                            : `url(https://merge-nft.s3.us-west-2.amazonaws.com/canvas.png?${timeRef.current})`,
+                            ? '' : `url(https://merge-nft.s3.us-west-2.amazonaws.com/canvas.png?${timeRef.current})`,
                         // backgroundImage: waitingForTxConfirmation
                         //     ? ``
                         //     : `${

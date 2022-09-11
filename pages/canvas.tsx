@@ -5,13 +5,11 @@ import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { Board } from '../components/Board';
 import PixelCanvasContextProvider from '../contexts/PixelCanvasContext';
 import { BrowserCheck } from '../components/Displays/BrowserWarning';
-import Image from 'next/image';
-import Link from 'next/link';
 
 function Header({ children }: { children: JSX.Element | JSX.Element[] }) {
     return (
         <header
-            className="sticky inset-x-0 top-0 w-screen backdrop-filter backdrop-blur-3xl bg-neutral-900 border-b border-white shadow z-[9980]"
+            className="sticky inset-x-0 top-0 w-screen backdrop-filter backdrop-blur-3xl bg-white/30 dark:bg-black/30 shadow z-[9980]"
             style={{
                 boxShadow: '0 0 20px 1px rgba(30,30,30,0.2)',
                 zIndex: 9980,
@@ -39,7 +37,7 @@ const Home: NextPage = () => {
                     style={{ display: 'none', visibility: 'hidden' }}
                 ></iframe>
             </noscript>
-            <div className="flex flex-col h-screen bg-neutral-900 z-0 overflow-hidden">
+            <div className="flex flex-col h-screen bg-stone-200 z-0 overflow-hidden">
                 <Head>
                     <title className="text-eth-gray">The Merge Mosaic</title>
                     <meta
@@ -52,6 +50,7 @@ const Home: NextPage = () => {
                 <Header>
                     <nav className="w-full">
                         <div className="flex flex-row width-clamp justify-center md:justify-between items-center">
+<<<<<<< HEAD
                             <div className="flex flex-row space-x-4 items-center">
                                 <Image
                                     src="https://merge-nft.s3.us-west-2.amazonaws.com/canvas.png"
@@ -64,6 +63,18 @@ const Home: NextPage = () => {
                                     <Link href="/">
                                         <a>The Merge Mosaic</a>
                                     </Link>
+=======
+                            <div className="flex space-x-4 items-center">
+                                <div>
+                                    <img
+                                        src="https://merge-nft.s3.us-west-2.amazonaws.com/canvas.png"
+                                        alt=""
+                                        className="h-8 w-8"
+                                    />
+                                </div>
+                                <div className="text-2xl font-bold text-eth-gray">
+                                    The Merge Canvas
+>>>>>>> parent of 8dfa0ed (Dark theme)
                                 </div>
                             </div>
                             <div className="hidden md:block text-lg">

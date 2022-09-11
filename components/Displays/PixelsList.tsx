@@ -202,7 +202,7 @@ export const PixelsList: FC = () => {
             {showPopup && (
                 <div className="absolute top-0 bottom-0 left-0 right-0 backdrop-blur flex flex-row justify-center items-center z-[9990]">
                     <div
-                        className="bg-white border border-black px-20 pt-10 pb-10 rounded-lg width-clamp min-w-[500px]"
+                        className="bg-white px-20 pt-10 pb-10 rounded-lg width-clamp min-w-[500px]"
                         style={{ marginTop: '72px' }}
                     >
                         <div className="flex flex-row items-start justify-between">

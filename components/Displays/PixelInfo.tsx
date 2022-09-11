@@ -75,8 +75,8 @@ export function PixelInfoSection({
         <div
             onClick={onClick}
             className={clsx(
-                'bg-white border border-black rounded-lg shadow-xl overflow-hidden flex-none',
-                compact ? 'py-3 px-6' : 'py-3 px-6',
+                'bg-white rounded-lg shadow-xl overflow-hidden flex-none',
+                compact ? 'py-3 px-6' : 'py-4 px-6',
                 isDisabled
                     ? 'pointer-events-none hidden'
                     : 'pointer-events-auto',
