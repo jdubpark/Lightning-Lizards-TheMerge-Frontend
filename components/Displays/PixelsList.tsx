@@ -69,7 +69,7 @@ const SelectedPixelsListItem: FC<SelectedPixelsListItemProps> = ({
     }, [])
 
     useEffect(() => {
-        const bn = BigNumber.from(inputValue)
+        const bn = BigNumber.from(ethers.utils.parseEther(inputValue))
         if (selectedPixelsList[index].price === bn) return
         selectedPixelsList[index].price = bn
         setSelectedPixelsList(selectedPixelsList);
