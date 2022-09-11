@@ -41,7 +41,7 @@ const Home: NextPage = () => {
             </noscript>
             <div className="flex flex-col h-screen bg-neutral-900 z-0 overflow-hidden">
                 <Head>
-                    <title className="text-eth-gray">The Merge Canvas</title>
+                    <title className="text-eth-gray">The Merge Mosaic</title>
                     <meta
                         name="description"
                         content="Own a Piece of Blockchain History By Contributing to this Hybrid NFT! Made with love by OutlierDAO"
@@ -62,7 +62,7 @@ const Home: NextPage = () => {
                                 />
                                 <div className="text-2xl font-bold text-stone-100">
                                     <Link href="/">
-                                        <a>The Merge Canvas</a>
+                                        <a>The Merge Mosaic</a>
                                     </Link>
                                 </div>
                             </div>

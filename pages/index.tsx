@@ -82,7 +82,7 @@ const Home: NextPage = () => {
             </noscript>
             <div>
                 <Head>
-                    <title className="text-eth-gray">The Merge Canvas</title>
+                    <title className="text-eth-gray">The Merge Mosaic</title>
                     <meta
                         name="description"
                         content="Own a Piece of Blockchain History By Contributing to this Hybrid NFT! Made with love by OutlierDAO"
