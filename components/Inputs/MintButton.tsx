@@ -113,10 +113,10 @@ export const MintButton = () => {
             setWaitingForTxConfirmation(true);
             console.log(txChangeColor);
             await txChangeColor.wait();
-            setWaitingForTxConfirmation(false);
         } catch (error) {
             console.error(error);
         } finally {
+            setWaitingForTxConfirmation(false);
             setIsOwnButtonDisabled(false);
         }
     }, [

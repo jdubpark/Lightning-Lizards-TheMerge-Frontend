@@ -166,6 +166,60 @@
             "type": "event"
         },
         {
+            "anonymous": false,
+            "inputs": [
+                {
+                    "indexed": false,
+                    "internalType": "uint16",
+                    "name": "x",
+                    "type": "uint16"
+                },
+                {
+                    "indexed": false,
+                    "internalType": "uint16",
+                    "name": "y",
+                    "type": "uint16"
+                },
+                {
+                    "components": [
+                        {
+                            "internalType": "uint8",
+                            "name": "R",
+                            "type": "uint8"
+                        },
+                        {
+                            "internalType": "uint8",
+                            "name": "G",
+                            "type": "uint8"
+                        },
+                        {
+                            "internalType": "uint8",
+                            "name": "B",
+                            "type": "uint8"
+                        }
+                    ],
+                    "indexed": false,
+                    "internalType": "struct IMergeCanvas.RGB",
+                    "name": "new_color",
+                    "type": "tuple"
+                },
+                {
+                    "indexed": true,
+                    "internalType": "address",
+                    "name": "old_owner",
+                    "type": "address"
+                },
+                {
+                    "indexed": true,
+                    "internalType": "address",
+                    "name": "new_owner",
+                    "type": "address"
+                }
+            ],
+            "name": "PixelChangeFail",
+            "type": "event"
+        },
+        {
             "inputs": [],
             "name": "CANVAS_DIMENSION",
             "outputs": [
