@@ -50,9 +50,8 @@ const InfoSection: FC = () => {
                 <br />
                 Win a pixel before the Merge by painting over others or bidding
                 ETH to show your zeal! Minimum bid is 0.001 ETH and the new
-                pixel price is refunded to the previous owner. So previous pixel
-                are fully incentivized if they lose their beloved pixels! Get in
-                early!
+                bid amount is sent to the previous owner. So you earn money
+                if you lose your beloved pixels! Get in early!
                 <br />
                 <br />
                 Unleash your artsy inner self and mint an NFT of your Mosaic
