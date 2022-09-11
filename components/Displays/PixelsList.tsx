@@ -56,7 +56,7 @@ const SelectedPixelsListItem: FC<SelectedPixelsListItemProps> = ({
     return (
         <div
             key={index}
-            className="flex flex-col gap-y-2 justify-center text-center"
+            className="flex flex-col gap-y-2 justify-center text-center "
         >
             <div
                 className={`flex flex-col justify-center items-center w-full aspect-square border-4 border-black`}
@@ -80,6 +80,7 @@ const SelectedPixelsListItem: FC<SelectedPixelsListItemProps> = ({
             <div className="flex flex-row gap-x-2">
                 <label>Bid: </label>
                 <input
+                    type="number"
                     value={ethers.utils.formatEther(
                         selectedPixelsList[index].price
                     )}
@@ -228,7 +229,7 @@ export const PixelsList: FC = () => {
                                 Owned
                             </button>
                         </div>
-                        <div className="grid grid-cols-3 gap-x-10 gap-y-5 w-[500px] max-h-[420px] overflow-auto">
+                        <div className="grid grid-cols-2 gap-x-10 gap-y-5 w-[500px] max-h-[420px] overflow-auto">
                             {tab === PixelsListTab.SELECTED_PIXELS ? (
                                 <SelectedPixelsList />
                             ) : (

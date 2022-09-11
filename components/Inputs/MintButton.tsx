@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 import {
-    BigNumber,
+    BigNumber, BigNumberish,
     Contract,
 } from 'ethers';
 import { useEffect, useState, useCallback } from 'react';
@@ -10,7 +10,7 @@ import {
     useSigner,
     useContract,
 } from 'wagmi';
-import { MERGE_CANVAS_CONTRACT_ADDRESS } from '../../utils/constants';
+import {IS_PRODUCTION, MERGE_CANVAS_CONTRACT_ADDRESS} from '../../utils/constants';
 import MergeCanvasArtifact from '../../contracts/MergeCanvas.json';
 import { usePixelCanvasContext } from '../../contexts/PixelCanvasContext';
 import { PixelInfoSection } from '../Displays/PixelInfo';
@@ -65,45 +65,59 @@ export const MintButton = () => {
             setIsOwnButtonDisabled(true)
             // if (chain.id !== 5) await switchNetworkAsync(5);
             let unsignedTx;
+            let gasLimit: BigNumberish;
+            let params = []
+            let fnName = ''
+
             if (selectedPixelsList.length > 1) {
-                unsignedTx =
-                    await mergeCanvasContract.populateTransaction.changePixelsColor(
-                        selectedPixelsList.map((item) => item.coordinates.x),
-                        selectedPixelsList.map((item) => item.coordinates.y),
-                        selectedPixelsList.map((item) => {
-                            return {
-                                R: BigNumber.from(item.color.r),
-                                G: BigNumber.from(item.color.g),
-                                B: BigNumber.from(item.color.b),
-                            };
-                        }),
-                        selectedPixelsList.map((item) => item.price)
-                    );
+                fnName = 'changePixelsColor'
+                params = [
+                    selectedPixelsList.map((item) => item.coordinates.x),
+                    selectedPixelsList.map((item) => item.coordinates.y),
+                    selectedPixelsList.map((item) => {
+                        return {
+                            R: BigNumber.from(item.color.r),
+                            G: BigNumber.from(item.color.g),
+                            B: BigNumber.from(item.color.b),
+                        };
+                    }),
+                    selectedPixelsList.map((item) => item.price)
+                ]
             } else {
-                unsignedTx =
-                    await mergeCanvasContract.populateTransaction.changePixelColor(
-                        selectedCoordinates.x,
-                        selectedCoordinates.y,
-                        {
-                            R: BigNumber.from(selectedColor.r),
-                            G: BigNumber.from(selectedColor.g),
-                            B: BigNumber.from(selectedColor.b),
-                        }
-                    );
+                fnName = 'changePixelColor'
+                params = [
+                    selectedCoordinates.x,
+                    selectedCoordinates.y,
+                    {
+                        R: BigNumber.from(selectedColor.r),
+                        G: BigNumber.from(selectedColor.g),
+                        B: BigNumber.from(selectedColor.b),
+                    }
+                ]
             }
 
+            unsignedTx = await mergeCanvasContract.populateTransaction[fnName](...params);
+            try {
+                gasLimit = await mergeCanvasContract.estimateGas[fnName](...params);
+            } catch {
+                gasLimit = BigNumber.from(300000).mul(selectedPixelsList.length)
+            }
+
+            console.log('Gas limit', gasLimit.toString())
             const txChangeColor = await signer.sendTransaction({
                 ...unsignedTx,
                 value: getTotalPrice(selectedPixelsList).toString(),
+                ...(IS_PRODUCTION ? {} : { gasLimit }),
             });
 
             setWaitingForTxConfirmation(true);
             console.log(txChangeColor);
             await txChangeColor.wait();
             setWaitingForTxConfirmation(false);
-            setIsOwnButtonDisabled(false);
         } catch (error) {
-            console.log(error);
+            console.error(error);
+        } finally {
+            setIsOwnButtonDisabled(false);
         }
     }, [
         signer,
