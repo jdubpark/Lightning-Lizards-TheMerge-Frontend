@@ -5,6 +5,8 @@ import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { Board } from '../components/Board';
 import PixelCanvasContextProvider from '../contexts/PixelCanvasContext';
 import { BrowserCheck } from '../components/Displays/BrowserWarning';
+import Link from "next/link";
+import Image from "next/image";
 
 function Header({ children }: { children: JSX.Element | JSX.Element[] }) {
     return (
@@ -50,7 +52,6 @@ const Home: NextPage = () => {
                 <Header>
                     <nav className="w-full">
                         <div className="flex flex-row width-clamp justify-center md:justify-between items-center">
-<<<<<<< HEAD
                             <div className="flex flex-row space-x-4 items-center">
                                 <Image
                                     src="https://merge-nft.s3.us-west-2.amazonaws.com/canvas.png"
@@ -63,18 +64,6 @@ const Home: NextPage = () => {
                                     <Link href="/">
                                         <a>The Merge Mosaic</a>
                                     </Link>
-=======
-                            <div className="flex space-x-4 items-center">
-                                <div>
-                                    <img
-                                        src="https://merge-nft.s3.us-west-2.amazonaws.com/canvas.png"
-                                        alt=""
-                                        className="h-8 w-8"
-                                    />
-                                </div>
-                                <div className="text-2xl font-bold text-eth-gray">
-                                    The Merge Canvas
->>>>>>> parent of 8dfa0ed (Dark theme)
                                 </div>
                             </div>
                             <div className="hidden md:block text-lg">
