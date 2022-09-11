@@ -4,6 +4,7 @@ import Head from 'next/head';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { Board } from '../components/Board';
 import PixelCanvasContextProvider from '../contexts/PixelCanvasContext';
+import { BrowserCheck } from '../components/Displays/BrowserWarning';
 
 function Header({ children }: { children: JSX.Element | JSX.Element[] }) {
     return (
@@ -28,8 +29,14 @@ function Footer({ children }: { children: JSX.Element | JSX.Element[] }) {
 const Home: NextPage = () => {
     return (
         <>
-            <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-K9JCT38"
-                              height="0" width="0" style={{ display: 'none', visibility: 'hidden' }}></iframe></noscript>
+            <noscript>
+                <iframe
+                    src="https://www.googletagmanager.com/ns.html?id=GTM-K9JCT38"
+                    height="0"
+                    width="0"
+                    style={{ display: 'none', visibility: 'hidden' }}
+                ></iframe>
+            </noscript>
             <div className="flex flex-col h-screen bg-stone-200 z-0 overflow-hidden">
                 <Head>
                     <title className="text-eth-gray">The Merge Canvas</title>
@@ -39,14 +46,21 @@ const Home: NextPage = () => {
                     />
                     <link rel="icon" href="/favicon.ico" />
                 </Head>
+                <BrowserCheck />
                 <Header>
                     <nav className="w-full">
                         <div className="flex flex-row width-clamp justify-between items-center">
                             <div className="flex space-x-4 items-center">
                                 <div>
-                                    <img src="https://merge-nft.s3.us-west-2.amazonaws.com/canvas.png" alt="" className="h-8 w-8" />
+                                    <img
+                                        src="https://merge-nft.s3.us-west-2.amazonaws.com/canvas.png"
+                                        alt=""
+                                        className="h-8 w-8"
+                                    />
                                 </div>
-                                <div className="text-2xl font-bold text-eth-gray">The Merge Canvas</div>
+                                <div className="text-2xl font-bold text-eth-gray">
+                                    The Merge Canvas
+                                </div>
                             </div>
                             <div className="text-lg">
                                 <ConnectButton
