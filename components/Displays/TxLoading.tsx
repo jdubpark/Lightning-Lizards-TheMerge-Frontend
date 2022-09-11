@@ -26,7 +26,7 @@ export const TxLoading: FC = () => {
 
     return (
         <div className="absolute top-0 left-0 right-0 bottom-0 z-50 backdrop-blur flex flex-row justify-center items-center">
-            <div className="bg-white px-20 py-10 rounded-lg">
+            <div className="bg-white border border-black px-20 py-10 rounded-lg">
                 <p className="text-2xl font-semibold whitespace-pre text-center">
                     {waitingForTxConfirmation
                         ? 'Waiting for Transaction Confirmation...'
