@@ -68,7 +68,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     return (
         <PlausibleProvider
             domain={process.env.NEXT_PUBLIC_PLAUISBLE_DOMAN!}
-            trackLocalhost={true}
+            trackLocalhost={false}
         >
             <WagmiConfig client={wagmiClient}>
                 <RainbowKitProvider
