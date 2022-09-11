@@ -200,7 +200,7 @@
                     ],
                     "indexed": false,
                     "internalType": "struct IMergeCanvas.RGB",
-                    "name": "old_color",
+                    "name": "new_color",
                     "type": "tuple"
                 },
                 {
@@ -210,13 +210,13 @@
                     "type": "address"
                 },
                 {
-                    "indexed": false,
-                    "internalType": "uint256",
-                    "name": "old_price",
-                    "type": "uint256"
+                    "indexed": true,
+                    "internalType": "address",
+                    "name": "new_owner",
+                    "type": "address"
                 }
             ],
-            "name": "PixelChangePrior",
+            "name": "PixelChangeFail",
             "type": "event"
         },
         {

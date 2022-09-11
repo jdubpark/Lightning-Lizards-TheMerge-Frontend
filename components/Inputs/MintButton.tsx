@@ -121,10 +121,10 @@ export const MintButton = () => {
             } catch (error) {
                 console.log({ error });
             }
-            setWaitingForTxConfirmation(false);
         } catch (error) {
             console.error(error);
         } finally {
+            setWaitingForTxConfirmation(false);
             setIsOwnButtonDisabled(false);
         }
     }, [
