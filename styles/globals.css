@@ -111,3 +111,20 @@
     --small-margin-x-offset: 5rem;
     --margin-x-offset: 15rem;
 }
+
+::-webkit-scrollbar-track {
+    border-radius: 0.125rem;
+    background-color: #e3e3e3;
+    height: 0.5rem;
+    margin: 0px 10px;
+}
+::-webkit-scrollbar {
+    width: 0.5rem;
+    border-radius: 0.125rem;
+    height: 0.5rem;
+}
+::-webkit-scrollbar-thumb {
+    border-radius: 0.2rem;
+    background-color: #737373;
+    height: 0.4rem;
+}

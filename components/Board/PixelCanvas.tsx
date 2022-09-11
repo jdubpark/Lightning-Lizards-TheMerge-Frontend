@@ -76,7 +76,7 @@ const PixelCanvas: NextPage = (props) => {
                 // }
             });
 
-            canvas.zoomAbs(halfSize, halfSize, 1);
+            canvas.zoomAbs(halfSize, halfSize, 50);
             setCanvasPanZoom(canvas);
 
             return () => {
@@ -127,7 +127,6 @@ const PixelCanvas: NextPage = (props) => {
             const diffY = Math.abs(prevCoord.y - newCoord.y) * scale;
             const delta = 100; // 100 is a good number from trial and error
 
-            console.log(diffX, diffY, delta, scale);
             if (diffX < delta && diffY < delta) {
                 // is a click!
 
@@ -220,7 +219,7 @@ const PixelCanvas: NextPage = (props) => {
             id="canvas-container"
             className="z-0 w-full flex flex-row items-start"
         >
-            <div className="flex-grow outline-0 hover:outline-0 focus:outline-0">
+            <div className="flex-grow outline-0 hover:outline-0 focus:outline-0 w-[0px]">
                 <canvas
                     ref={canvasRef}
                     onMouseDown={onMouseDown}
@@ -237,7 +236,7 @@ const PixelCanvas: NextPage = (props) => {
                             ? ``
                             : `${
                                   canvasIsEditable
-                                      ? 'linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), '
+                                      ? 'linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), '
                                       : ''
                               }url(https://merge-nft.s3.us-west-2.amazonaws.com/canvas.png)`,
                     }}
