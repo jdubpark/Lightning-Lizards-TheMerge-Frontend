@@ -7,6 +7,7 @@ import { useEffect, useRef } from 'react';
 import { Board } from '../components/Board';
 import PixelCanvasContextProvider from '../contexts/PixelCanvasContext';
 import canvas from '../public/canvas2.png';
+import { LunchButton } from '../components/Inputs/LunchAppButton';
 
 function Header({ children }: { children: JSX.Element | JSX.Element[] }) {
     return (
@@ -31,7 +32,7 @@ export function topImage() {
             <div className="flex flex-col justify-center items-center h-screen">
                 <div className="flex flex-row justify-center items-center border-4 bg-black border-black ">
                     <div className="text-7xl font-bold text-white mar">
-                        The Merge Canvas
+                        The Merge Mosaic
                     </div>
                 </div>
                 <div className="flex flex-row justify-center items-center border-4 bg-black border-black ">
@@ -39,6 +40,7 @@ export function topImage() {
                         A Collective Canvas for the ETH Merge
                     </div>
                 </div>
+                <LunchButton />
             </div>
         </div>
     );
@@ -49,14 +51,25 @@ const Intro: NextPage = () => {
         return (
             <div className="flex flex-col justify-center h-screen">
                 <div className="flex flex-col gap-y-10">
-                    <div className="text-5xl font-bold text-black mar">
+                    <div className="text-3xl font-bold text-black mar">
                         Own a Piece of Blockchain History By Contributing to
-                        this Hybrid NFT Where Users Can Draw on the Canvas in
-                        ETH 1.0 Up to the Merge and Become One of the Firsts to
-                        Mint an NFT in ETH 2.0
+                        This Hybrid NFT
+                    </div>
+                    <div className="text-3xl font-bold text-black mar">
+                        Users Can Draw on the Canvas in ETH 1.0 Up to the Merge
+                        Moment. You Can Mint an NFT of the Pixels you have
+                        contibted to the Mosaic as Soon as the Merge Happens and
+                        Be and Become One of the Firsts to an NFT on ETH 2.0
                     </div>
 
-                    <div className="text-5xl font-bold text-black mar">
+                    <div className="text-3xl font-bold text-black mar">
+                        Users Can Draw on the Canvas in ETH 1.0 Up to the Merge
+                        Moment. You Can Mint an NFT of the Pixels you have
+                        contibted to the Mosaic as Soon as the Merge Happens and
+                        Be and Become One of the Firsts to an NFT on ETH 2.0
+                    </div>
+
+                    <div className="text-3xl font-bold text-black mar">
                         Showcase Your Community Spirit, Support the ETH, and Get
                         a Proof You Were Part of the historical Moment of ETH
                         Merge
