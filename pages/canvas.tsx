@@ -5,8 +5,9 @@ import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { Board } from '../components/Board';
 import PixelCanvasContextProvider from '../contexts/PixelCanvasContext';
 import { BrowserCheck } from '../components/Displays/BrowserWarning';
-import Link from "next/link";
-import Image from "next/image";
+import Link from 'next/link';
+import Image from 'next/image';
+import { BasicNotfication } from '../components/Notifications/BasicNotification';
 
 function Header({ children }: { children: JSX.Element | JSX.Element[] }) {
     return (
@@ -82,6 +83,21 @@ const Home: NextPage = () => {
                         <Board />
                     </PixelCanvasContextProvider>
                     {/*<DisplayNameComp />*/}
+                    <div className="block sm:hidden">
+                        <BasicNotfication
+                            notifications={[
+                                'Pan and zoom to explore the Mosaic 💎',
+                                'View page on a desktop to edit Mosaic 🎨',
+                            ]}
+                        />
+                    </div>
+                    <div className="hidden sm:block">
+                        <BasicNotfication
+                            notifications={[
+                                'Pan and zoom to explore the Mosaic 💎',
+                            ]}
+                        />
+                    </div>
                 </main>
                 {/* <Footer>
                 <div className="text-eth-gray">

@@ -3,6 +3,7 @@ import Head from 'next/head';
 import Link from 'next/link';
 import { FC } from 'react';
 import clsx from 'clsx';
+import { BasicNotfication } from '../components/Notifications/BasicNotification';
 
 const SplashScreen: FC = () => {
     return (
@@ -45,14 +46,15 @@ const InfoSection: FC = () => {
                 <br />
                 <br />
                 Draw on the Mosaic Canvas up to the Merge TTD, when your pixels
-                become permanent in the old chain. Be the last one to write
-                into the old chain!
+                become permanent in the old chain. Be the last one to write into
+                the old chain!
                 <br />
                 <br />
-                Win a pixel before the Merge by painting over others or bidding ETH to
-                show your zeal! Minimum bid is 0.001 ETH and the new pixel price is refunded
-                to the previous owner. So previous pixel are fully incentivized if they
-                lose their beloved pixels! Get in early!
+                Win a pixel before the Merge by painting over others or bidding
+                ETH to show your zeal! Minimum bid is 0.001 ETH and the new
+                pixel price is refunded to the previous owner. So previous pixel
+                are fully incentivized if they lose their beloved pixels! Get in
+                early!
                 <br />
                 <br />
                 Unleash your artsy inner self and mint an NFT of your Mosaic
@@ -98,6 +100,7 @@ const Home: NextPage = () => {
                 <main className="">
                     <SplashScreen />
                     <InfoSection />
+
                     <Footer>
                         <div className="text-eth-gray">
                             The Merge Mosaic built with ⚡ by{' '}
