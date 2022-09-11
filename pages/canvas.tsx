@@ -49,7 +49,7 @@ const Home: NextPage = () => {
                 <BrowserCheck />
                 <Header>
                     <nav className="w-full">
-                        <div className="flex flex-row width-clamp justify-between items-center">
+                        <div className="flex flex-row width-clamp justify-center md:justify-between items-center">
                             <div className="flex space-x-4 items-center">
                                 <div>
                                     <img
@@ -62,7 +62,7 @@ const Home: NextPage = () => {
                                     The Merge Canvas
                                 </div>
                             </div>
-                            <div className="text-lg">
+                            <div className="hidden md:block text-lg">
                                 <ConnectButton
                                     // chainStatus="none"
                                     showBalance={false}
