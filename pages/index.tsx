@@ -22,10 +22,11 @@ const SplashScreen: FC = () => {
                     <h2 className="font-bold">Merge? #LGTM!</h2>
                 </div>
             </div>
+            <br />
             <Link href="/canvas">
                 <a
                     className={clsx(
-                        'mt-20 py-5 px-6 w-fit bg-eth-gray/90 text-white text-xl font-bold rounded-xl shadow transition cursor-pointer',
+                        'mt-19 py-4 px-6 w-fit bg-eth-gray/90 text-white text-xl font-bold rounded-xl shadow transition cursor-pointer',
                         'hover:bg-eth-gray hover:shadow-lg'
                     )}
                 >
