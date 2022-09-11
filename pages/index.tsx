@@ -52,12 +52,12 @@ const InfoSection: FC = () => {
                 have an NFT on ETH 2.0
                 <br />
                 <br />
-                Showcase Your Community Spirit, Support the ETH, and get a proof
-                you were part of the historical moment of ETH Merge
+                Showcase your community spirit, support the ETH, and get a proof
+                you were part of the historical moment of ETH Merge!
                 <br />
                 <br />
-                PS: Pixels are free for grab now and you can sell them to the
-                next person 😉
+                PS: Pixels are free for grab and you can sell them to the next
+                person 😉
             </p>
         </div>
     );
