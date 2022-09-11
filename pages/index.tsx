@@ -45,8 +45,8 @@ const InfoSection: FC = () => {
                 <br />
                 <br />
                 Draw on the Mosaic Canvas up to the Merge TTD, when your pixels
-                become permanent in the old chain. Be the last one to write into
-                the old chain!.
+                become permanent in the old chain. Be the last one to write
+                into the old chain!
                 <br />
                 <br />
                 Unleash your artsy inner self and mint an NFT of your Mosaic
