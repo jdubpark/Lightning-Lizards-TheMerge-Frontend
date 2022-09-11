@@ -1,4 +1,4 @@
-import { BigNumber, ethers } from 'ethers';
+import { BigNumber, BigNumberish, ethers } from 'ethers';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { RgbColor } from 'react-colorful';
 import {
@@ -27,35 +27,49 @@ const SelectedPixelsListItem: FC<SelectedPixelsListItemProps> = ({
 
     const [userPrice, setUserPrice] = useState(ethers.utils.formatEther(price));
 
-    const deleteSelectedPixelHandler = (index: number) => {
-        const canvas = canvasRef.current;
-        if (!canvas) return;
-        const selectedPixel = selectedPixelsList[index];
-        const newSelectedPixelsList = [...selectedPixelsList];
-        newSelectedPixelsList.splice(index, 1);
-        setSelectedPixelsList(newSelectedPixelsList);
-        ApiClient.getCoordinateData(
-            selectedPixel.coordinates.x,
-            selectedPixel.coordinates.y
-        ).then((cd) => {
-            if (!cd) return;
-            drawPixel(
+    const deleteSelectedPixelHandler = useCallback(
+        (index: number) => {
+            const canvas = canvasRef.current;
+            if (!canvas) return;
+            const selectedPixel = selectedPixelsList[index];
+            const newSelectedPixelsList = [...selectedPixelsList];
+            newSelectedPixelsList.splice(index, 1);
+            setSelectedPixelsList(newSelectedPixelsList);
+            ApiClient.getCoordinateData(
                 selectedPixel.coordinates.x,
-                selectedPixel.coordinates.y,
-                canvas,
-                {
-                    r: cd.color.R,
-                    g: cd.color.G,
-                    b: cd.color.B,
-                }
-            );
-        });
-    };
+                selectedPixel.coordinates.y
+            ).then((cd) => {
+                if (!cd) return;
+                drawPixel(
+                    selectedPixel.coordinates.x,
+                    selectedPixel.coordinates.y,
+                    canvas,
+                    {
+                        r: cd.color.R,
+                        g: cd.color.G,
+                        b: cd.color.B,
+                    }
+                );
+            });
+        },
+        [canvasRef, drawPixel, selectedPixelsList, setSelectedPixelsList]
+    );
 
     const textColor =
         color.r * 0.299 + color.g * 0.587 + color.b * 0.114 > 186
             ? '#000000'
             : '#ffffff';
+
+    const [inputValue, setInputValue] = useState<BigNumber>(
+        selectedPixelsList[index].minPrice
+    );
+
+    useEffect(() => {
+        const bn = BigNumber.from(ethers.utils.formatEther(inputValue));
+        if (selectedPixelsList[index].price === bn) return;
+        selectedPixelsList[index].price = bn;
+        setSelectedPixelsList(selectedPixelsList);
+    }, [index, inputValue, selectedPixelsList, setSelectedPixelsList]);
 
     return (
         <div key={index} className="flex flex-col gap-y-2">
