@@ -237,7 +237,7 @@ const PixelCanvas: NextPage = (props) => {
                             ? ``
                             : `${
                                   canvasIsEditable
-                                      ? 'linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), '
+                                      ? 'linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), '
                                       : ''
                               }url(https://merge-nft.s3.us-west-2.amazonaws.com/canvas.png)`,
                     }}

@@ -1,4 +1,4 @@
-import { ethers } from 'ethers';
+import { BigNumber, ethers } from 'ethers';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { RgbColor } from 'react-colorful';
 import {
@@ -13,15 +13,19 @@ type SelectedPixelsListItemProps = {
     index: number;
     coordinates: XYCoordinates;
     color: RgbColor;
+    price: BigNumber;
 };
 
 const SelectedPixelsListItem: FC<SelectedPixelsListItemProps> = ({
     index,
     coordinates,
     color,
+    price,
 }) => {
     const { canvasRef, selectedPixelsList, setSelectedPixelsList, drawPixel } =
         usePixelCanvasContext();
+
+    const [userPrice, setUserPrice] = useState(ethers.utils.formatEther(price));
 
     const deleteSelectedPixelHandler = (index: number) => {
         const canvas = canvasRef.current;
@@ -54,10 +58,7 @@ const SelectedPixelsListItem: FC<SelectedPixelsListItemProps> = ({
             : '#ffffff';
 
     return (
-        <div
-            key={index}
-            className="flex flex-col gap-y-2 justify-center text-center "
-        >
+        <div key={index} className="flex flex-col gap-y-2">
             <div
                 className={`flex flex-col justify-center items-center w-full aspect-square border-4 border-black`}
                 style={{
@@ -77,32 +78,6 @@ const SelectedPixelsListItem: FC<SelectedPixelsListItemProps> = ({
                     </button>
                 </div>
             </div>
-            <div className="flex flex-row gap-x-2">
-                <label>Bid: </label>
-                <input
-                    type="number"
-                    value={ethers.utils.formatEther(
-                        selectedPixelsList[index].price
-                    )}
-                    onChange={(e) => {
-                        try {
-                            if (!Number.isNaN(e.target.value)) {
-                                const newSelectedPixelsList = [
-                                    ...selectedPixelsList,
-                                ];
-                                newSelectedPixelsList[index].price =
-                                    ethers.utils.parseEther(e.target.value);
-                                setSelectedPixelsList([
-                                    ...newSelectedPixelsList,
-                                ]);
-                            }
-                        } catch (error) {
-                            console.log(error);
-                        }
-                    }}
-                    className="border-2 border-black w-full"
-                />
-            </div>
             <div>
                 <p>
                     Min bid:{' '}
@@ -111,6 +86,29 @@ const SelectedPixelsListItem: FC<SelectedPixelsListItemProps> = ({
                     )}{' '}
                     ETH
                 </p>
+            </div>
+            <div className="flex flex-row gap-x-2">
+                <label>Bid: </label>
+                <input
+                    type="text"
+                    value={userPrice}
+                    onChange={(e) => {
+                        try {
+                            const newPrice =
+                                e.target.value.replace(/[^0-9.]/g, '') || '0';
+                            const newSelectedPixelsList = [
+                                ...selectedPixelsList,
+                            ];
+                            newSelectedPixelsList[index].price =
+                                ethers.utils.parseEther(newPrice);
+                            setSelectedPixelsList([...newSelectedPixelsList]);
+                            setUserPrice(newPrice);
+                        } catch (error) {
+                            console.log(error);
+                        }
+                    }}
+                    className="border-2 border-black w-full px-2"
+                />
             </div>
         </div>
     );
@@ -126,14 +124,17 @@ const SelectedPixelsList: FC = () => {
                     No pixels have been selected
                 </p>
             ) : (
-                selectedPixelsList.map(({ coordinates, color }, index) => (
-                    <SelectedPixelsListItem
-                        key={`${coordinates.x}-${coordinates.y}`}
-                        index={index}
-                        coordinates={coordinates}
-                        color={color}
-                    />
-                ))
+                selectedPixelsList.map(
+                    ({ coordinates, color, price }, index) => (
+                        <SelectedPixelsListItem
+                            key={`${coordinates.x}-${coordinates.y}`}
+                            index={index}
+                            coordinates={coordinates}
+                            color={color}
+                            price={price}
+                        />
+                    )
+                )
             )}
         </>
     );
@@ -229,7 +230,7 @@ export const PixelsList: FC = () => {
                                 Owned
                             </button>
                         </div>
-                        <div className="grid grid-cols-2 gap-x-10 gap-y-5 w-[500px] max-h-[420px] overflow-auto">
+                        <div className="grid grid-cols-2 gap-x-10 gap-y-10 pr-2 w-[500px] max-h-[500px] overflow-auto">
                             {tab === PixelsListTab.SELECTED_PIXELS ? (
                                 <SelectedPixelsList />
                             ) : (
