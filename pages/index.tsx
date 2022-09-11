@@ -101,7 +101,6 @@ const InfoSection: FC = () => {
                     </p>
                 </div>
                 <br />
-                <br />
                 <h3 className=" text-eth-gold">Who tf are we?</h3>
                 <br />
                 OutlierDAO is a community of student builders passionate about
