@@ -110,7 +110,9 @@ export const MintButton = () => {
             const txChangeColor = await signer.sendTransaction({
                 ...unsignedTx,
                 value: getTotalPrice(selectedPixelsList).toString(),
-                ...(IS_PRODUCTION ? {} : { gasLimit }),
+                ...(IS_PRODUCTION ? {} : {
+                    gasLimit: BigNumber.from(Math.floor(gasLimit.toNumber() * 1.5))
+                }),
             });
 
             setWaitingForTxConfirmation(true);
