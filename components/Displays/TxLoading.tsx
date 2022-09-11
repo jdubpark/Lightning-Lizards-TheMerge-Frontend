@@ -30,7 +30,7 @@ export const TxLoading: FC = () => {
                 <p className="text-2xl font-semibold whitespace-pre text-center">
                     {waitingForTxConfirmation
                         ? 'Waiting for Transaction Confirmation...'
-                        : 'Transaction Confirmed! 🎉\n Updating Canvas...'}
+                        : 'Transaction Resolved. Updating Canvas...'}
                 </p>
             </div>
         </div>
