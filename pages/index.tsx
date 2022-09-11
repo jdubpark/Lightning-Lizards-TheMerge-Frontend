@@ -45,13 +45,15 @@ const InfoSection: FC = () => {
                 pixel of Mosaic! 🦄
                 <br />
                 <br />
-                Draw on the Mosaic up to the Merge TTD, when your pixels become
-                permanent in the old chain, you will be one of the last ones to
-                write into the old chain!
+                Draw on the Mosaic Canvas up to the Merge TTD, when your pixels
+                become permanent. Be the last one to write into the old Ethereum
+                state!
                 <br />
                 <br />
                 Win a pixel before the Merge by painting over others or bidding
-                ETH to show your zeal!
+                ETH to show your zeal! Minimum bid is 0.001 ETH and the new bid
+                amount is sent to the previous owner. So you earn money if you
+                lose your beloved pixels! Get in early!
                 <br />
                 <br />
                 Unleash your artsy inner self and mint an NFT of your Mosaic
@@ -121,14 +123,6 @@ function Footer({ children }: { children: JSX.Element | JSX.Element[] }) {
 const Home: NextPage = () => {
     return (
         <>
-            <noscript>
-                <iframe
-                    src="https://www.googletagmanager.com/ns.html?id=GTM-K9JCT38"
-                    height="0"
-                    width="0"
-                    style={{ display: 'none', visibility: 'hidden' }}
-                ></iframe>
-            </noscript>
             <div>
                 <Head>
                     <title>The Merge Mosaic</title>

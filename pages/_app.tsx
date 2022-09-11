@@ -12,11 +12,13 @@ import {
 import { chain, configureChains, createClient, WagmiConfig } from 'wagmi';
 import { publicProvider } from 'wagmi/providers/public';
 import { jsonRpcProvider } from 'wagmi/providers/jsonRpc';
-import Script from "next/script";
-import {IS_PRODUCTION} from "../utils/constants";
 
-let chainsIncluded = [chain.mainnet]
-if (!IS_PRODUCTION) chainsIncluded = [...chainsIncluded, chain.goerli, chain.hardhat]
+let chainsIncluded;
+if (process.env.NEXT_PUBLIC_NODE_ENV === 'production') {
+    chainsIncluded = [chain.mainnet];
+} else {
+    chainsIncluded = [chain.mainnet, chain.goerli, chain.hardhat];
+}
 
 const { chains, provider, webSocketProvider } = configureChains(
     chainsIncluded,
@@ -42,7 +44,6 @@ const wagmiClient = createClient({
     webSocketProvider,
 });
 
-const DarkTheme = rbDarkTheme();
 const LightTheme = rbLightTheme();
 
 const lightTheme: Theme = {
@@ -64,29 +65,16 @@ const lightTheme: Theme = {
 
 function MyApp({ Component, pageProps }: AppProps) {
     return (
-        <>
-            <Script
-                id="google-tag-manager"
-                strategy="afterInteractive"
-                dangerouslySetInnerHTML={{
-                    __html: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-                    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-                    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-                    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-                })(window,document,'script','dataLayer','GTM-K9JCT38');`
-                }}
-            />
-            <WagmiConfig client={wagmiClient}>
-                <RainbowKitProvider
-                    chains={chains}
-                    theme={lightTheme}
-                    modalSize="compact"
-                    showRecentTransactions
-                >
-                    <Component {...pageProps} />
-                </RainbowKitProvider>
-            </WagmiConfig>
-        </>
+        <WagmiConfig client={wagmiClient}>
+            <RainbowKitProvider
+                chains={chains}
+                theme={lightTheme}
+                modalSize="compact"
+                showRecentTransactions
+            >
+                <Component {...pageProps} />
+            </RainbowKitProvider>
+        </WagmiConfig>
     );
 }
 

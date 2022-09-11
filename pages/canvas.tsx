@@ -33,14 +33,6 @@ function Footer({ children }: { children: JSX.Element | JSX.Element[] }) {
 const Home: NextPage = () => {
     return (
         <>
-            <noscript>
-                <iframe
-                    src="https://www.googletagmanager.com/ns.html?id=GTM-K9JCT38"
-                    height="0"
-                    width="0"
-                    style={{ display: 'none', visibility: 'hidden' }}
-                ></iframe>
-            </noscript>
             <div className="flex flex-col h-screen bg-stone-200 z-0 overflow-hidden">
                 <Head>
                     <title className="text-eth-gray">The Merge Mosaic</title>
