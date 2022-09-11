@@ -127,18 +127,6 @@
                     "type": "uint16"
                 },
                 {
-                    "indexed": false,
-                    "internalType": "address",
-                    "name": "old_owner",
-                    "type": "address"
-                },
-                {
-                    "indexed": false,
-                    "internalType": "address",
-                    "name": "new_owner",
-                    "type": "address"
-                },
-                {
                     "components": [
                         {
                             "internalType": "uint8",
@@ -157,38 +145,15 @@
                         }
                     ],
                     "indexed": false,
-                    "internalType": "struct MergeCanvas.RGB",
-                    "name": "old_color",
-                    "type": "tuple"
-                },
-                {
-                    "components": [
-                        {
-                            "internalType": "uint8",
-                            "name": "R",
-                            "type": "uint8"
-                        },
-                        {
-                            "internalType": "uint8",
-                            "name": "G",
-                            "type": "uint8"
-                        },
-                        {
-                            "internalType": "uint8",
-                            "name": "B",
-                            "type": "uint8"
-                        }
-                    ],
-                    "indexed": false,
-                    "internalType": "struct MergeCanvas.RGB",
+                    "internalType": "struct IMergeCanvas.RGB",
                     "name": "new_color",
                     "type": "tuple"
                 },
                 {
-                    "indexed": false,
-                    "internalType": "uint256",
-                    "name": "old_price",
-                    "type": "uint256"
+                    "indexed": true,
+                    "internalType": "address",
+                    "name": "new_owner",
+                    "type": "address"
                 },
                 {
                     "indexed": false,
@@ -197,7 +162,61 @@
                     "type": "uint256"
                 }
             ],
-            "name": "PixelColorChanged",
+            "name": "PixelChange",
+            "type": "event"
+        },
+        {
+            "anonymous": false,
+            "inputs": [
+                {
+                    "indexed": false,
+                    "internalType": "uint16",
+                    "name": "x",
+                    "type": "uint16"
+                },
+                {
+                    "indexed": false,
+                    "internalType": "uint16",
+                    "name": "y",
+                    "type": "uint16"
+                },
+                {
+                    "components": [
+                        {
+                            "internalType": "uint8",
+                            "name": "R",
+                            "type": "uint8"
+                        },
+                        {
+                            "internalType": "uint8",
+                            "name": "G",
+                            "type": "uint8"
+                        },
+                        {
+                            "internalType": "uint8",
+                            "name": "B",
+                            "type": "uint8"
+                        }
+                    ],
+                    "indexed": false,
+                    "internalType": "struct IMergeCanvas.RGB",
+                    "name": "old_color",
+                    "type": "tuple"
+                },
+                {
+                    "indexed": true,
+                    "internalType": "address",
+                    "name": "old_owner",
+                    "type": "address"
+                },
+                {
+                    "indexed": false,
+                    "internalType": "uint256",
+                    "name": "old_price",
+                    "type": "uint256"
+                }
+            ],
+            "name": "PixelChangePrior",
             "type": "event"
         },
         {
@@ -208,25 +227,6 @@
                     "internalType": "uint16",
                     "name": "",
                     "type": "uint16"
-                }
-            ],
-            "stateMutability": "view",
-            "type": "function"
-        },
-        {
-            "inputs": [
-                {
-                    "internalType": "address",
-                    "name": "_address",
-                    "type": "address"
-                }
-            ],
-            "name": "Contributed",
-            "outputs": [
-                {
-                    "internalType": "bool",
-                    "name": "",
-                    "type": "bool"
                 }
             ],
             "stateMutability": "view",
@@ -262,7 +262,7 @@
                             "type": "uint8"
                         }
                     ],
-                    "internalType": "struct MergeCanvas.RGB",
+                    "internalType": "struct IMergeCanvas.RGB",
                     "name": "_new_color",
                     "type": "tuple"
                 }
@@ -302,7 +302,7 @@
                             "type": "uint8"
                         }
                     ],
-                    "internalType": "struct MergeCanvas.RGB[]",
+                    "internalType": "struct IMergeCanvas.RGB[]",
                     "name": "_new_color",
                     "type": "tuple[]"
                 },
@@ -369,7 +369,7 @@
                             "type": "uint8"
                         }
                     ],
-                    "internalType": "struct MergeCanvas.RGB",
+                    "internalType": "struct IMergeCanvas.RGB",
                     "name": "color",
                     "type": "tuple"
                 }
@@ -426,15 +426,28 @@
             "type": "function"
         },
         {
-            "inputs": [],
-            "name": "mergeNow",
-            "outputs": [
+            "inputs": [
                 {
-                    "internalType": "uint256",
-                    "name": "",
-                    "type": "uint256"
+                    "internalType": "address",
+                    "name": "_address",
+                    "type": "address"
                 }
             ],
+            "name": "hasContributed",
+            "outputs": [
+                {
+                    "internalType": "bool",
+                    "name": "",
+                    "type": "bool"
+                }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "inputs": [],
+            "name": "mergeNow",
+            "outputs": [],
             "stateMutability": "nonpayable",
             "type": "function"
         },
@@ -468,6 +481,26 @@
                 }
             ],
             "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "bool",
+                    "name": "_allow",
+                    "type": "bool"
+                }
+            ],
+            "name": "setBatchAllowed",
+            "outputs": [],
+            "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
+            "inputs": [],
+            "name": "withdraw",
+            "outputs": [],
+            "stateMutability": "nonpayable",
             "type": "function"
         }
     ]
