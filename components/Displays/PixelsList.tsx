@@ -53,14 +53,12 @@ const SelectedPixelsListItem: FC<SelectedPixelsListItemProps> = ({
             ? '#000000'
             : '#ffffff';
 
-    const [inputValue, setInputValue] = useState<BigNumberish>(ethers.utils.formatEther(
-        selectedPixelsList[index].minPrice
-    ))
+    const [inputValue, setInputValue] = useState<BigNumber>(selectedPixelsList[index].minPrice)
 
     const onInputChange = useCallback((e: any) => {
         if (Number.isNaN(e.target.value)) return
         let value
-        if (Number(e.target.value) <= selectedPixelsList[index].minPrice.toNumber()) {
+        if (Number(e.target.value) <= Number(ethers.utils.formatEther(selectedPixelsList[index].minPrice))) {
             value = selectedPixelsList[index].minPrice
         } else {
             value = ethers.utils.parseEther(e.target.value)
@@ -69,7 +67,7 @@ const SelectedPixelsListItem: FC<SelectedPixelsListItemProps> = ({
     }, [])
 
     useEffect(() => {
-        const bn = BigNumber.from(ethers.utils.parseEther(inputValue))
+        const bn = BigNumber.from(ethers.utils.formatEther(inputValue))
         if (selectedPixelsList[index].price === bn) return
         selectedPixelsList[index].price = bn
         setSelectedPixelsList(selectedPixelsList);
