@@ -25,7 +25,7 @@ export const PixelChangeListener: FC<PixelChangeListenerProps> = ({
     useContractEvent({
         addressOrName: MERGE_CANVAS_CONTRACT_ADDRESS,
         contractInterface: MergeCanvasABI,
-        eventName: 'PixelColorChanged',
+        eventName: 'PixelChange',
         listener: (event) => colorCanvasPixel(event),
     });
 
