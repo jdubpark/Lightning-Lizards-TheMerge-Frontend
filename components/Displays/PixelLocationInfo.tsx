@@ -1,21 +1,15 @@
-import clsx from 'clsx';
-import { BigNumberish, BigNumber, constants, ethers } from 'ethers';
+import { BigNumberish, constants } from 'ethers';
 import { useEffect, useState } from 'react';
 
 import { usePixelCanvasContext } from '../../contexts/PixelCanvasContext';
 import { formatPrice, midEllipsis } from '../../utils/misc';
 import ApiClient from '../../utils/ApiClient';
 import { RgbColor } from 'react-colorful';
-import PixelColorInfo from './PixelColorInfo';
 import { InfoItem, InfoItemAddress, PixelInfoSection } from './PixelInfo';
 
 export default function PixelLocationInfo() {
     const {
         selectedCoordinates,
-        selectedColor,
-        setSelectedColor,
-        canvasIsEditable,
-        setCanvasIsEditable,
     } = usePixelCanvasContext();
 
     const [price, setPrice] = useState<BigNumberish>('0');

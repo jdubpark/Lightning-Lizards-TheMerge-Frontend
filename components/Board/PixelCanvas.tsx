@@ -48,6 +48,9 @@ const PixelCanvas: NextPage = (props) => {
         waitingForTxConfirmation,
     } = usePixelCanvasContext();
 
+    // updates only on first render, used as force cache
+    const timeRef = useRef<number>(Date.now())
+
     const [canvasPanZoom, setCanvasPanZoom] = useState<PanZoom | null>(null);
 
     const [prevCoord, setPrevCoord] = useState<XYCoordinates>({ x: 0, y: 0 });
@@ -233,12 +236,14 @@ const PixelCanvas: NextPage = (props) => {
                         // width: CANVAS_DIMENSION,
                         // opacity: canvasIsEditable ? 1 : 0.5,
                         backgroundImage: waitingForTxConfirmation
-                            ? ``
-                            : `${
-                                  canvasIsEditable
-                                      ? 'linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), '
-                                      : ''
-                              }url(https://merge-nft.s3.us-west-2.amazonaws.com/canvas.png)`,
+                            ? '' : `url(https://merge-nft.s3.us-west-2.amazonaws.com/canvas.png?${timeRef.current})`,
+                        // backgroundImage: waitingForTxConfirmation
+                        //     ? ``
+                        //     : `${
+                        //           canvasIsEditable
+                        //               ? 'linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), '
+                        //               : ''
+                        //       }url(https://merge-nft.s3.us-west-2.amazonaws.com/canvas.png)`,
                     }}
                 />
             </div>
