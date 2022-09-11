@@ -18,12 +18,8 @@ const SplashScreen: FC = () => {
                     </h1>
                 </div>
                 <div className="text-center bg-[rgba(0,0,0,0.8)] w-[300px] md:w-[400px] py-3 md:text-xl text-white">
-                    <h2>
-                        A Collective Canvas for the Merge
-                    </h2>
-                    <h2 className="font-bold">
-                        Merge? #LGTM!
-                    </h2>
+                    <h2>A Collective Canvas for the Merge</h2>
+                    <h2 className="font-bold">Merge? #LGTM!</h2>
                 </div>
             </div>
             <Link href="/canvas">
@@ -44,17 +40,24 @@ const InfoSection: FC = () => {
     return (
         <div className="flex flex-row justify-center py-20 mx-auto max-w-[85%]">
             <p className="text-2xl md:text-4xl font-bold max-w-[1000px]">
-                Own a Piece of Blockchain History By Contributing to This Hybrid
-                NFT. <br />
-                <br />
-                Users Can Draw on the Canvas in ETH 1.0 Up to the Merge Moment.
-                You Can Mint an NFT of the Pixels you have contributed to the
-                Mosaic as Soon as the Merge Happens and Become One of the
-                First ETH-ers to an NFT on ETH 2.0
+                Become part of the history of the blockchain when you color a
+                pixel on this Mosaic
                 <br />
                 <br />
-                Showcase Your Community Spirit, Support the ETH, and Get a Proof
-                You Were Part of the historical Moment of ETH Merge
+                You get to draw on the canvas in ETH 1.0, up to the Merge moment
+                and be one of the last people who writes into the old chain
+                <br />
+                Then, you can mint an NFT of the pixels you own in the Mosaic as
+                soon as the Merge happens and be one of the first ETH-ers to
+                have an NFT on ETH 2.0
+                <br />
+                <br />
+                Showcase Your Community Spirit, Support the ETH, and get a proof
+                you were part of the historical moment of ETH Merge
+                <br />
+                <br />
+                PS: Pixels are free for grab now and you can sell them to the
+                next person 😉
             </p>
         </div>
     );
