@@ -1,5 +1,5 @@
 import type { NextPage } from 'next';
-import { LunchButton } from '../components/Inputs/LunchAppButton';
+import { LaunchButton } from '../components/Inputs/LaunchAppButton';
 
 function Header({ children }: { children: JSX.Element | JSX.Element[] }) {
     return (
@@ -22,17 +22,17 @@ export function topImage() {
     return (
         <div className=" bg-blend-normal bg-cover bg-[url(../public/canvas2.png)]">
             <div className="flex flex-col justify-center items-center h-screen">
-                <div className="flex flex-row justify-center items-center border-4 bg-black border-black ">
-                    <div className="text-7xl font-bold text-white mar">
+                <div className="flex flex-col justify-center items-center">
+                    <div className="border-4 bg-black border-black text-7xl font-bold text-white mar">
                         The Merge Mosaic
                     </div>
-                </div>
-                <div className="flex flex-row justify-center items-center border-4 bg-black border-black mb-10">
-                    <div className="text-5xl font-bold text-white ">
+                    <div className="border-4 bg-black border-black text-5xl font-bold text-white mar">
                         A Collective Canvas for the ETH Merge
                     </div>
                 </div>
-                <LunchButton />
+                <div className="pt-6">
+                    <LaunchButton />
+                </div>
             </div>
         </div>
     );
@@ -42,7 +42,7 @@ const Intro: NextPage = () => {
     function description() {
         return (
             <div className="flex flex-col justify-center h-screen w-full items-center">
-                <div className="flex flex-col gap-y-10 w-1/2">
+                <div className="flex flex-col gap-y-10 w-1/2 pt-4">
                     <div className="text-3xl font-bold text-black mar">
                         Own a Piece of Blockchain History By Contributing to
                         This Hybrid NFT

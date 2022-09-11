@@ -13,7 +13,7 @@ import MergeCanvasArtifact from '../../contracts/MergeCanvas.json';
 import { usePixelCanvasContext } from '../../contexts/PixelCanvasContext';
 import Link from 'next/link';
 
-export const LunchButton = () => {
+export const LaunchButton = () => {
     return (
         <div className="flex-none">
             <Link href="/canvas">
@@ -24,7 +24,7 @@ export const LunchButton = () => {
                         'hover:bg-eth-gray hover:shadow-lg'
                     )}
                 >
-                    Lunch Dapp
+                    Launch App
                 </button>
             </Link>
         </div>
