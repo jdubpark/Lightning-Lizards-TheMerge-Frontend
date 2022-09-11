@@ -12,6 +12,7 @@ import {
 import { chain, configureChains, createClient, WagmiConfig } from 'wagmi';
 import { publicProvider } from 'wagmi/providers/public';
 import { jsonRpcProvider } from 'wagmi/providers/jsonRpc';
+import PlausibleProvider from 'next-plausible';
 
 let chainsIncluded;
 if (process.env.NEXT_PUBLIC_NODE_ENV === 'production') {
@@ -65,16 +66,20 @@ const lightTheme: Theme = {
 
 function MyApp({ Component, pageProps }: AppProps) {
     return (
-        <WagmiConfig client={wagmiClient}>
-            <RainbowKitProvider
-                chains={chains}
-                theme={lightTheme}
-                modalSize="compact"
-                showRecentTransactions
-            >
-                <Component {...pageProps} />
-            </RainbowKitProvider>
-        </WagmiConfig>
+        <>
+            <PlausibleProvider domain="mergemosaic.xyz" trackLocalhost={true}>
+                <WagmiConfig client={wagmiClient}>
+                    <RainbowKitProvider
+                        chains={chains}
+                        theme={lightTheme}
+                        modalSize="compact"
+                        showRecentTransactions
+                    >
+                        <Component {...pageProps} />
+                    </RainbowKitProvider>
+                </WagmiConfig>
+            </PlausibleProvider>
+        </>
     );
 }
 
