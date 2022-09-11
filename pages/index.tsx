@@ -3,7 +3,6 @@ import Head from 'next/head';
 import Link from 'next/link';
 import { FC } from 'react';
 import clsx from 'clsx';
-import { BasicNotfication } from '../components/Notifications/BasicNotification';
 
 const SplashScreen: FC = () => {
     return (
@@ -46,8 +45,7 @@ const InfoSection: FC = () => {
                 <br />
                 <br />
                 Draw on the Mosaic Canvas up to the Merge TTD, when your pixels
-                become permanent in the old chain. Be the last one to write into
-                the old chain!
+                become permanent. Be the last one to write into the old Ethereum state!
                 <br />
                 <br />
                 Win a pixel before the Merge by painting over others or bidding
