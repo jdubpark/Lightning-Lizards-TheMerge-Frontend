@@ -29,6 +29,9 @@ export function topImage() {
                     <div className="border-4 bg-black border-black text-5xl font-bold text-white mar">
                         A Collective Canvas for the ETH Merge
                     </div>
+                    <div className="border-4 bg-black border-black text-3xl font-bold text-white mar">
+                        Merge? #LGTM!
+                    </div>
                 </div>
                 <div className="pt-6">
                     <LaunchButton />
