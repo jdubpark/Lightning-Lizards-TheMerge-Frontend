@@ -43,7 +43,7 @@ export default function PixelLocationInfo() {
                 value={
                     owner !== '' && owner !== constants.AddressZero
                         ? midEllipsis(owner, 11)
-                        : '—'
+                        : 'Claim First!'
                 }
                 link={
                     owner !== '' && owner !== constants.AddressZero
