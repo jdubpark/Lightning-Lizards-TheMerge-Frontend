@@ -80,6 +80,7 @@ const SelectedPixelsListItem: FC<SelectedPixelsListItemProps> = ({
             <div className="flex flex-row gap-x-2">
                 <label>Bid: </label>
                 <input
+                    type="number"
                     value={ethers.utils.formatEther(
                         selectedPixelsList[index].price
                     )}

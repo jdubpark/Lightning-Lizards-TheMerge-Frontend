@@ -146,11 +146,17 @@ const PixelCanvas: NextPage = (props) => {
                             newCoord.x,
                             newCoord.y
                         );
-                        console.log('price: ', price);
+
+                        const parsedPrice = ethers.utils.parseUnits(
+                            price,
+                            'wei'
+                        );
+
                         const zero = ethers.utils.parseEther('0');
-                        const minPrice = ethers.utils.parseEther('1').eq(zero)
+                        const minPrice = parsedPrice.eq(zero)
                             ? zero
-                            : ethers.utils.parseEther('0').add(1);
+                            : parsedPrice.add(ethers.utils.parseEther('0.001'));
+
                         drawPixel(
                             newCoord.x,
                             newCoord.y,
