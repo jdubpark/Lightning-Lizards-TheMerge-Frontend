@@ -5,8 +5,8 @@ import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { Board } from '../components/Board';
 import PixelCanvasContextProvider from '../contexts/PixelCanvasContext';
 import { BrowserCheck } from '../components/Displays/BrowserWarning';
-import Image from 'next/image';
-import Link from 'next/link';
+import Link from "next/link";
+import Image from "next/image";
 
 function Header({ children }: { children: JSX.Element | JSX.Element[] }) {
     return (
@@ -60,7 +60,7 @@ const Home: NextPage = () => {
                                     width="32px"
                                     layout="fixed"
                                 />
-                                <div className="text-2xl font-bold text-stone-100">
+                                <div className="text-2xl font-bold text-eth-gray">
                                     <Link href="/">
                                         <a>The Merge Mosaic</a>
                                     </Link>

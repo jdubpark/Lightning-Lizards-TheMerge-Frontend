@@ -45,8 +45,14 @@ const InfoSection: FC = () => {
                 <br />
                 <br />
                 Draw on the Mosaic Canvas up to the Merge TTD, when your pixels
-                become permanent in the old chain. Be the last one to write into
-                the old chain!
+                become permanent in the old chain. Be the last one to write
+                into the old chain!
+                <br />
+                <br />
+                Win a pixel before the Merge by painting over others or bidding ETH to
+                show your zeal! Minimum bid is 0.001 ETH and the new pixel price is refunded
+                to the previous owner. So previous pixel are fully incentivized if they
+                lose their beloved pixels! Get in early!
                 <br />
                 <br />
                 Unleash your artsy inner self and mint an NFT of your Mosaic
@@ -58,8 +64,8 @@ const InfoSection: FC = () => {
                 you were part of the historical moment of ETH Merge!
                 <br />
                 <br />
-                PS: Pixels are free for grab and you can sell them to the next
-                person 😉
+                PS: Pixels are free for grab and you can gain ETH from the next
+                person bidding 😉
             </p>
         </div>
     );
@@ -82,7 +88,7 @@ const Home: NextPage = () => {
             </noscript>
             <div>
                 <Head>
-                    <title className="text-eth-gray">The Merge Mosaic</title>
+                    <title>The Merge Mosaic</title>
                     <meta
                         name="description"
                         content="Own a Piece of Blockchain History By Contributing to this Hybrid NFT! Made with love by OutlierDAO"
