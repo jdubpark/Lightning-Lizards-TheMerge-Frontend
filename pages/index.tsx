@@ -130,6 +130,23 @@ const Home: NextPage = () => {
                         name="description"
                         content="Own a Piece of Blockchain History By Contributing to this Hybrid NFT! Made with love by OutlierDAO"
                     />
+                    <meta
+                        name="twitter:card"
+                        content="https://merge-nft.s3.us-west-2.amazonaws.com/canvas.png"
+                    />
+                    {/* <meta
+                        name="twitter:site"
+                        content="@YOUR_TWITTER_USERNAME"
+                    /> */}
+                    <meta name="twitter:title" content="The Merge Canvas" />
+                    <meta
+                        name="twitter:description"
+                        content="The Merge Canvas -  Own a Piece of Blockchain History By Contributing to this Hybrid NFT"
+                    />
+                    <meta
+                        name="twitter:image"
+                        content="https://merge-nft.s3.us-west-2.amazonaws.com/canvas.png"
+                    />
                     <link rel="icon" href="/favicon.ico" />
                 </Head>
                 <main className="">
