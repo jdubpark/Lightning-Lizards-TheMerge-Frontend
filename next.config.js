@@ -1,5 +1,8 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {
+const { withPlausibleProxy } = require('next-plausible');
+
+module.exports = withPlausibleProxy()({
+    // ...your next js config, if any
     reactStrictMode: true,
     // Warning: This allows production builds to successfully complete even if
     // your project has ESLint errors.
@@ -15,6 +18,4 @@ const nextConfig = {
     images: {
         domains: ['merge-nft.s3.us-west-2.amazonaws.com'],
     },
-};
-
-module.exports = nextConfig;
+});

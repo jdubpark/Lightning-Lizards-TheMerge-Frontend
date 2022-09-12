@@ -8,6 +8,7 @@ import { BrowserCheck } from '../components/Displays/BrowserWarning';
 import Link from 'next/link';
 import Image from 'next/image';
 import { BasicNotfication } from '../components/Notifications/BasicNotification';
+import { MergeCountdown } from '../components/Notifications/MergeCountdown';
 
 function Header({ children }: { children: JSX.Element | JSX.Element[] }) {
     return (
@@ -32,14 +33,6 @@ function Footer({ children }: { children: JSX.Element | JSX.Element[] }) {
 const Home: NextPage = () => {
     return (
         <>
-            <noscript>
-                <iframe
-                    src="https://www.googletagmanager.com/ns.html?id=GTM-K9JCT38"
-                    height="0"
-                    width="0"
-                    style={{ display: 'none', visibility: 'hidden' }}
-                ></iframe>
-            </noscript>
             <div className="flex flex-col h-screen bg-stone-200 z-0 overflow-hidden">
                 <Head>
                     <title className="text-eth-gray">The Merge Mosaic</title>
@@ -98,6 +91,7 @@ const Home: NextPage = () => {
                             ]}
                         />
                     </div>
+                    <MergeCountdown />
                 </main>
                 {/* <Footer>
                 <div className="text-eth-gray">
