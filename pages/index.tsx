@@ -40,7 +40,7 @@ const SplashScreen: FC = () => {
 const InfoSection: FC = () => {
     return (
         <div className="flex flex-row justify-center py-20 mx-auto max-w-[85%]">
-            <p className="text-2xl md:text-4xl font-bold max-w-[1000px]">
+            <div className="text-2xl md:text-4xl font-bold max-w-[1000px]">
                 Be a part of the historic Ethereum merge with your on-chain
                 pixel of Mosaic! 🦄
                 <br />
@@ -111,7 +111,7 @@ const InfoSection: FC = () => {
                 censorship-resistant, and sustainable tech for the future. The
                 DAO is mentored and backed by thought leaders from Floodgate and
                 Standard Crypto.
-            </p>
+            </div>
         </div>
     );
 };
