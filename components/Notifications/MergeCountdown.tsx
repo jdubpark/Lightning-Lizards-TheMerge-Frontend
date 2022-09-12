@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from 'react';
+import {FC, useCallback, useEffect, useState} from 'react';
 import Web3 from 'web3';
 import { chain } from 'wagmi';
 import ApiClient from '../../utils/ApiClient';
@@ -7,87 +7,89 @@ import { MdOutlineClose } from 'react-icons/md';
 
 const web3 = new Web3(chain.mainnet.rpcUrls.default);
 
+interface MergeCountdown {
+    hours: number;
+    minutes: number;
+    seconds: number;
+}
+
+// I'm a smol boi, don't touch me
+function SmolTimer({ hours, minutes, seconds }: MergeCountdown) {
+    return (
+        <div>
+            <div className="text-xl">Merge Countdown 🕒</div>
+            <div className="flex space-x-2 whitespace-pre mt-2 text-xl font-semibold">
+                <div>{`${hours} hr`}</div>
+                <div>{`${minutes} min`}</div>
+                <div>{`${seconds} sec`}</div>
+            </div>
+        </div>
+    );
+}
+
+// I'm a bigly timer, don't mess with me
+function BiglyTimer({ hours, minutes, seconds }: MergeCountdown) {
+    return (
+        <div className="flex space-x-2 whitespace-pre md:text-xl text-center text-2xl md:text-5xl font-semibold">
+            <div>{`${hours} hr`}</div>
+            <div>{`${minutes} min`}</div>
+            <div>{`${seconds} sec`}</div>
+        </div>
+    );
+}
+
+function getTimeDestructured(mergeCountdownTime: BigNumber) {
+    if (!mergeCountdownTime) return { hours: 0, minutes: 0, seconds: 0 };
+    let totalSeconds = mergeCountdownTime.toNumber()
+    const hours = Math.floor(mergeCountdownTime.toNumber() / 3600);
+    totalSeconds %= 3600; // sub hours
+    return {
+        hours,
+        minutes: Math.floor(totalSeconds / 60),
+        seconds: totalSeconds % 60,
+    };
+}
+
 export const MergeCountdown: FC = () => {
-    const [mergeCoutdownTimeSet, setMergeCountdownTimeSet] = useState(false);
-    const [mergeCountdownTime, setMergeCountdownTime] = useState<
-        BigNumber | undefined
-    >();
+    const [mergeCountdownTimeSet, setMergeCountdownTimeSet] = useState(false);
+    const [mergeCountdownTime, setMergeCountdownTime] = useState<BigNumber>();
+    const [mergeCountdown, setMergeCountdown] = useState<MergeCountdown>({ hours: 0, minutes: 0, seconds: 0 });
     const [showTimerPopup, setShowTimerPopup] = useState(false);
 
-    const calculateMergeCountdownTime = async () => {
-        const currentBlockNumber = await web3.eth.getBlockNumber();
-        const { totalDifficulty } = await web3.eth.getBlock(currentBlockNumber);
-        const hashRate = await ApiClient.getHashRate();
-        const terminalTotalDifficulty = BigNumber.from(
-            '58750000000000000000000'
-        );
-        if (terminalTotalDifficulty.gte(totalDifficulty)) {
-            const remainingTime = terminalTotalDifficulty
-                .sub(totalDifficulty)
-                .div(hashRate);
-            setMergeCountdownTime(BigNumber.from(remainingTime));
-        } else {
-            setMergeCountdownTime(BigNumber.from(0));
-        }
-
-        setMergeCountdownTimeSet(true);
-    };
-
     useEffect(() => {
-        calculateMergeCountdownTime();
+        (async () => {
+            const currentBlockNumber = await web3.eth.getBlockNumber();
+            const { totalDifficulty } = await web3.eth.getBlock(currentBlockNumber);
+            const hashRate = await ApiClient.getHashRate();
+            const terminalTotalDifficulty = BigNumber.from(
+                '58750000000000000000000'
+            );
+            if (terminalTotalDifficulty.gte(totalDifficulty)) {
+                const remainingTime = terminalTotalDifficulty
+                    .sub(totalDifficulty)
+                    .div(hashRate);
+                setMergeCountdownTime(remainingTime);
+            } else {
+                setMergeCountdownTime(BigNumber.from('0'));
+            }
+            setMergeCountdownTimeSet(true);
+        })()
     }, []);
 
     useEffect(() => {
-        if (mergeCoutdownTimeSet) {
-            const countdownInterval = setInterval(() => {
-                setMergeCountdownTime((prevTime) =>
-                    prevTime && prevTime.gt(0) ? prevTime?.sub(1) : prevTime
-                );
-            }, 1000);
-            return () => clearInterval(countdownInterval);
-        }
-    }, [mergeCoutdownTimeSet]);
+        if (!mergeCountdownTimeSet) return;
+        const countdownInterval = setInterval(() => {
+            setMergeCountdownTime((prevTime) =>
+                prevTime && prevTime.gt(0) ? prevTime?.sub(1) : prevTime
+            );
+        }, 1000);
+        return () => clearInterval(countdownInterval);
+    }, [mergeCountdownTimeSet]);
 
-    const getTimeDestructured = (): {
-        days: number;
-        hours: number;
-        minutes: number;
-        seconds: number;
-    } => {
-        if (!mergeCountdownTime)
-            return { days: 0, hours: 0, minutes: 0, seconds: 0 };
-        const seconds = mergeCountdownTime.mod(60).toNumber();
-        const minutes = mergeCountdownTime.div(60).mod(60).toNumber();
-        const hours = mergeCountdownTime
-            .div(60 * 60)
-            .mod(60)
-            .toNumber();
-        const days = mergeCountdownTime
-            .div(60 * 60 * 24)
-            .mod(60)
-            .toNumber();
-
-        return { days, hours, minutes, seconds };
-    };
-
-    const smallTimer = () => {
-        const { days, hours, minutes, seconds } = getTimeDestructured();
-
-        const numberFormatting = 'text-xl font-semibold';
-
-        return (
-            <div>
-                <p className="text-xl">Merge Countdown 🕒</p>
-                <p className="whitespace-pre mt-2">
-                    <span className={numberFormatting}>{days}</span> day{'  '}
-                    <span className={numberFormatting}>{hours}</span> hr{'  '}
-                    <span className={numberFormatting}>{minutes}</span> min
-                    {'  '}
-                    <span className={numberFormatting}>{seconds}</span> sec
-                </p>
-            </div>
-        );
-    };
+    useEffect(() => {
+        if (!mergeCountdownTime) return;
+        setMergeCountdown(getTimeDestructured(mergeCountdownTime))
+    }, [mergeCountdownTime])
 
     if (!showTimerPopup) {
         return (
@@ -96,29 +98,11 @@ export const MergeCountdown: FC = () => {
                     className="px-10 py-5 rounded-xl text-white bg-black/70 hover:bg-black"
                     onClick={() => setShowTimerPopup(true)}
                 >
-                    {smallTimer()}
+                    <SmolTimer {...mergeCountdown} />
                 </button>
             </div>
         );
     }
-
-    const largeTimer = () => {
-        const { days, hours, minutes, seconds } = getTimeDestructured();
-
-        const numberFormatting = 'text-2xl md:text-5xl font-semibold';
-
-        return (
-            <div>
-                <p className="whitespace-pre md:text-xl text-center">
-                    <span className={numberFormatting}>{days}</span> day{'  '}
-                    <span className={numberFormatting}>{hours}</span> hr{'  '}
-                    <span className={numberFormatting}>{minutes}</span> min
-                    {'  '}
-                    <span className={numberFormatting}>{seconds}</span> sec
-                </p>
-            </div>
-        );
-    };
 
     return (
         <div className="absolute top-0 bottom-0 left-0 right-0 backdrop-blur flex flex-row justify-center items-center z-[9990]">
@@ -140,7 +124,7 @@ export const MergeCountdown: FC = () => {
                 <p className="text-sm md:text-xl mt-2 mb-10">
                     Time estimated until the Merge takes place
                 </p>
-                {largeTimer()}
+                <BiglyTimer {...mergeCountdown} />
                 <p className="mt-10 md:text-xl font-semibold text-center">
                     ***Time is ticking so don&apos;t miss out!***
                 </p>
