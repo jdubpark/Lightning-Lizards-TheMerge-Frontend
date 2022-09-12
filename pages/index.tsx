@@ -40,9 +40,11 @@ const SplashScreen: FC = () => {
 const InfoSection: FC = () => {
     return (
         <div className="flex flex-row justify-center py-20 mx-auto max-w-[85%]">
-            <div className="text-2xl md:text-4xl font-bold max-w-[1000px]">
-                Be a part of the historic Ethereum merge with your on-chain
-                pixel of Mosaic! 🦄
+            <div className="text-2xl md:text-4xl max-w-[1000px]">
+                <p className="font-bold">
+                    Be a part of the historic Ethereum merge with your on-chain
+                    pixel of Mosaic! 🦄
+                </p>
                 <br />
                 <br />
                 The Merge Mosaic is an NFT project to celebrate the Ethereum
@@ -53,7 +55,7 @@ const InfoSection: FC = () => {
                 <br />
                 <br />
                 <br />
-                <h3 className="text-eth-gold">
+                <h3 className="text-eth-gold font-bold">
                     How on earth does this even work?
                 </h3>
                 <br />
@@ -74,7 +76,7 @@ const InfoSection: FC = () => {
                     <p>Claim your NFT when ETH 2.0 launches!</p>
                 </div>
                 <br />
-                <h3 className=" text-eth-gold">Who tf are we?</h3>
+                <h3 className=" text-eth-gold font-bold">Who tf are we?</h3>
                 <br />
                 <span>
                     <a
