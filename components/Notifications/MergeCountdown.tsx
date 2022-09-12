@@ -14,7 +14,7 @@ interface MergeCountdown {
 }
 
 // I'm a smol boi, don't touch me
-function SmolTimer({ hours, minutes, seconds }: MergeCountdown) {
+function SmolTimer({ mergeCountdown: { hours, minutes, seconds } }: { mergeCountdown: MergeCountdown }) {
     return (
         <div>
             <div className="text-xl">Merge Countdown 🕒</div>
@@ -28,7 +28,7 @@ function SmolTimer({ hours, minutes, seconds }: MergeCountdown) {
 }
 
 // I'm a bigly timer, don't mess with me
-function BiglyTimer({ hours, minutes, seconds }: MergeCountdown) {
+function BiglyTimer({ mergeCountdown: { hours, minutes, seconds } }: { mergeCountdown: MergeCountdown }) {
     return (
         <div className="flex space-x-2 whitespace-pre md:text-xl text-center text-2xl md:text-5xl font-semibold">
             <div>{`${hours} hr`}</div>
@@ -98,7 +98,7 @@ export const MergeCountdown: FC = () => {
                     className="px-10 py-5 rounded-xl text-white bg-black/70 hover:bg-black"
                     onClick={() => setShowTimerPopup(true)}
                 >
-                    <SmolTimer {...mergeCountdown} />
+                    <SmolTimer mergeCountdown={mergeCountdown} />
                 </button>
             </div>
         );
@@ -112,9 +112,7 @@ export const MergeCountdown: FC = () => {
             >
                 <button
                     className="absolute top-5 md:top-10 right-5 md:right-10"
-                    onClick={() => {
-                        setShowTimerPopup(false);
-                    }}
+                    onClick={() => setShowTimerPopup(false)}
                 >
                     <MdOutlineClose />
                 </button>
@@ -124,7 +122,7 @@ export const MergeCountdown: FC = () => {
                 <p className="text-sm md:text-xl mt-2 mb-10">
                     Time estimated until the Merge takes place
                 </p>
-                <BiglyTimer {...mergeCountdown} />
+                <BiglyTimer mergeCountdown={mergeCountdown} />
                 <p className="mt-10 md:text-xl font-semibold text-center">
                     ***Time is ticking so don&apos;t miss out!***
                 </p>
