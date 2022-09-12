@@ -18,8 +18,8 @@ const SplashScreen: FC = () => {
                     </h1>
                 </div>
                 <div className="text-center bg-[rgba(0,0,0,0.8)] w-[300px] md:w-[400px] py-3 md:text-xl text-white">
-                    <h2>A Collective Canvas for the Merge</h2>
-                    <h2 className="font-bold">Merge? #LGTM!</h2>
+                    <h2>A Collective Canvas for the </h2>
+                    <h2 className="font-bold">Merge! #LGTM!</h2>
                 </div>
             </div>
             <br />
@@ -45,30 +45,11 @@ const InfoSection: FC = () => {
                 pixel of Mosaic! 🦄
                 <br />
                 <br />
-                Draw on the Mosaic Canvas up to the Merge TTD, when your pixels
-                become permanent. Be the last one to write into the old Ethereum
-                state!
-                <br />
-                <br />
-                Win a pixel before the Merge by painting over others or bidding
-                ETH to show your zeal! Minimum bid is 0.001 ETH and the new bid
-                amount is sent to the previous owner. So you earn money if you
-                lose your beloved pixels! Get in early!
-                <br />
-                <br />
-                Unleash your artsy inner self and mint an NFT of your Mosaic
-                pixels! Be the first ETH-ers to have an NFT on ETH 2.0 that
-                represents the history.
-                <br />
-                <br />
-                Showcase your community spirit, support the ETH, and own a proof
-                you were part of the historical moment of ETH Merge!
-                <br />
-                <br />
-                PS: Pixels are free for grab and you can gain ETH from the next
-                person bidding 😉
-                <br />
-                #LGTM - Let’s get the merge
+                The Merge Mosaic is an NFT project to celebrate the Ethereum
+                Merge! Create art on our 500x500 pixel canvas and have it
+                forever immortalized when Ethereum switches to PoS. Participate
+                by mobilizing your community and minting up to 500 pixels for
+                free!
                 <br />
                 <br />
                 <br />
@@ -78,39 +59,38 @@ const InfoSection: FC = () => {
                 <br />
                 <div className="[&>*]:mb-6">
                     <p> We give you a large canvas</p>
-                    <p> Connect your wallet 🦊</p>
+                    <p> Launch the app and connect your wallet 🦊</p>
                     <p>
-                        Choose upto 500 pixels anywhere on the canvas for free
+                        Choose up to 500 pixels anywhere on the canvas for free
+                        (as long as they&apos;re not already taken!)
                     </p>
 
                     <p>
-                        You can draw on someone else`&apos;`s pixel - pay them
-                        and overwrite their work (minimum bid is 0.001ETH) 😛
+                        If a pixel you want is taken, bid a minimum of 0.001 ETH
+                        to overwrite that pixel!
                     </p>
 
-                    <p>
-                        Post the merge you would get a fully on chain NFT on ETH
-                        2.0 of the art you made on the canvas making you one of
-                        the first people to have an NFT on ETH 2.0
-                    </p>
-                    <p>
-                        Get your community together and draw out what you stand
-                        for. Go crazy 🤪
-                    </p>
-                    <p>
-                        P.S: We’ve optimized the code so much so it won&apos;t
-                        cost you more than a couple of bucks to edit pixels 💸
-                    </p>
+                    <p>Celebrate the Merge 🥳</p>
+                    <p>Claim your NFT when ETH 2.0 launches!</p>
                 </div>
                 <br />
                 <h3 className=" text-eth-gold">Who tf are we?</h3>
                 <br />
-                OutlierDAO is a community of student builders passionate about
-                web3. Our mission is to connect, educate and empower the top
-                web3 builders of the world who would offer open,
-                censorship-resistant, and sustainable tech for the future. The
-                DAO is mentored and backed by thought leaders from Floodgate and
-                Standard Crypto.
+                <span>
+                    <a
+                        href="https://twitter.com/LightningLizards"
+                        className="text-blue-500"
+                    >
+                        Outliers{' '}
+                    </a>
+                    <span>
+                        is a community of student builders passionate about
+                        web3. Our mission is to connect, educate and empower the
+                        top web3 builders of the world. Outliers are mentored
+                        and backed by thought leaders from Floodgate and
+                        Standard Crypto.
+                    </span>
+                </span>
             </div>
         </div>
     );

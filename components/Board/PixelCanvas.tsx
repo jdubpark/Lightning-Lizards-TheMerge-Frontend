@@ -169,7 +169,7 @@ const PixelCanvas: NextPage = (props) => {
                     return;
                 }
 
-                if (canvasIsEditable) {
+                if (colorPickerEnabled) {
                     setSelectedColor(pixelColor)
                     return;
                 }
