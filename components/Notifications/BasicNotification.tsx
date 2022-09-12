@@ -34,7 +34,7 @@ export const BasicNotfication: FC<BasicNotificationProps> = ({
                             key={index}
                             className="flex flex-row gap-x-2 md:gap-x-5 justify-between w-full items-center px-5 py-5 mx-auto text-white text md:text-xl bg-black/70 rounded-lg"
                         >
-                            <p>{text}</p>
+                            <div>{text}</div>
                             <button
                                 onClick={() => {
                                     const newShowNotification = [
