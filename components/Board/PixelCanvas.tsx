@@ -41,11 +41,13 @@ const PixelCanvas: NextPage = (props) => {
         selectedCoordinates,
         setSelectedCoordinates,
         selectedColor,
+        setSelectedColor,
         selectedPixelsList,
         setSelectedPixelsList,
         userPixelsList,
 
         canvasIsEditable,
+        colorPickerEnabled,
         waitingForTxConfirmation,
     } = usePixelCanvasContext();
 
@@ -147,6 +149,31 @@ const PixelCanvas: NextPage = (props) => {
             if (diffX < delta && diffY < delta) {
                 // is a click!
 
+                let owner: string
+                let price: string
+                let pixelColor: RgbColor
+                try {
+                    const data =
+                        await ApiClient.getCoordinateData(
+                            newCoord.x,
+                            newCoord.y
+                        );
+                    owner = data.owner;
+                    price = data.price;
+                    // voodoo magic, it lowercases the keys!
+                    pixelColor = Object.fromEntries(
+                        Object.entries(data.color).map(([k, v]) => [k.toLowerCase(), v])
+                    ) as unknown as RgbColor
+                } catch (err) {
+                    console.log(err);
+                    return;
+                }
+
+                if (canvasIsEditable) {
+                    setSelectedColor(pixelColor)
+                    return;
+                }
+
                 setSelectedCoordinates(newCoord);
                 // Check if the pixel has been previously selected
                 const newSelectedPixelsList = [...selectedPixelsList];
@@ -158,12 +185,6 @@ const PixelCanvas: NextPage = (props) => {
                 if (indexOfPixel === -1) {
                     // Newly selected pixel
                     try {
-                        const { owner, price } =
-                            await ApiClient.getCoordinateData(
-                                newCoord.x,
-                                newCoord.y
-                            );
-
                         const parsedPrice = ethers.utils.parseUnits(
                             price,
                             'wei'
@@ -227,9 +248,12 @@ const PixelCanvas: NextPage = (props) => {
             }
         },
         [
+            canvasRef,
+            clearPixel,
+            drawPixel,
+            setSelectedPixelsList,
             canvasPanZoom,
-            prevCoord.x,
-            prevCoord.y,
+            prevCoord,
             selectedColor,
             setSelectedCoordinates,
             selectedPixelsList,
@@ -250,7 +274,9 @@ const PixelCanvas: NextPage = (props) => {
                     height={CANVAS_DIMENSION}
                     width={CANVAS_DIMENSION}
                     style={{
-                        cursor: canvasIsEditable ? 'crosshair' : 'cursor',
+                        cursor: colorPickerEnabled
+                            ? 'url(\'data:image/x-icon;base64,AAACAAEAICAQAAAAAADoAgAAFgAAACgAAAAgAAAAQAAAAAEABAAAAAAAAAIAAAAAAAAAAAAAEAAAAAAAAAAAAAAAh4eHAL+/vwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIQAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAACEAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAhAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAIQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD///////////////////////////////////////////////////////////////////////////////////////D////g///+AP///gD///8B////A////sP///0D///6M///9H///+j////R////o////0f///9P////H////w==\'), auto' :
+                            canvasIsEditable ? 'crosshair' : 'cursor',
                         imageRendering: 'pixelated',
                         // height: CANVAS_DIMENSION,
                         // width: CANVAS_DIMENSION,

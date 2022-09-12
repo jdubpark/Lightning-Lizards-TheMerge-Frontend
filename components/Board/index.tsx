@@ -18,12 +18,12 @@ export const Board = () => {
     const { canvasIsEditable, setCanvasIsEditable } = usePixelCanvasContext();
 
     return (
-        <div className="flex flex-row gap-x-5 h-full my-10">
+        <div className="flex flex-row gap-x-5 h-full my-10 items-start">
             <TxLoading />
             <PixelCanvas />
             <div
-                className="hidden md:flex flex-col gap-y-5 w-[450px] z-10 px-5 overflow-y-auto"
-                style={{ maxHeight: 'calc(100vh - 160px)' }}
+                className="hidden h-auto md:flex flex-col gap-y-5 w-[450px] z-10 px-5 pb-12 overflow-y-auto"
+                style={{ maxHeight: 'calc(100vh - 180px)' }}
             >
                 <PixelInfoSection
                     name={

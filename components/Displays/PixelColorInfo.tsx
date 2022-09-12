@@ -4,9 +4,10 @@ import { RgbColorPicker } from 'react-colorful';
 import { usePixelCanvasContext } from '../../contexts/PixelCanvasContext';
 import RgbColorInput from '../Inputs/RGBColorInput';
 import { PixelInfoSection } from './PixelInfo';
+import clsx from "clsx";
 
 export default function PixelColorInfo() {
-    const { selectedColor, setSelectedColor } = usePixelCanvasContext();
+    const { selectedColor, setSelectedColor, colorPickerEnabled, setColorPickerEnabled } = usePixelCanvasContext();
 
     const [pickerType, setPickerType] = useState<'picker' | 'input'>('picker');
 
@@ -35,8 +36,9 @@ export default function PixelColorInfo() {
                         />
                     </div>
                 )}
-                <div className="text-center">
+                <div className="flex justify-center space-x-2 items-center">
                     <button
+                        type="button"
                         className="py-1 px-2 text-sm font-semibold bg-eth-light-gray/80 hover:bg-eth-light-gray rounded"
                         onClick={() => {
                             setPickerType(
@@ -44,7 +46,17 @@ export default function PixelColorInfo() {
                             );
                         }}
                     >
-                        Change Picker
+                        {pickerType === 'input' ? 'Use Picker' : 'Use RGB'}
+                    </button>
+                    <button
+                        type="button"
+                        className={clsx(
+                            "py-1 px-2 text-sm font-semibold rounded text-white",
+                            colorPickerEnabled ? 'bg-red-600/80 hover:red-600' : 'bg-eth-gray/80 hover:bg-eth-gray',
+                        )}
+                        onClick={() => setColorPickerEnabled((prev) => !prev)}
+                    >
+                        {colorPickerEnabled ? 'Exit Picker' : 'Pick Color'}
                     </button>
                 </div>
             </div>
