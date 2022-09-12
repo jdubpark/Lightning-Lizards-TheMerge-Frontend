@@ -9,6 +9,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { BasicNotfication } from '../components/Notifications/BasicNotification';
 import { MergeCountdown } from '../components/Notifications/MergeCountdown';
+import TwitterButton from '../components/Displays/twitterButton';
 
 function Header({ children }: { children: JSX.Element | JSX.Element[] }) {
     return (
@@ -92,6 +93,9 @@ const Home: NextPage = () => {
                         />
                     </div>
                     <MergeCountdown />
+                    <div className="absolute bottom-5 right-5 ">
+                        <TwitterButton />
+                    </div>
                 </main>
                 {/* <Footer>
                 <div className="text-eth-gray">
