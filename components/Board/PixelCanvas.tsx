@@ -69,11 +69,22 @@ const PixelCanvas: NextPage = (props) => {
             if (!context) return;
             context.imageSmoothingEnabled = false;
 
+            const canvasContainer = document.getElementById('canvas-container');
+            if (!canvasContainer) return;
+
+            console.log(
+                canvasContainer.clientWidth,
+                canvasContainer.clientHeight
+            );
+
             const canvas = panzoom(canvasRef.current, {
                 maxZoom: maxScaleFactor,
                 minZoom: 0.9,
                 autocenter: true,
                 pinchSpeed: 0.6,
+                initialX: CANVAS_DIMENSION / 2,
+                initialY: 0,
+                initialZoom: 20,
                 // beforeMouseDown: function(e) {
                 //     // allow mouse-down panning only if altKey is down. Otherwise - ignore
                 //     return !e.altKey; // ignoring !e.altKey
@@ -147,21 +158,27 @@ const PixelCanvas: NextPage = (props) => {
                 if (indexOfPixel === -1) {
                     // Newly selected pixel
                     try {
-                        const { price } = await ApiClient.getCoordinateData(
-                            newCoord.x,
-                            newCoord.y
-                        );
+                        const { owner, price } =
+                            await ApiClient.getCoordinateData(
+                                newCoord.x,
+                                newCoord.y
+                            );
 
                         const parsedPrice = ethers.utils.parseUnits(
                             price,
                             'wei'
                         );
-
-                        const zero = ethers.utils.parseEther('0');
-                        const minPrice = parsedPrice.eq(zero)
-                            ? zero
-                            : parsedPrice.add(ethers.utils.parseEther('0.001'));
-
+                        let minPrice = parsedPrice.add(
+                            ethers.utils.parseEther('0.000')
+                        );
+                        if (
+                            owner !==
+                            '0x0000000000000000000000000000000000000000'
+                        ) {
+                            minPrice = parsedPrice.add(
+                                ethers.utils.parseEther('0.001')
+                            );
+                        }
                         drawPixel(
                             newCoord.x,
                             newCoord.y,
