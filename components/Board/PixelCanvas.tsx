@@ -158,20 +158,27 @@ const PixelCanvas: NextPage = (props) => {
                 if (indexOfPixel === -1) {
                     // Newly selected pixel
                     try {
-                        const { price } = await ApiClient.getCoordinateData(
-                            newCoord.x,
-                            newCoord.y
-                        );
+                        const { owner, price } =
+                            await ApiClient.getCoordinateData(
+                                newCoord.x,
+                                newCoord.y
+                            );
 
                         const parsedPrice = ethers.utils.parseUnits(
                             price,
                             'wei'
                         );
-
-                        const minPrice = parsedPrice.add(
-                            ethers.utils.parseEther('0.001')
+                        let minPrice = parsedPrice.add(
+                            ethers.utils.parseEther('0.000')
                         );
-
+                        if (
+                            owner !==
+                            '0x0000000000000000000000000000000000000000'
+                        ) {
+                            minPrice = parsedPrice.add(
+                                ethers.utils.parseEther('0.001')
+                            );
+                        }
                         drawPixel(
                             newCoord.x,
                             newCoord.y,
