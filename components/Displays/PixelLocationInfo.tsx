@@ -29,7 +29,7 @@ export default function PixelLocationInfo() {
     }, [selectedCoordinates]);
 
     return (
-        <PixelInfoSection name="Pixel Info">
+        <PixelInfoSection name="Selected Pixel">
             <div className="grid grid-cols-2">
                 <InfoItem name="x" value={selectedCoordinates.x} />
                 <InfoItem name="y" value={selectedCoordinates.y} />
