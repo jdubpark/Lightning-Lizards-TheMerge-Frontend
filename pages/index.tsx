@@ -62,7 +62,7 @@ const InfoSection: FC = () => {
                     <p> Launch the app and connect your wallet 🦊</p>
                     <p>
                         Choose up to 500 pixels anywhere on the canvas for free
-                        (as long as they're not already taken!)
+                        (as long as they&apos;re not already taken!)
                     </p>
 
                     <p>
