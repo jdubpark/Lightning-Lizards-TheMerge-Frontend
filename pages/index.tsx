@@ -135,7 +135,7 @@ const Home: NextPage = () => {
                         name="twitter:site"
                         content="@YOUR_TWITTER_USERNAME"
                     /> */}
-                    <meta name="twitter:title" content="The Merge Canvas" />
+                    <meta name="twitter:title" content="Merge Mosaic" />
                     <meta
                         name="twitter:description"
                         content="The Merge Canvas -  Own a Piece of Blockchain History By Contributing to this Hybrid NFT"
