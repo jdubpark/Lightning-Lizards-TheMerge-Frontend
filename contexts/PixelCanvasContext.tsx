@@ -4,7 +4,7 @@ import {
     Dispatch,
     MutableRefObject,
     ReactNode,
-    SetStateAction,
+    SetStateAction, useCallback,
     useContext,
     useEffect,
     useRef,
@@ -58,11 +58,37 @@ interface PixelCanvasContextInterface {
 
     waitingForTxConfirmation: boolean;
     setWaitingForTxConfirmation: Dispatch<SetStateAction<boolean>>;
+
+    colorPickerEnabled: boolean;
+    setColorPickerEnabled: Dispatch<SetStateAction<boolean>>;
 }
 
 const PixelCanvasContext = createContext<
     PixelCanvasContextInterface | undefined
 >(undefined);
+
+// These functions don't rely on React FC,
+// so pull them out here to reduce function re-rendering
+function drawPixel(
+    x: number,
+    y: number,
+    canvas: HTMLCanvasElement,
+    selectedColor: RgbColor,
+    lowOpacity?: boolean
+) {
+    const context = canvas.getContext('2d');
+    if (!context) return;
+    context.fillStyle = `rgba(${selectedColor.r}, ${selectedColor.g}, ${
+        selectedColor.b
+    }, ${lowOpacity ? 0.3 : 1})`;
+    context.fillRect(x, y, 1, 1);
+}
+
+function clearPixel(x: number, y: number, canvas: HTMLCanvasElement) {
+    const context = canvas.getContext('2d');
+    if (!context) return;
+    context.clearRect(x, y, 1, 1);
+}
 
 export default function PixelCanvasContextProvider({
     children,
@@ -86,46 +112,35 @@ export default function PixelCanvasContextProvider({
     const [selectedPixelsList, setSelectedPixelsList] = useState<SelectedPixelsList>([]);
     const [userPixelsList, setUserPixelsList] = useState<CoordinateData[]>([]);
 
-    const [canvasIsEditable, setCanvasIsEditable] = useState(false);
+    const [canvasIsEditable, setCanvasIsEditable] = useState<boolean>(false);
     const [waitingForTxConfirmation, setWaitingForTxConfirmation] =
-        useState(false);
+        useState<boolean>(false);
 
-    const fetchUserPixelsList = async () => {
+    const [colorPickerEnabled, setColorPickerEnabled] = useState<boolean>(false);
+
+    const onEscapeKeyPressed = useCallback((e: KeyboardEvent) => {
+        if (e.key !== 'Escape' || !colorPickerEnabled) return;
+        setColorPickerEnabled(false);
+    }, [colorPickerEnabled, setColorPickerEnabled]);
+
+    useEffect( () => {
         if (!signer) return;
-        const signerAddress = await signer.getAddress();
-        ApiClient.getUserPixels(signerAddress)
-            .then((cd) => setUserPixelsList([...cd]))
-            .catch((error) => {
-                console.log(error);
-            });
-    };
-
-    useEffect(() => {
-        if (signer) {
-            fetchUserPixelsList();
-        }
+        signer.getAddress()
+            .then((address) => {
+                ApiClient.getUserPixels(address)
+                    .then((cd) => setUserPixelsList([...cd]))
+                    .catch((error) => {
+                        console.log(error);
+                    });
+            })
     }, [signer]);
 
-    function drawPixel(
-        x: number,
-        y: number,
-        canvas: HTMLCanvasElement,
-        selectedColor: RgbColor,
-        lowOpacity?: boolean
-    ) {
-        const context = canvas.getContext('2d');
-        if (!context) return;
-        context.fillStyle = `rgba(${selectedColor.r}, ${selectedColor.g}, ${
-            selectedColor.b
-        }, ${lowOpacity ? 0.3 : 1})`;
-        context.fillRect(x, y, 1, 1);
-    }
-
-    function clearPixel(x: number, y: number, canvas: HTMLCanvasElement) {
-        const context = canvas.getContext('2d');
-        if (!context) return;
-        context.clearRect(x, y, 1, 1);
-    }
+    useEffect(() => {
+        document.addEventListener("keydown", onEscapeKeyPressed, false);
+        return () => {
+            document.removeEventListener("keydown", onEscapeKeyPressed, false);
+        };
+    }, [onEscapeKeyPressed]);
 
     return (
         <PixelCanvasContext.Provider
@@ -148,6 +163,9 @@ export default function PixelCanvasContextProvider({
                 setWaitingForTxConfirmation,
 
                 clearPixel,
+
+                setColorPickerEnabled,
+                colorPickerEnabled,
             }}
         >
             {children}
