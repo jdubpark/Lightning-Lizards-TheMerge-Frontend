@@ -84,8 +84,8 @@ const InfoSection: FC = () => {
                     </p>
 
                     <p>
-                        You can draw on someone else’s pixel - pay them and
-                        overwrite their work (minimum bid is 0.001ETH) 😛
+                        You can draw on someone else`&apos;`s pixel - pay them
+                        and overwrite their work (minimum bid is 0.001ETH) 😛
                     </p>
 
                     <p>
@@ -98,8 +98,8 @@ const InfoSection: FC = () => {
                         for. Go crazy 🤪
                     </p>
                     <p>
-                        P.S: We’ve optimized the code so much so it won't cost
-                        you more than a couple of bucks to edit pixels 💸
+                        P.S: We’ve optimized the code so much so it won&apos;t
+                        cost you more than a couple of bucks to edit pixels 💸
                     </p>
                 </div>
                 <br />
