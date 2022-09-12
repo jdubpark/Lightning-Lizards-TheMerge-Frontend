@@ -1,5 +1,13 @@
+import clsx from 'clsx';
 import { BigNumber, BigNumberish, ethers } from 'ethers';
-import { FC, useCallback, useEffect, useState } from 'react';
+import {
+    Dispatch,
+    FC,
+    SetStateAction,
+    useCallback,
+    useEffect,
+    useState,
+} from 'react';
 import { RgbColor } from 'react-colorful';
 import {
     usePixelCanvasContext,
@@ -14,6 +22,8 @@ type SelectedPixelsListItemProps = {
     coordinates: XYCoordinates;
     color: RgbColor;
     price: BigNumber;
+    minPrice: BigNumber;
+    setHasErrors: Dispatch<SetStateAction<boolean>>;
 };
 
 const SelectedPixelsListItem: FC<SelectedPixelsListItemProps> = ({
@@ -21,10 +31,13 @@ const SelectedPixelsListItem: FC<SelectedPixelsListItemProps> = ({
     coordinates,
     color,
     price,
+    minPrice,
+    setHasErrors,
 }) => {
     const { canvasRef, selectedPixelsList, setSelectedPixelsList, drawPixel } =
         usePixelCanvasContext();
 
+    const [error, setError] = useState('');
     const [userPrice, setUserPrice] = useState(ethers.utils.formatEther(price));
 
     const deleteSelectedPixelHandler = useCallback(
@@ -60,14 +73,13 @@ const SelectedPixelsListItem: FC<SelectedPixelsListItemProps> = ({
             ? '#000000'
             : '#ffffff';
 
-    const [inputValue, setInputValue] = useState<BigNumber>(
-        selectedPixelsList[index].minPrice
-    );
-
     return (
         <div key={index} className="flex flex-col gap-y-2">
             <div
-                className={`flex flex-col justify-center items-center w-full aspect-square border-4 border-black`}
+                className={clsx(
+                    `flex flex-col justify-center items-center w-full aspect-square border-4 border-black`,
+                    error ? 'border-red-400' : ''
+                )}
                 style={{
                     backgroundColor: `rgb(${color.r}, ${color.g}, ${color.b})`,
                     color: textColor,
@@ -85,43 +97,59 @@ const SelectedPixelsListItem: FC<SelectedPixelsListItemProps> = ({
                     </button>
                 </div>
             </div>
-            <div>
-                <p>
-                    Min bid:{' '}
-                    {ethers.utils.formatEther(
-                        selectedPixelsList[index].minPrice
-                    )}{' '}
-                    ETH
-                </p>
-            </div>
             <div className="flex flex-row gap-x-2">
                 <label>Bid: </label>
-                <input
-                    type="text"
-                    value={userPrice}
-                    onChange={(e) => {
-                        try {
-                            const newPrice =
-                                e.target.value.replace(/[^0-9.]/g, '') || '0';
-                            const newSelectedPixelsList = [
-                                ...selectedPixelsList,
-                            ];
-                            newSelectedPixelsList[index].price =
-                                ethers.utils.parseEther(newPrice);
-                            setSelectedPixelsList([...newSelectedPixelsList]);
-                            setUserPrice(newPrice);
-                        } catch (error) {
-                            console.log(error);
-                        }
-                    }}
-                    className="border-2 border-black w-full px-2"
-                />
+                <div>
+                    <input
+                        type="text"
+                        value={userPrice}
+                        onChange={(e) => {
+                            try {
+                                const newPrice =
+                                    e.target.value.replace(/[^0-9.]/g, '') ||
+                                    '0';
+                                const newSelectedPixelsList = [
+                                    ...selectedPixelsList,
+                                ];
+                                const newPriceBigNum =
+                                    ethers.utils.parseEther(newPrice);
+                                newSelectedPixelsList[index].price =
+                                    newPriceBigNum;
+                                setSelectedPixelsList([
+                                    ...newSelectedPixelsList,
+                                ]);
+                                setUserPrice(newPrice);
+                                setError('');
+                                setHasErrors(false);
+                                if (newPriceBigNum.lt(minPrice)) {
+                                    setHasErrors(true);
+                                    setError(
+                                        `Min bid is ${ethers.utils.formatEther(
+                                            minPrice
+                                        )} ETH`
+                                    );
+                                }
+                            } catch (error) {
+                                console.log(error);
+                            }
+                        }}
+                        className={clsx(
+                            'border-2 border-black w-full px-2',
+                            error ? 'border-red-400' : ''
+                        )}
+                    />
+                    {error && <p className="text-red-400">{error}</p>}
+                </div>
             </div>
         </div>
     );
 };
 
-const SelectedPixelsList: FC = () => {
+type SelectedPixelsListProps = {
+    setHasErrors: Dispatch<SetStateAction<boolean>>;
+};
+
+const SelectedPixelsList: FC<SelectedPixelsListProps> = ({ setHasErrors }) => {
     const { selectedPixelsList } = usePixelCanvasContext();
 
     return (
@@ -132,13 +160,15 @@ const SelectedPixelsList: FC = () => {
                 </p>
             ) : (
                 selectedPixelsList.map(
-                    ({ coordinates, color, price }, index) => (
+                    ({ coordinates, color, price, minPrice }, index) => (
                         <SelectedPixelsListItem
                             key={`${coordinates.x}-${coordinates.y}`}
                             index={index}
                             coordinates={coordinates}
                             color={color}
                             price={price}
+                            minPrice={minPrice}
+                            setHasErrors={setHasErrors}
                         />
                     )
                 )
@@ -192,6 +222,7 @@ export const PixelsList: FC = () => {
         PixelsListTab.SELECTED_PIXELS
     );
     const [showPopup, setShowPopup] = useState(false);
+    const [hasErrors, setHasErrors] = useState(false);
 
     return (
         <>
@@ -202,7 +233,7 @@ export const PixelsList: FC = () => {
             {showPopup && (
                 <div className="absolute top-0 bottom-0 left-0 right-0 backdrop-blur flex flex-row justify-center items-center z-[9990]">
                     <div
-                        className="bg-white px-20 pt-10 pb-10 rounded-lg width-clamp min-w-[500px]"
+                        className="bg-white rounded-lg shadow-xl px-20 pt-10 pb-10 width-clamp min-w-[500px]"
                         style={{ marginTop: '72px' }}
                     >
                         <div className="flex flex-row items-start justify-between">
@@ -213,33 +244,38 @@ export const PixelsList: FC = () => {
                                 Pixels
                             </p>
                             <button
+                                disabled={hasErrors}
                                 onClick={() => setShowPopup(false)}
-                                className="py-1 px-2 rounded text-white bg-eth-gray/80 hover:bg-eth-gray"
+                                className="py-1 px-2 rounded text-white bg-eth-gray/80 hover:bg-eth-gray disabled:bg-eth-gray/80 disabled:opacity-50"
                             >
                                 Close
                             </button>
                         </div>
                         <div className="pb-5 flex flex-row items-center gap-x-2">
                             <button
+                                disabled={hasErrors}
                                 onClick={() =>
                                     setTab(PixelsListTab.SELECTED_PIXELS)
                                 }
-                                className="py-1 px-2 rounded bg-eth-light-gray/80 hover:bg-eth-light-gray"
+                                className="py-1 px-2 rounded bg-eth-light-gray/80 hover:bg-eth-light-gray disabled:bg-eth-light-gray/80 disabled:opacity-50"
                             >
                                 Selected
                             </button>
                             <button
+                                disabled={hasErrors}
                                 onClick={() =>
                                     setTab(PixelsListTab.USER_PIXELS)
                                 }
-                                className="py-1 px-2 rounded bg-eth-light-gray/80 hover:bg-eth-light-gray"
+                                className="py-1 px-2 rounded bg-eth-light-gray/80 hover:bg-eth-light-gray disabled:bg-eth-light-gray/80 disabled:opacity-50"
                             >
                                 Owned
                             </button>
                         </div>
                         <div className="grid grid-cols-2 gap-x-10 gap-y-10 pr-2 w-[500px] max-h-[500px] overflow-auto">
                             {tab === PixelsListTab.SELECTED_PIXELS ? (
-                                <SelectedPixelsList />
+                                <SelectedPixelsList
+                                    setHasErrors={setHasErrors}
+                                />
                             ) : (
                                 <UserPixelsList />
                             )}

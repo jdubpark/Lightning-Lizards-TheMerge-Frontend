@@ -68,19 +68,30 @@ const PixelCanvas: NextPage = (props) => {
             if (!context) return;
             context.imageSmoothingEnabled = false;
 
+            const canvasContainer = document.getElementById('canvas-container');
+            if (!canvasContainer) return;
+
+            console.log(
+                canvasContainer.clientWidth,
+                canvasContainer.clientHeight
+            );
+
             const canvas = panzoom(canvasRef.current, {
                 maxZoom: 50,
                 minZoom: 0.9,
                 autocenter: true,
                 pinchSpeed: 0.6,
+                initialX: CANVAS_DIMENSION / 2,
+                initialY: 0,
+                initialZoom: 20,
                 // beforeMouseDown: function(e) {
                 //     // allow mouse-down panning only if altKey is down. Otherwise - ignore
                 //     return !e.altKey; // ignoring !e.altKey
                 // }
             });
 
-            canvas.zoomAbs(halfSize, halfSize, 50);
-            canvas.moveTo(halfSize / 2, halfSize / 2);
+            // canvas.zoomAbs(halfSize, halfSize, 50);
+            // canvas.moveTo(0, 0);
             setCanvasPanZoom(canvas);
 
             return () => {
@@ -155,10 +166,9 @@ const PixelCanvas: NextPage = (props) => {
                             'wei'
                         );
 
-                        const zero = ethers.utils.parseEther('0');
-                        const minPrice = parsedPrice.eq(zero)
-                            ? zero
-                            : parsedPrice.add(ethers.utils.parseEther('0.001'));
+                        const minPrice = parsedPrice.add(
+                            ethers.utils.parseEther('0.001')
+                        );
 
                         drawPixel(
                             newCoord.x,
