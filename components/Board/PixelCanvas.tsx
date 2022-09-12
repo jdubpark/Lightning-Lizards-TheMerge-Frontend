@@ -13,6 +13,7 @@ import { ethers } from 'ethers';
 
 const createShadow = (size: number) => `${size}px ${size}px 10px #ccc inset`;
 const shadowSize = 8;
+const maxScaleFactor = 50;
 
 /**
  * Returns the floored coordinate {x,y} from mouse event
@@ -69,7 +70,7 @@ const PixelCanvas: NextPage = (props) => {
             context.imageSmoothingEnabled = false;
 
             const canvas = panzoom(canvasRef.current, {
-                maxZoom: 50,
+                maxZoom: maxScaleFactor,
                 minZoom: 0.9,
                 autocenter: true,
                 pinchSpeed: 0.6,
@@ -79,8 +80,11 @@ const PixelCanvas: NextPage = (props) => {
                 // }
             });
 
-            canvas.zoomAbs(halfSize, halfSize, 50);
-            canvas.moveTo(halfSize / 2, halfSize / 2);
+            canvas.zoomAbs(CANVAS_DIMENSION, CANVAS_DIMENSION, maxScaleFactor);
+            canvas.moveTo(
+                -halfSize * maxScaleFactor,
+                -halfSize * maxScaleFactor
+            );
             setCanvasPanZoom(canvas);
 
             return () => {
