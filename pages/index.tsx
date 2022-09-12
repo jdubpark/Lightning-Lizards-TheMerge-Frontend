@@ -142,7 +142,7 @@ const Home: NextPage = () => {
                     />
                     <meta
                         name="twitter:image"
-                        content="https://merge-nft.s3.us-west-2.amazonaws.com/canvas.png"
+                        content="https://merge-nft.s3.us-west-2.amazonaws.com/card.png"
                     />
                     <link rel="icon" href="/favicon.ico" />
                 </Head>
