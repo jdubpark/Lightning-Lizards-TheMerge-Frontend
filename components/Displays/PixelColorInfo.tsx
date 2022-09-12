@@ -56,7 +56,7 @@ export default function PixelColorInfo() {
                         )}
                         onClick={() => setColorPickerEnabled((prev) => !prev)}
                     >
-                        {colorPickerEnabled ? 'Exit Picker' : 'Pick Color'}
+                        {colorPickerEnabled ? 'Exit Picker (esc)' : 'Pick Color'}
                     </button>
                 </div>
             </div>
