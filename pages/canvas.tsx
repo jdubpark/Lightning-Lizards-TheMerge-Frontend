@@ -1,5 +1,6 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
+import { ToastContainer } from 'react-toastify';
 // import Image from 'next/image';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { Board } from '../components/Board';
@@ -101,6 +102,7 @@ const Home: NextPage = () => {
                 </div>
             </Footer> */}
             </div>
+            <ToastContainer />
         </>
     );
 };

@@ -1,7 +1,9 @@
 import clsx from 'clsx';
-import { BigNumber, BigNumberish, Contract } from 'ethers';
+import { providers, BigNumber, BigNumberish, Contract } from 'ethers';
 import { useEffect, useState, useCallback } from 'react';
+import {toast, ToastOptions} from 'react-toastify';
 import { useNetwork, useSwitchNetwork, useSigner, useContract } from 'wagmi';
+
 import {
     IS_PRODUCTION,
     MERGE_CANVAS_CONTRACT_ADDRESS,
@@ -17,6 +19,53 @@ function getTotalPrice(selectedPixelsList: SelectedPixelsList): BigNumber {
         (a, b) => a.add(b.price),
         BigNumber.from('0')
     );
+}
+
+const MAX_PIXEL_CHANGE_PER_TX = 250;
+
+const toastConfig: ToastOptions = {
+    position: 'top-right',
+    autoClose: 5000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+}
+
+type MintParamsForSinglePixel = [number, number, { R: BigNumber; B: BigNumber; G: BigNumber }]
+type MintParamsForMultiplePixels = [number[], number[], { R: BigNumber; B: BigNumber; G: BigNumber }[], BigNumber[]]
+
+function createMintParamsForMultiplePixels(selectedPixelsList: SelectedPixelsList): MintParamsForMultiplePixels {
+    return [
+        selectedPixelsList.map((item) => item.coordinates.x),
+        selectedPixelsList.map((item) => item.coordinates.y),
+        selectedPixelsList.map((item) => {
+            return {
+                R: BigNumber.from(item.color.r),
+                G: BigNumber.from(item.color.g),
+                B: BigNumber.from(item.color.b),
+            };
+        }),
+        selectedPixelsList.map((item) => item.price),
+    ]
+}
+
+function getMintParamsForMultiplePixels(selectedPixelsList: SelectedPixelsList): {
+    params: MintParamsForMultiplePixels[],
+    isMultipleTxs: boolean,
+} {
+    let params = []
+    let isMultipleTxs = false;
+    if (selectedPixelsList.length > MAX_PIXEL_CHANGE_PER_TX) {
+        isMultipleTxs = true;
+        for (let i = 0; i < selectedPixelsList.length; i += MAX_PIXEL_CHANGE_PER_TX) {
+            params.push(createMintParamsForMultiplePixels(selectedPixelsList.slice(i, i + MAX_PIXEL_CHANGE_PER_TX)));
+        }
+    } else {
+        params.push(createMintParamsForMultiplePixels(selectedPixelsList))
+    }
+    return {params, isMultipleTxs}
 }
 
 export const MintButton = () => {
@@ -61,28 +110,20 @@ export const MintButton = () => {
 
             setIsOwnButtonDisabled(true);
             // if (chain.id !== 5) await switchNetworkAsync(5);
-            let unsignedTx;
-            let gasLimit: BigNumberish;
-            let params = [];
+            let gasLimit: BigNumberish | undefined;
+            let params: (MintParamsForSinglePixel | MintParamsForMultiplePixels)[] = [];
             let fnName = '';
+            let isMultipleTxs = false;
+            let txsChangeColor: Promise<providers.TransactionResponse>[] = []
 
             if (selectedPixelsList.length > 1) {
                 fnName = 'changePixelsColor';
-                params = [
-                    selectedPixelsList.map((item) => item.coordinates.x),
-                    selectedPixelsList.map((item) => item.coordinates.y),
-                    selectedPixelsList.map((item) => {
-                        return {
-                            R: BigNumber.from(item.color.r),
-                            G: BigNumber.from(item.color.g),
-                            B: BigNumber.from(item.color.b),
-                        };
-                    }),
-                    selectedPixelsList.map((item) => item.price),
-                ];
+                const mintParams = getMintParamsForMultiplePixels(selectedPixelsList)
+                isMultipleTxs = mintParams.isMultipleTxs;
+                params = mintParams.params;
             } else {
                 fnName = 'changePixelColor';
-                params = [
+                params.push([
                     selectedCoordinates.x,
                     selectedCoordinates.y,
                     {
@@ -90,39 +131,55 @@ export const MintButton = () => {
                         G: BigNumber.from(selectedColor.g),
                         B: BigNumber.from(selectedColor.b),
                     },
-                ];
+                ])
             }
 
-            unsignedTx = await mergeCanvasContract.populateTransaction[fnName](
-                ...params
-            );
-            try {
-                gasLimit = await mergeCanvasContract.estimateGas[fnName](
-                    ...params
-                );
-            } catch {
-                gasLimit = BigNumber.from(300000).mul(
-                    selectedPixelsList.length
-                );
+            if (!IS_PRODUCTION) {
+                gasLimit = await mergeCanvasContract.estimateGas[fnName](...params)
+                    .then((limit) => limit)
+                    .catch((error) => BigNumber.from(300000).mul(
+                        selectedPixelsList.length
+                    ))
+                gasLimit = BigNumber.from(Math.floor(gasLimit.toNumber() * 1.5)),
+                console.log('Gas limit', gasLimit.toString());
+            } else {
+                gasLimit = undefined
             }
 
-            console.log('Gas limit', gasLimit.toString());
-            const txChangeColor = await signer.sendTransaction({
-                ...unsignedTx,
-                value: getTotalPrice(selectedPixelsList).toString(),
-                ...(IS_PRODUCTION ? {} : {
-                    gasLimit: BigNumber.from(Math.floor(gasLimit.toNumber() * 1.5))
-                }),
-            });
+            if (!isMultipleTxs) {
+                const unsignedTx = await mergeCanvasContract.populateTransaction[fnName](
+                    ...params[0]
+                );
+
+                txsChangeColor.push(
+                    signer.sendTransaction({
+                        ...unsignedTx,
+                        value: getTotalPrice(selectedPixelsList).toString(),
+                        gasLimit,
+                    })
+                );
+            } else {
+                toast('🦄 Your pixels will be colored in multiple transactions due to block gas limit!', toastConfig);
+
+                params.forEach((param) => {
+                    mergeCanvasContract.populateTransaction[fnName](
+                        ...params[0]
+                    ).then((unsignedTx) => {
+                        txsChangeColor.push(
+                            signer.sendTransaction({
+                                ...unsignedTx,
+                                value: getTotalPrice(selectedPixelsList).toString(),
+                                gasLimit,
+                            })
+                        )
+                    })
+                })
+            }
 
             setWaitingForTxConfirmation(true);
-            console.log(txChangeColor);
-            try {
-                const receipt = await txChangeColor.wait();
-                console.log({ receipt });
-            } catch (error) {
-                console.log({ error });
-            }
+            console.log(txsChangeColor);
+            await Promise.allSettled(txsChangeColor)
+                .catch((err) => { throw err })
         } catch (error) {
             console.error(error);
         } finally {
@@ -138,7 +195,6 @@ export const MintButton = () => {
         setWaitingForTxConfirmation,
         selectedCoordinates,
         selectedColor,
-        getTotalPrice,
     ]);
 
     useEffect(() => {
