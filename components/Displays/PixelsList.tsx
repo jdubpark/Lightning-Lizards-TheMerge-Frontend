@@ -227,7 +227,7 @@ export const PixelsList: FC = () => {
     return (
         <>
             <PixelInfoSection
-                name={`Selected Pixels (${selectedPixelsList.length})`}
+                name={`Selected Pixels (${selectedPixelsList.length}) / 200`}
                 onClick={() => setShowPopup(true)}
             />
             {showPopup && (
