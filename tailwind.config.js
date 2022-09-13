@@ -15,6 +15,7 @@ module.exports = {
                 'eth-light-gray': '#ecf0f1',
                 'eth-gold': '#c99d66',
                 'eth-gray': '#3c3c3d',
+                'twitter-blue': '#1da1f2',
             },
         },
     },

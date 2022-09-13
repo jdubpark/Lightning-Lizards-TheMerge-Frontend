@@ -94,9 +94,6 @@ const Home: NextPage = () => {
                         />
                     </div>
                     <MergeCountdown />
-                    <div className="absolute bottom-5 right-5 ">
-                        <TwitterButton />
-                    </div>
                 </main>
                 {/* <Footer>
                 <div className="text-eth-gray">
