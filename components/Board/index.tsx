@@ -13,6 +13,7 @@ import { PixelsList } from '../Displays/PixelsList';
 import { PixelInfoSection } from '../Displays/PixelInfo';
 import { MintButton } from '../Inputs/MintButton';
 import { TxLoading } from '../Displays/TxLoading';
+import TwitterButton from '../Displays/twitterButton';
 
 export const Board = () => {
     const { canvasIsEditable, setCanvasIsEditable } = usePixelCanvasContext();
@@ -47,6 +48,7 @@ export const Board = () => {
                     compact
                 />
                 <PixelLocationInfo />
+                <TwitterButton />
                 {canvasIsEditable && (
                     <>
                         <PixelColorInfo />
