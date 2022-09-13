@@ -80,7 +80,7 @@ const InfoSection: FC = () => {
                 <br />
                 <span>
                     <a
-                        href="https://twitter.com/LightningLizards"
+                        href="https://twitter.com/outlierdao"
                         className="text-blue-500"
                     >
                         Outliers{' '}
