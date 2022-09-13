@@ -11,9 +11,8 @@ import { PixelChangeListener } from './PixelChangeListener';
 import ApiClient from '../../utils/ApiClient';
 import { ethers } from 'ethers';
 
-const createShadow = (size: number) => `${size}px ${size}px 10px #ccc inset`;
-const shadowSize = 8;
 const maxScaleFactor = 50;
+const initialZoom = 25;
 
 /**
  * Returns the floored coordinate {x,y} from mouse event
@@ -74,27 +73,22 @@ const PixelCanvas: NextPage = (props) => {
             const canvasContainer = document.getElementById('canvas-container');
             if (!canvasContainer) return;
 
-            console.log(
-                canvasContainer.clientWidth,
-                canvasContainer.clientHeight
-            );
-
             const canvas = panzoom(canvasRef.current, {
                 maxZoom: maxScaleFactor,
                 minZoom: 0.9,
                 autocenter: true,
                 pinchSpeed: 0.6,
-                initialX: CANVAS_DIMENSION / 2,
-                initialY: 0,
-                initialZoom: 20,
+                initialX: CANVAS_DIMENSION / 2, // center
+                initialY: CANVAS_DIMENSION / 2, // center
+                initialZoom,
                 // beforeMouseDown: function(e) {
                 //     // allow mouse-down panning only if altKey is down. Otherwise - ignore
                 //     return !e.altKey; // ignoring !e.altKey
                 // }
             });
 
-            canvas.zoomAbs(CANVAS_DIMENSION, CANVAS_DIMENSION, maxScaleFactor);
-            canvas.moveTo(0, 0);
+            canvas.zoomAbs(CANVAS_DIMENSION, CANVAS_DIMENSION, initialZoom);
+            canvas.moveTo(-CANVAS_DIMENSION * initialZoom / 2.3, -CANVAS_DIMENSION * initialZoom / 2.5);
 
             setCanvasPanZoom(canvas);
 
@@ -225,24 +219,6 @@ const PixelCanvas: NextPage = (props) => {
                     // Remove the pixel and replace with most recent pixel coloring
                     newSelectedPixelsList.splice(indexOfPixel, 1);
                     clearPixel(newCoord.x, newCoord.y, canvas);
-                    // Since we will be refreshing every block, no need to get immediate data
-                    // await ApiClient.getCoordinateData(
-                    //     selectedCoordinates.x,
-                    //     selectedCoordinates.y
-                    // ).then((cd) => {
-                    //     if (!cd) return;
-                    //     drawPixel(
-                    //         newCoord.x,
-                    //         newCoord.y,
-                    //         canvas,
-                    //         {
-                    //             r: cd.color.R,
-                    //             g: cd.color.G,
-                    //             b: cd.color.B,
-                    //         },
-                    //         true
-                    //     );
-                    // });
                 }
                 setSelectedPixelsList([...newSelectedPixelsList]);
             }
