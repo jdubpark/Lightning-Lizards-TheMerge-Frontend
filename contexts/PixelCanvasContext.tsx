@@ -4,7 +4,8 @@ import {
     Dispatch,
     MutableRefObject,
     ReactNode,
-    SetStateAction, useCallback,
+    SetStateAction,
+    useCallback,
     useContext,
     useEffect,
     useRef,
@@ -13,7 +14,7 @@ import {
 import { RgbColor } from 'react-colorful';
 import { useSigner } from 'wagmi';
 import ApiClient, { CoordinateData } from '../utils/ApiClient';
-import {SelectedPixelsList} from "../utils/types";
+import { SelectedPixelsList } from '../utils/types';
 
 export interface XYCoordinates {
     x: number;
@@ -105,40 +106,44 @@ export default function PixelCanvasContextProvider({
             y: 0,
         });
     const [selectedColor, setSelectedColor] = useState<RgbColor>({
-        r: 255,
-        g: 255,
-        b: 255,
+        r: 78,
+        g: 200,
+        b: 239,
     });
-    const [selectedPixelsList, setSelectedPixelsList] = useState<SelectedPixelsList>([]);
+    const [selectedPixelsList, setSelectedPixelsList] =
+        useState<SelectedPixelsList>([]);
     const [userPixelsList, setUserPixelsList] = useState<CoordinateData[]>([]);
 
     const [canvasIsEditable, setCanvasIsEditable] = useState<boolean>(false);
     const [waitingForTxConfirmation, setWaitingForTxConfirmation] =
         useState<boolean>(false);
 
-    const [colorPickerEnabled, setColorPickerEnabled] = useState<boolean>(false);
+    const [colorPickerEnabled, setColorPickerEnabled] =
+        useState<boolean>(false);
 
-    const onEscapeKeyPressed = useCallback((e: KeyboardEvent) => {
-        if (e.key !== 'Escape' || !colorPickerEnabled) return;
-        setColorPickerEnabled(false);
-    }, [colorPickerEnabled, setColorPickerEnabled]);
+    const onEscapeKeyPressed = useCallback(
+        (e: KeyboardEvent) => {
+            if (e.key !== 'Escape' || !colorPickerEnabled) return;
+            setColorPickerEnabled(false);
+        },
+        [colorPickerEnabled, setColorPickerEnabled]
+    );
 
-    useEffect( () => {
+    useEffect(() => {
         if (!signer) return;
-        signer.getAddress()
-            .then((address) => {
-                ApiClient.getUserPixels(address)
-                    .then((cd) => setUserPixelsList([...cd]))
-                    .catch((error) => {
-                        console.log(error);
-                    });
-            })
+        signer.getAddress().then((address) => {
+            ApiClient.getUserPixels(address)
+                .then((cd) => setUserPixelsList([...cd]))
+                .catch((error) => {
+                    console.log(error);
+                });
+        });
     }, [signer]);
 
     useEffect(() => {
-        document.addEventListener("keydown", onEscapeKeyPressed, false);
+        document.addEventListener('keydown', onEscapeKeyPressed, false);
         return () => {
-            document.removeEventListener("keydown", onEscapeKeyPressed, false);
+            document.removeEventListener('keydown', onEscapeKeyPressed, false);
         };
     }, [onEscapeKeyPressed]);
 

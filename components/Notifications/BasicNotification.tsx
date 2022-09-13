@@ -24,7 +24,7 @@ export const BasicNotfication: FC<BasicNotificationProps> = ({
     }, []);
 
     return (
-        <div className="fixed bottom-0 left-0 right-0 bottom-5 x-50 z-50">
+        <div className="fixed bottom-5 left-0 right-0 x-50 z-50">
             <div className="flex flex-col gap-y-3 justify-center items-center w-fit mx-auto">
                 {notifications.map((text, index) => {
                     if (!showNotifications[index]) return null;
