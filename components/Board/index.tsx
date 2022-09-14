@@ -14,6 +14,7 @@ import { PixelInfoSection } from '../Displays/PixelInfo';
 import { MintButton } from '../Inputs/MintButton';
 import { TxLoading } from '../Displays/TxLoading';
 import TwitterButton from '../Displays/twitterButton';
+import { NFTMintButton } from '../Inputs/NFTMintButton';
 
 export const Board = () => {
     const { canvasIsEditable, setCanvasIsEditable } = usePixelCanvasContext();
@@ -54,6 +55,7 @@ export const Board = () => {
                         <PixelColorInfo />
                         <PixelsList />
                         <MintButton />
+                        <NFTMintButton />
                     </>
                 )}
                 <div className="hidden h-screen" />

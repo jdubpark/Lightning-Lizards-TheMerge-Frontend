@@ -109,22 +109,20 @@ export const NFTMintButton = () => {
             {isLoadingSigner ? (
                 <div>Connect Wallet!</div>
             ) : (
-                <PixelInfoSection name="Mint NFT">
-                    <div className="flex flex-col space-y-2">
-                        <button
-                            type="button"
-                            className={clsx(
-                                'py-3 px-6 w-full bg-eth-gold/80 text-white font-bold rounded uppercase shadow transition cursor-pointer',
-                                'hover:bg-eth-gold hover:shadow-lg',
-                                isOwnButtonDisabled &&
-                                    'bg-eth-gray opacity-40 cursor-none'
-                            )}
-                            onClick={() => ownNFT()}
-                        >
-                            Mint NFT
-                        </button>
-                    </div>
-                </PixelInfoSection>
+                <div className="flex flex-col space-y-2">
+                    <button
+                        type="button"
+                        className={clsx(
+                            'py-3 px-6 w-full bg-eth-gold/80 text-white font-bold rounded uppercase shadow transition cursor-pointer',
+                            'hover:bg-eth-gold hover:shadow-lg',
+                            isOwnButtonDisabled &&
+                                'bg-eth-gray opacity-40 cursor-none'
+                        )}
+                        onClick={() => ownNFT()}
+                    >
+                        Mint NFT
+                    </button>
+                </div>
             )}
         </div>
     );
